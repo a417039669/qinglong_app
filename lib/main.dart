@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/module/login/login_page.dart';
 
@@ -10,12 +11,18 @@ import 'base/routes.dart';
 import 'base/userinfo_viewmodel.dart';
 import 'module/home/home_page.dart';
 
+late UserInfoViewModel userInfoViewModel;
+
+var logger = Logger();
+
 void main() {
+
+  WidgetsFlutterBinding.ensureInitialized();
+  userInfoViewModel = UserInfoViewModel.getInstance();
   runApp(
     ProviderScope(
       overrides: [
         themeProvider,
-        userInfoProvider,
       ],
       child: const MyApp(),
     ),
@@ -42,7 +49,7 @@ class MyApp extends ConsumerWidget {
           return Routes.generateRoute(setting);
         },
         // home: ref.read<UserInfoViewModel>(userInfoProvider).userInfoBean != null ? const HomePage() : LoginPage(),
-        home: HomePage(),
+        home: LoginPage(),
       ),
     );
   }

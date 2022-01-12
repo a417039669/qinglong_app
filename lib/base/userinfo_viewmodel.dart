@@ -1,46 +1,37 @@
-import 'dart:convert';
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qinglong_app/base/base_viewmodel.dart';
 import 'package:qinglong_app/utils/sp_utils.dart';
 
 import 'sp_const.dart';
 
-var userInfoProvider = ChangeNotifierProvider((ref) => UserInfoViewModel());
+class UserInfoViewModel {
+  String? _token;
+  String? _host = "";
 
-class UserInfoViewModel extends ViewModel {
-  UserInfoBean? _userInfoBean;
+  static UserInfoViewModel? _userInfoViewModel;
 
-  UserInfoViewModel() {
+  static UserInfoViewModel getInstance() {
+    _userInfoViewModel ??= UserInfoViewModel._();
+    return _userInfoViewModel!;
+  }
+
+  UserInfoViewModel._() {
     String userInfoJson = SpUtil.getString(sp_UserINfo);
+    _host = SpUtil.getString(sp_Host);
     if (userInfoJson.isNotEmpty) {
-      _userInfoBean = UserInfoBean.fromJson(jsonDecode(userInfoJson));
+      _token = userInfoJson;
     }
   }
 
-  void updateUserInfoBean(UserInfoBean userInfoBean) {
-    _userInfoBean = userInfoBean;
-    SpUtil.putString(sp_UserINfo, jsonEncode(userInfoBean));
+  void updateToken(String token) {
+    _token = token;
+    SpUtil.putString(sp_UserINfo, token);
   }
 
-  UserInfoBean? get userInfoBean => _userInfoBean;
-}
-
-class UserInfoBean {
-  String? name;
-  int? age;
-
-  UserInfoBean({this.name, this.age});
-
-  UserInfoBean.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    age = json['age'];
+  void updateHost(String host) {
+    _host = host;
+    SpUtil.putString(sp_Host, host);
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['age'] = this.age;
-    return data;
-  }
+  String? get token => _token;
+
+  String? get host => _host;
 }

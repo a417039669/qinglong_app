@@ -33,7 +33,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: MaterialApp(
@@ -41,7 +41,8 @@ class MyApp extends ConsumerWidget {
         onGenerateRoute: (setting) {
           return Routes.generateRoute(setting);
         },
-        home: ref.read<UserInfoViewModel>(userInfoProvider).userInfoBean != null ? const HomePage() : LoginPage(),
+        // home: ref.read<UserInfoViewModel>(userInfoProvider).userInfoBean != null ? const HomePage() : LoginPage(),
+        home: HomePage(),
       ),
     );
   }

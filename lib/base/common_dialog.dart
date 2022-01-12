@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
@@ -28,23 +27,23 @@ class CommonDialog extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                margin: EdgeInsets.only(top: 15.0),
+                margin: const EdgeInsets.only(top: 15.0),
                 constraints: BoxConstraints(
                   minHeight: 40,
                 ),
                 child: IconTheme(
-                    data: IconThemeData(
+                    data: const IconThemeData(
                       color: Colors.white,
                       size: 40.0,
                     ),
                     child: LoadingIcon()),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               if (text != null)
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: 15,
                     right: 15,
                     bottom: 15,
@@ -53,7 +52,7 @@ class CommonDialog extends StatelessWidget {
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
                     child: Text(text!),
                   ),
                 ),
@@ -83,7 +82,7 @@ class LoadingIconState extends State<LoadingIcon> with SingleTickerProviderState
   @override
   void initState() {
     super.initState();
-    _controller = new AnimationController(vsync: this, duration: Duration(milliseconds: 1000))..repeat();
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000))..repeat();
     _doubleAnimation = Tween(begin: 0.0, end: 360.0).animate(_controller!)
       ..addListener(() {
         setState(() {});
@@ -113,12 +112,14 @@ typedef HideCallback = Future Function();
 
 int backButtonIndex = 2;
 
+OverlayEntry? overlay;
+
 HideCallback showCommonDialog(
-    BuildContext context, {
-      String? text,
-      bool backButtonClose = false,
-      CommonDialogState commonDialogState = CommonDialogState.LOADING,
-    }) {
+  BuildContext context, {
+  String? text,
+  bool backButtonClose = false,
+  CommonDialogState commonDialogState = CommonDialogState.LOADING,
+}) {
   Completer<VoidCallback> result = Completer<VoidCallback>();
   var backButtonName = 'QL_Toast$backButtonIndex';
   BackButtonInterceptor.add((stopDefaultButtonEvent, _) {
@@ -131,7 +132,11 @@ HideCallback showCommonDialog(
   }, zIndex: backButtonIndex, name: backButtonName);
   backButtonIndex++;
 
-  var overlay = OverlayEntry(
+  if (overlay != null) {
+    overlay?.remove();
+    overlay = null;
+  }
+  overlay = OverlayEntry(
     maintainState: true,
     builder: (_) => WillPopScope(
       onWillPop: () async {
@@ -145,10 +150,12 @@ HideCallback showCommonDialog(
     ),
   );
   result.complete(() {
-    overlay.remove();
+    overlay?.remove();
     BackButtonInterceptor.removeByName(backButtonName);
   });
-  Overlay.of(context)?.insert(overlay);
+  if (overlay != null) {
+    Overlay.of(context)?.insert(overlay!);
+  }
 
   return () async {
     var hide = await result.future;

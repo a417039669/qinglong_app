@@ -16,7 +16,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  HideCallback? _hideCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -24,21 +23,9 @@ class _LoginPageState extends State<LoginPage> {
       body: Consumer(builder: (context, ref, child) {
         var model = ref.watch<LoginViewModel>(loginProvider);
 
-        if (model.isLoading) {
-          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-            _hideCallback ??= loadingDialog(context, text: "登录中...");
-          });
-        } else {
-          if (_hideCallback != null) {
-            WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-              _hideCallback!();
-            });
-          }
-        }
-
         if (model.loginSuccess) {
           WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-            Navigator.of(context).pushNamed(Routes.route_HomePage);
+            Navigator.of(context).popAndPushNamed(Routes.route_HomePage);
           });
         }
         return SizedBox(
@@ -130,16 +117,19 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 30,
                   child: CupertinoButton(
-                      color: (_userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty)
+                      color: (_userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty && !model.isLoading)
                           ? Theme.of(context).primaryColor
                           : Theme.of(context).primaryColor.withOpacity(0.3),
-                      child: const Text(
-                        "登录",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
+                      child: model.isLoading
+                          ? const CupertinoActivityIndicator()
+                          : const Text(
+                              "登录",
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            ),
                       onPressed: () {
+                        if (model.isLoading) return;
                         Utils.hideKeyBoard(context);
                         model.login(_userNameController.text, _passwordController.text);
                       }),

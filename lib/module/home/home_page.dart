@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 ref.read(themeProvider).changeTheme();
               },
-              child: Center(child: Text("改变主题")),
+              child: const Center(child: Text("改变主题")),
             );
           }),
         ],

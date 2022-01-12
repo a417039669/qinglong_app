@@ -16,5 +16,9 @@ class ThemeViewModel extends ChangeNotifier {
   }
 }
 
-ThemeData darkTheme = ThemeData.dark().copyWith();
-ThemeData lightTheme = ThemeData.light().copyWith();
+ThemeData darkTheme = ThemeData.dark().copyWith(
+  primaryColor: Color(0xffffffff),
+);
+ThemeData lightTheme = ThemeData.light().copyWith(
+  primaryColor: Color(0xFF0F77FE),
+);

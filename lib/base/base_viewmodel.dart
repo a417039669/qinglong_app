@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-class BaseViewModel extends ChangeNotifier {
+
+class ViewModel extends ChangeNotifier{}
+
+
+class BaseViewModel extends ViewModel {
   PageState currentState = PageState.START;
 
   void loading({bool notify = false}) {

@@ -24,9 +24,13 @@ class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseS
   @override
   void initState() {
     super.initState();
-    if (widget.onReady != null) {
-      widget.onReady!(ref.read<T>(widget.model));
-    }
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (timeStamp) {
+        if (widget.onReady != null) {
+          widget.onReady!(ref.read<T>(widget.model));
+        }
+      },
+    );
   }
 
   @override

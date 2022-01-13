@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
+import 'package:qinglong_app/module/task/task_viewmodel.dart';
 
-class AddTaskPage extends StatefulWidget {
+class AddTaskPage extends ConsumerStatefulWidget {
   final TaskBean? taskBean;
 
   const AddTaskPage({Key? key, this.taskBean}) : super(key: key);
 
   @override
-  State<AddTaskPage> createState() => _AddTaskPageState();
+  ConsumerState<AddTaskPage> createState() => _AddTaskPageState();
 }
 
-class _AddTaskPageState extends State<AddTaskPage> {
+class _AddTaskPageState extends ConsumerState<AddTaskPage> {
   late TaskBean taskBean;
 
   final TextEditingController _nameController = TextEditingController();
@@ -192,7 +193,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
     if (response.success) {
       successDialog(context, "操作成功").then((value) {
-        Navigator.of(context).pop(response.bean);
+        ref.read(taskProvider).updateBean(taskBean);
+        Navigator.of(context).pop();
       });
     } else {
       failDialog(context, response.message ??"");

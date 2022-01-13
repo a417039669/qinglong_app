@@ -6,13 +6,12 @@ import 'package:qinglong_app/base/base_viewmodel.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
+import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 
 var taskProvider = ChangeNotifierProvider((ref) => TaskViewModel());
 
 class TaskViewModel extends BaseViewModel {
   List<TaskBean> list = [];
-
-  String temp = "sadad";
 
   Future<void> loadData([isLoading = true]) async {
     if (isLoading) {
@@ -73,5 +72,17 @@ class TaskViewModel extends BaseViewModel {
     } else {
       failed(result.message, notify: true);
     }
+  }
+
+  void updateBean(TaskBean result) {
+    if (result.sId == null) {
+      loadData(false);
+      return;
+    }
+    TaskBean bean = list.firstWhere((element) => element.sId == result.sId);
+    bean.name = result.name;
+    bean.schedule = result.schedule;
+    bean.command = result.command;
+    notifyListeners();
   }
 }

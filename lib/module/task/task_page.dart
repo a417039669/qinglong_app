@@ -33,7 +33,6 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     return BaseStateWidget<TaskViewModel>(
       builder: (ref, model, child) {
-
         return RefreshIndicator(
           onRefresh: () async {
             return model.loadData(false);
@@ -48,7 +47,7 @@ class _TaskPageState extends State<TaskPage> {
               TaskBean item = model.list[index - 1];
 
               if ((item.name == null || item.name!.contains(_searchKey ?? "")) || (item.command == null || item.command!.contains(_searchKey ?? ""))) {
-                return TaskItemCell(item);
+                return TaskItemCell(item, ref);
               } else {
                 return const SizedBox.shrink();
               }
@@ -102,23 +101,11 @@ class _TaskPageState extends State<TaskPage> {
   }
 }
 
-class TaskItemCell extends ConsumerStatefulWidget {
+class TaskItemCell extends StatelessWidget {
   final TaskBean bean;
+  final WidgetRef ref;
 
-  const TaskItemCell(this.bean, {Key? key}) : super(key: key);
-
-  @override
-  _TaskItemCellState createState() => _TaskItemCellState();
-}
-
-class _TaskItemCellState extends ConsumerState<TaskItemCell> {
-  late TaskBean bean;
-
-  @override
-  void initState() {
-    bean = widget.bean;
-    super.initState();
-  }
+  const TaskItemCell(this.bean, this.ref, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -317,15 +304,7 @@ class _TaskItemCellState extends ConsumerState<TaskItemCell> {
             child: const Text('编辑'),
             onPressed: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean).then((value) {
-                if (value != null) {
-                  var result = value as TaskDetailBean;
-                  bean.name = result.name;
-                  bean.schedule = result.schedule;
-                  bean.command = result.command;
-                  setState(() {});
-                }
-              });
+              Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean);
             },
           ),
           CupertinoActionSheetAction(

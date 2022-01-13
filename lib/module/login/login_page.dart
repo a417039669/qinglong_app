@@ -2,6 +2,7 @@ import 'package:dio_log/dio_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/main.dart';
 import 'package:qinglong_app/module/login/login_viewmodel.dart';
@@ -22,7 +23,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -36,6 +36,12 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.of(context).popAndPushNamed(Routes.route_HomePage);
           });
         }
+        if (model.msg.isNotEmpty) {
+          WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+            failDialog(context, model.msg);
+            model.msg = "";
+          });
+        }
         return SizedBox(
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
@@ -45,7 +51,24 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 3,
+                  height: MediaQuery.of(context).size.height / 6,
+                ),
+                Image.asset(
+                  "assets/images/ql.png",
+                  width: 60,
+                  height: 60,
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text(
+                  "青龙控制面板",
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -103,7 +126,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Expanded(
                         child: TextField(
-
                           onChanged: (_) {
                             setState(() {});
                           },
@@ -160,24 +182,27 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 30,
-                  child: CupertinoButton(
-                      color: (_hostController.text.isNotEmpty && _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty && !model.isLoading)
-                          ? Theme.of(context).primaryColor
-                          : Theme.of(context).primaryColor.withOpacity(0.3),
-                      child: model.isLoading
-                          ? const CupertinoActivityIndicator()
-                          : const Text(
-                              "登录",
-                              style: TextStyle(
-                                fontSize: 16,
+                  child: IgnorePointer(
+                    ignoring: _hostController.text.isEmpty || _userNameController.text.isEmpty || _passwordController.text.isEmpty || model.isLoading,
+                    child: CupertinoButton(
+                        color:
+                            (_hostController.text.isNotEmpty && _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty && !model.isLoading)
+                                ? Theme.of(context).primaryColor
+                                : Theme.of(context).primaryColor.withOpacity(0.4),
+                        child: model.isLoading
+                            ? const CupertinoActivityIndicator()
+                            : const Text(
+                                "登录",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                      onPressed: () {
-                        if (model.isLoading) return;
-                        Utils.hideKeyBoard(context);
-                        userInfoViewModel.updateHost(_hostController.text);
-                        model.login(_userNameController.text, _passwordController.text);
-                      }),
+                        onPressed: () {
+                          Utils.hideKeyBoard(context);
+                          userInfoViewModel.updateHost(_hostController.text);
+                          model.login(_userNameController.text, _passwordController.text);
+                        }),
+                  ),
                 ),
               ],
             ),

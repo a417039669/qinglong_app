@@ -14,7 +14,7 @@ class LoginViewModel extends ViewModel {
   bool isLoading = false;
   String msg = "";
 
-  void login(String userName, String password) async {
+  Future<void> login(String userName, String password) async {
     isLoading = true;
     loginSuccess = false;
     msg = "";

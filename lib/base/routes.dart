@@ -18,6 +18,8 @@ class Routes {
               builder: (context) => AddTaskPage(
                     taskBean: settings.arguments as TaskBean,
                   ));
+        } else {
+          return CupertinoPageRoute(builder: (context) => AddTaskPage());
         }
     }
 

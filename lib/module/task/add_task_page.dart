@@ -79,7 +79,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     height: 10,
                   ),
                   const Text(
-                    "任务名称:",
+                    "名称:",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -92,7 +92,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     controller: _nameController,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                      hintText: "请输入任务名称",
+                      hintText: "请输入名称",
                     ),
                     autofocus: false,
                   ),

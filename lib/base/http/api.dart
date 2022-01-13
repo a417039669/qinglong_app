@@ -39,6 +39,16 @@ class Api {
   }
 
   static Future<HttpResponse<TaskDetailBean>> addTask(String name, String command, String cron, {String? id}) async {
-    return await Http.put<TaskDetailBean>(Url.ADD_TASK, {"name": name, "command": command, "schedule": cron, "_id": id});
+    var data = {"name": name, "command": command, "schedule": cron};
+
+    if (id != null) {
+      data["_id"] = id;
+      return await Http.put<TaskDetailBean>(Url.ADD_TASK, data);
+    }
+    return await Http.post<TaskDetailBean>(Url.ADD_TASK, data);
+  }
+
+  static Future<HttpResponse<NullResponse>> delTask(String cron) async {
+    return await Http.delete<NullResponse>(Url.ADD_TASK, [cron]);
   }
 }

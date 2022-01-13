@@ -9,7 +9,7 @@ class TaskBean {
   String? schedule;
   bool? saved;
   String? sId;
-  num? created;
+  int? created;
   int? status;
   String? timestamp;
   int? isSystem;

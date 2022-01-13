@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,6 +33,7 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     return BaseStateWidget<TaskViewModel>(
       builder: (ref, model, child) {
+
         return RefreshIndicator(
           onRefresh: () async {
             return model.loadData(false);
@@ -335,12 +338,38 @@ class _TaskItemCellState extends ConsumerState<TaskItemCell> {
             child: const Text('删除'),
             onPressed: () {
               Navigator.pop(context);
+              delTask(context, ref);
             },
           ),
           CupertinoActionSheetAction(
             child: Text(bean.isPinned! == 0 ? "置顶" : "取消置顶"),
             onPressed: () {
               Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void delTask(BuildContext context, WidgetRef ref) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text("确认删除"),
+        content: Text("确认删除定时任务 ${bean.name ?? ""} 吗"),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text("取消"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CupertinoDialogAction(
+            child: const Text("确定"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              ref.read(taskProvider).delCron(bean.sId!);
             },
           ),
         ],

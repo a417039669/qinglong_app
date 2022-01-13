@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/base_viewmodel.dart';
 import 'package:qinglong_app/base/http/api.dart';
@@ -9,6 +12,8 @@ var taskProvider = ChangeNotifierProvider((ref) => TaskViewModel());
 class TaskViewModel extends BaseViewModel {
   List<TaskBean> list = [];
 
+  String temp = "sadad";
+
   Future<void> loadData([isLoading = true]) async {
     if (isLoading) {
       loading(notify: true);
@@ -19,7 +24,6 @@ class TaskViewModel extends BaseViewModel {
     if (result.success && result.bean != null) {
       list.clear();
       list.addAll(result.bean!);
-
       sortList();
       success();
     } else {
@@ -30,11 +34,14 @@ class TaskViewModel extends BaseViewModel {
 
   void sortList() {
     list.sort((a, b) {
-      return a.isDisabled! - b.isDisabled!;
+      return b.created!.compareTo(a.created!);
+    });
+    list.sort((a, b) {
+      return a.isDisabled!.compareTo(b.isDisabled!);
     });
 
     list.sort((a, b) {
-      return a.status! - b.status!;
+      return a.status!.compareTo(b.status!);
     });
   }
 
@@ -43,6 +50,8 @@ class TaskViewModel extends BaseViewModel {
     if (result.success) {
       list.firstWhere((element) => element.sId == cron).status = 0;
       notifyListeners();
+    } else {
+      failed(result.message, notify: true);
     }
   }
 
@@ -51,6 +60,18 @@ class TaskViewModel extends BaseViewModel {
     if (result.success) {
       list.firstWhere((element) => element.sId == cron).status = 1;
       notifyListeners();
+    } else {
+      failed(result.message, notify: true);
+    }
+  }
+
+  Future<void> delCron(String id) async {
+    HttpResponse<NullResponse> result = await Api.delTask(id);
+    if (result.success) {
+      list.removeWhere((element) => element.sId == id);
+      notifyListeners();
+    } else {
+      failed(result.message, notify: true);
     }
   }
 }

@@ -36,31 +36,46 @@ class Http {
   }
 
   static Future<HttpResponse<T>> get<T>(String uri, Map<String, String>? json, {bool compute = true}) async {
-    _init();
-    var response = await _dio!.get(uri, queryParameters: json);
+    try {
+      _init();
+      var response = await _dio!.get(uri, queryParameters: json);
 
-    return decodeResponse<T>(response, compute);
+      return decodeResponse<T>(response, compute);
+    } on DioError catch (e) {
+      return HttpResponse(success: false, message: e.message, code: 0);
+    }
   }
 
   static Future<HttpResponse<T>> post<T>(String uri, dynamic json, {bool compute = true}) async {
-    _init();
-    var response = await _dio!.post(uri, data: json);
+    try {
+      _init();
+      var response = await _dio!.post(uri, data: json);
 
-    return decodeResponse<T>(response, compute);
+      return decodeResponse<T>(response, compute);
+    } on DioError catch (e) {
+      return HttpResponse(success: false, message: e.message, code: 0);
+    }
   }
 
   static Future<HttpResponse<T>> delete<T>(String uri, dynamic json, {bool compute = true}) async {
-    _init();
-    var response = await _dio!.delete(uri, data: json);
+    try {
+      _init();
+      var response = await _dio!.delete(uri, data: json);
 
-    return decodeResponse<T>(response, compute);
+      return decodeResponse<T>(response, compute);
+    } on DioError catch (e) {
+      return HttpResponse(success: false, message: e.message, code: 0);
+    }
   }
 
   static Future<HttpResponse<T>> put<T>(String uri, dynamic json, {bool compute = true}) async {
-    _init();
-    var response = await _dio!.put(uri, data: json);
-
-    return decodeResponse<T>(response, compute);
+    try {
+      _init();
+      var response = await _dio!.put(uri, data: json);
+      return decodeResponse<T>(response, compute);
+    } on DioError catch (e) {
+      return HttpResponse(success: false, message: e.message, code: 0);
+    }
   }
 
   static HttpResponse<T> decodeResponse<T>(
@@ -173,4 +188,4 @@ void decode<T>() async {
   compute(DeserializeAction.invokeJson, DeserializeAction<T>({}));
 }
 
-class NullResponse{}
+class NullResponse {}

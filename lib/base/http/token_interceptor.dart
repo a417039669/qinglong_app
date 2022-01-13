@@ -7,7 +7,7 @@ class TokenInterceptor extends Interceptor {
     if (userInfoViewModel.token != null) {
       options.headers["Authorization"] = "Bearer " + userInfoViewModel.token!;
     }
-    options.queryParameters["t"] = DateTime.now().millisecondsSinceEpoch;
+    options.queryParameters["t"] = (DateTime.now().millisecondsSinceEpoch~/1000).toString();
     return handler.next(options);
   }
 }

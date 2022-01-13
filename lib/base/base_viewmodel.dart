@@ -7,6 +7,7 @@ class BaseViewModel extends ViewModel {
   String? failReason;
 
   void loading({bool notify = false}) {
+    failReason = null;
     currentState = PageState.LOADING;
     if (notify) {
       notifyListeners();
@@ -14,6 +15,7 @@ class BaseViewModel extends ViewModel {
   }
 
   void success({bool notify = true}) {
+    failReason = null;
     currentState = PageState.CONTENT;
     if (notify) {
       notifyListeners();
@@ -27,8 +29,20 @@ class BaseViewModel extends ViewModel {
       notifyListeners();
     }
   }
+  void failToast(String? reason, {bool notify = false}) {
+    currentState = PageState.CONTENT;
+    failReason = reason;
+    if (notify) {
+      notifyListeners();
+    }
+  }
+
+  void clearToast(){
+    failReason = null;
+  }
 
   void empty({bool notify = false}) {
+    failReason = null;
     currentState = PageState.EMPTY;
     if (notify) {
       notifyListeners();

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qinglong_app/base/common_dialog.dart';
 import 'base_viewmodel.dart';
 
 class BaseStateWidget<T extends BaseViewModel> extends ConsumerStatefulWidget {
@@ -36,6 +37,12 @@ class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseS
   @override
   Widget build(BuildContext context) {
     var viewModel = ref.watch<T>(widget.model);
+    if (viewModel.failReason != null) {
+      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+        failDialog(context, viewModel.failReason!);
+        viewModel.clearToast();
+      });
+    }
     if (viewModel.currentState == PageState.CONTENT) {
       return widget.builder(ref, viewModel, widget.child);
     }
@@ -50,7 +57,7 @@ class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseS
     if (viewModel.currentState == PageState.FAILED) {
       return Container(
         alignment: Alignment.center,
-        child: Text(viewModel.failReason ??""),
+        child: Text(viewModel.failReason ?? ""),
       );
     }
 

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
+import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/module/config/config_page.dart';
 import 'package:qinglong_app/module/env/env_page.dart';
@@ -30,20 +31,44 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> actions = [];
+
+    if (_index == 0) {
+      actions.add(InkWell(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            Routes.route_AddTask,
+          );
+        },
+        child: const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 15,
+          ),
+          child: Center(
+            child: Icon(
+              CupertinoIcons.add,
+              size: 20,
+            ),
+          ),
+        ),
+      ));
+    }
+
+    actions.add(
+      Consumer(builder: (context, ref, child) {
+        return InkWell(
+          onTap: () {
+            ref.read(themeProvider).changeTheme();
+          },
+          child: const Center(child: Text("改变主题")),
+        );
+      }),
+    );
     return Scaffold(
       appBar: QlAppBar(
         canBack: false,
         title: _title,
-        actions: [
-          Consumer(builder: (context, ref, child) {
-            return InkWell(
-              onTap: () {
-                ref.read(themeProvider).changeTheme();
-              },
-              child: const Center(child: Text("改变主题")),
-            );
-          }),
-        ],
+        actions: actions,
       ),
       body: IndexedStack(
         index: _index,

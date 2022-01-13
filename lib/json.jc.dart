@@ -1,5 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+import 'package:qinglong_app/module/config/config_bean.dart';
 import 'package:qinglong_app/module/login/login_bean.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
@@ -19,6 +20,10 @@ class JsonConversion$Json {
 
     String type = M.toString();
 
+    if(type == (ConfigBean).toString()){
+      return ConfigBean.jsonConversion(json)  as M;
+    }
+    
     if(type == (LoginBean).toString()){
       return LoginBean.jsonConversion(json)  as M;
     }
@@ -35,7 +40,11 @@ class JsonConversion$Json {
   }
 
   static M _getListChildType<M>(List<dynamic> data) {
-      if(<LoginBean>[] is M){
+      if(<ConfigBean>[] is M){
+      return data.map<ConfigBean>((e) => ConfigBean.jsonConversion(e)).toList() as M;
+    }
+    
+    if(<LoginBean>[] is M){
       return data.map<LoginBean>((e) => LoginBean.jsonConversion(e)).toList() as M;
     }
     

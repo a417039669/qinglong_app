@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:qinglong_app/base/http/http.dart';
+import 'package:qinglong_app/module/config/config_bean.dart';
 import 'package:qinglong_app/module/login/login_bean.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
@@ -66,5 +67,16 @@ class Api {
 
   static Future<HttpResponse<NullResponse>> disableTask(String cron) async {
     return await Http.put<NullResponse>(Url.DISABLE_TASK, [cron]);
+  }
+
+  static Future<HttpResponse<List<ConfigBean>>> files() async {
+    return await Http.get<List<ConfigBean>>(Url.FILES, null);
+  }
+
+  static Future<HttpResponse<String>> content(String name) async {
+    return await Http.get<String>(Url.CONFIG_CONTENT+name, null);
+  }
+  static Future<HttpResponse<NullResponse>> saveFile(String name,String content) async {
+    return await Http.post<NullResponse>(Url.SAVE_FILE, {"content":content,"name": name});
   }
 }

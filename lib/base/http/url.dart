@@ -9,6 +9,9 @@ class Url {
   static const UNPIN_TASK = "/api/crons/unpin";
   static const ENABLE_TASK = "/api/crons/enable";
   static const DISABLE_TASK = "/api/crons/disable";
+  static const FILES = "/api/configs/files";
+  static const CONFIG_CONTENT = "/api/configs/";
+  static const SAVE_FILE = "/api/configs/save";
 
   static INTIME_LOG(String cronId) {
     return "/api/crons/$cronId/log";

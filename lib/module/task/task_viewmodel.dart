@@ -20,18 +20,37 @@ class TaskViewModel extends BaseViewModel {
       list.clear();
       list.addAll(result.bean!);
 
-      list.sort((a, b) {
-        return a.isDisabled! - b.isDisabled!;
-      });
-
-      list.sort((a, b) {
-        return a.status! - b.status!;
-      });
-
+      sortList();
       success();
     } else {
       list.clear();
       failed(result.message, notify: true);
+    }
+  }
+
+  void sortList() {
+    list.sort((a, b) {
+      return a.isDisabled! - b.isDisabled!;
+    });
+
+    list.sort((a, b) {
+      return a.status! - b.status!;
+    });
+  }
+
+  Future<void> runCrons(String cron) async {
+    HttpResponse<NullResponse> result = await Api.startTasks([cron]);
+    if (result.success) {
+      list.firstWhere((element) => element.sId == cron).status = 0;
+      notifyListeners();
+    }
+  }
+
+  Future<void> stopCrons(String cron) async {
+    HttpResponse<NullResponse> result = await Api.stopTasks([cron]);
+    if (result.success) {
+      list.firstWhere((element) => element.sId == cron).status = 1;
+      notifyListeners();
     }
   }
 }

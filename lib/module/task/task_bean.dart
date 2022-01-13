@@ -16,7 +16,7 @@ class TaskBean {
   int? isDisabled;
   String? logPath;
   int? isPinned;
-  num? lastExecutionTime;
+  int? lastExecutionTime;
   int? lastRunningTime;
   String? pid;
 

@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:ffi';
+import 'dart:core';
 
 import 'package:dio/dio.dart';
 import 'package:dio_log/dio_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:qinglong_app/base/http/token_interceptor.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
-import 'package:qinglong_app/main.dart';
 
 import '../../json.jc.dart';
 
@@ -36,7 +35,7 @@ class Http {
     }
   }
 
-  static Future<HttpResponse<T>> get<T>(String uri, Map<String, String> json, {bool compute = true}) async {
+  static Future<HttpResponse<T>> get<T>(String uri, Map<String, String>? json, {bool compute = true}) async {
     _init();
     var response = await _dio!.get(uri, queryParameters: json);
 
@@ -74,7 +73,7 @@ class Http {
       try {
         if (response.data["code"] == 200) {
           if (response.data["data"] != null) {
-            if (T is Void) {
+            if (T == NullResponse) {
               return HttpResponse<T>(
                 success: true,
                 code: 200,
@@ -83,7 +82,7 @@ class Http {
 
             dynamic data = response.data["data"];
             T t;
-            if (T is String) {
+            if (T == String) {
               if (data is String) {
                 t = data as T;
               } else {
@@ -109,7 +108,7 @@ class Http {
             }
           } else {
             return HttpResponse<T>(
-              success: false,
+              success: true,
               code: 200,
             );
           }
@@ -173,3 +172,5 @@ class CronBean with BaseBean<CronBean> {
 void decode<T>() async {
   compute(DeserializeAction.invokeJson, DeserializeAction<T>({}));
 }
+
+class NullResponse{}

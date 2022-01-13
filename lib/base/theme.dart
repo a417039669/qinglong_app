@@ -22,14 +22,16 @@ class ThemeViewModel extends ChangeNotifier {
 }
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
-  primaryColor: Color(0xffffffff),
+  primaryColor: const Color(0xffffffff),
 );
 ThemeData lightTheme = ThemeData.light().copyWith(
-  primaryColor: Color(0xFF0F77FE),
+  primaryColor: const Color(0xFF0F77FE),
+  scaffoldBackgroundColor: Colors.white,
 );
 
 abstract class ThemeColors {
   Color taskTitleColor();
+  Color searchBarBg();
 }
 
 class LightartThemeColors extends ThemeColors {
@@ -37,11 +39,24 @@ class LightartThemeColors extends ThemeColors {
   Color taskTitleColor() {
     return Color(0xff333333);
   }
+
+
+  @override
+  Color searchBarBg() {
+    return const Color(0xffF7F7F7);
+  }
 }
 
 class DartThemeColors extends ThemeColors {
   @override
   Color taskTitleColor() {
     return Colors.white;
+  }
+
+
+
+  @override
+  Color searchBarBg() {
+    return const Color(0xff2E312E);
   }
 }

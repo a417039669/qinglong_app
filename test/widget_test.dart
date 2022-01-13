@@ -16,7 +16,5 @@ import 'package:qinglong_app/module/login/login_viewmodel.dart';
 
 void main() {
 
-  testWidgets("", (_){
 
-  });
 }

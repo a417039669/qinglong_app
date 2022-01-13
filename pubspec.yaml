@@ -21,6 +21,7 @@ dependencies:
   dio_log: ^2.0.2
   json_conversion_annotation: ^0.0.4
   logger: ^1.1.0
+  intl: ^0.17.0
 
 dev_dependencies:
   build_runner: ^2.0.0

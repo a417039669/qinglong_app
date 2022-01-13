@@ -8,7 +8,7 @@ class Routes {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case route_HomePage:
-        return CupertinoPageRoute(builder: (context) => const HomePage());
+        return MaterialPageRoute(builder: (context) => const HomePage());
     }
 
     return null;

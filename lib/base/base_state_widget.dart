@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'base_viewmodel.dart';
 
 class BaseStateWidget<T extends BaseViewModel> extends ConsumerStatefulWidget {
-  final Widget Function(BuildContext context, T value, Widget? child) builder;
+  final Widget Function(WidgetRef context, T value, Widget? child) builder;
   final ProviderBase<T> model;
   final Widget? child;
   final Function(T)? onReady;
@@ -37,7 +37,7 @@ class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseS
   Widget build(BuildContext context) {
     var viewModel = ref.watch<T>(widget.model);
     if (viewModel.currentState == PageState.CONTENT) {
-      return widget.builder(context, viewModel, widget.child);
+      return widget.builder(ref, viewModel, widget.child);
     }
 
     if (viewModel.currentState == PageState.LOADING) {

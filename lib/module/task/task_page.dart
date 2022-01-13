@@ -157,10 +157,9 @@ class TaskItemCell extends StatelessWidget {
       ),
       child: Container(
         color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.searchBarBg() : Colors.transparent,
-        margin: const EdgeInsets.only(bottom: 7, top: 7),
         padding: const EdgeInsets.symmetric(
           horizontal: 15,
-          vertical: 5,
+          vertical: 8,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -204,7 +203,7 @@ class TaskItemCell extends StatelessWidget {
               ],
             ),
             const SizedBox(
-              height: 5,
+              height: 8,
             ),
             Text(
               bean.schedule ?? "",
@@ -324,11 +323,16 @@ class TaskItemCell extends StatelessWidget {
             child: Text(bean.isPinned! == 0 ? "置顶" : "取消置顶"),
             onPressed: () {
               Navigator.pop(context);
+              pinTask();
             },
           ),
         ],
       ),
     );
+  }
+
+  void pinTask() {
+    ref.read(taskProvider).pinTask(bean.sId!, bean.isPinned!);
   }
 
   void delTask(BuildContext context, WidgetRef ref) {

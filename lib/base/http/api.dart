@@ -51,4 +51,12 @@ class Api {
   static Future<HttpResponse<NullResponse>> delTask(String cron) async {
     return await Http.delete<NullResponse>(Url.ADD_TASK, [cron]);
   }
+
+  static Future<HttpResponse<NullResponse>> pinTask(String cron) async {
+    return await Http.put<NullResponse>(Url.PIN_TASK, [cron]);
+  }
+
+  static Future<HttpResponse<NullResponse>> unpinTask(String cron) async {
+    return await Http.put<NullResponse>(Url.UNPIN_TASK, [cron]);
+  }
 }

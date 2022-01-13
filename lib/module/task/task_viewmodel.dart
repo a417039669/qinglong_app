@@ -1,12 +1,8 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/base_viewmodel.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
-import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 
 var taskProvider = ChangeNotifierProvider((ref) => TaskViewModel());
 
@@ -41,6 +37,9 @@ class TaskViewModel extends BaseViewModel {
 
     list.sort((a, b) {
       return a.status!.compareTo(b.status!);
+    });
+    list.sort((a, b) {
+      return b.isPinned!.compareTo(a.isPinned!);
     });
   }
 
@@ -84,5 +83,29 @@ class TaskViewModel extends BaseViewModel {
     bean.schedule = result.schedule;
     bean.command = result.command;
     notifyListeners();
+  }
+
+  void pinTask(String sId, int isPinned) async {
+    if (isPinned == 1) {
+      HttpResponse<NullResponse> response = await Api.unpinTask(sId);
+
+      if (response.success) {
+        list.firstWhere((element) => element.sId == sId).isPinned = 0;
+        sortList();
+        success();
+      } else {
+        failToast(response.message, notify: true);
+      }
+    } else {
+      HttpResponse<NullResponse> response = await Api.pinTask(sId);
+
+      if (response.success) {
+        list.firstWhere((element) => element.sId == sId).isPinned = 1;
+        sortList();
+        success();
+      } else {
+        failToast(response.message, notify: true);
+      }
+    }
   }
 }

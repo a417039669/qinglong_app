@@ -59,4 +59,12 @@ class Api {
   static Future<HttpResponse<NullResponse>> unpinTask(String cron) async {
     return await Http.put<NullResponse>(Url.UNPIN_TASK, [cron]);
   }
+
+  static Future<HttpResponse<NullResponse>> enableTask(String cron) async {
+    return await Http.put<NullResponse>(Url.ENABLE_TASK, [cron]);
+  }
+
+  static Future<HttpResponse<NullResponse>> disableTask(String cron) async {
+    return await Http.put<NullResponse>(Url.DISABLE_TASK, [cron]);
+  }
 }

@@ -156,7 +156,7 @@ class TaskItemCell extends StatelessWidget {
         ],
       ),
       child: Container(
-        color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.searchBarBg() : Colors.transparent,
+        color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
         padding: const EdgeInsets.symmetric(
           horizontal: 15,
           vertical: 8,
@@ -310,6 +310,7 @@ class TaskItemCell extends StatelessWidget {
             child: Text(bean.isDisabled! == 1 ? "启用" : "禁用"),
             onPressed: () {
               Navigator.pop(context);
+              enableTask();
             },
           ),
           CupertinoActionSheetAction(
@@ -329,6 +330,10 @@ class TaskItemCell extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void enableTask() {
+    ref.read(taskProvider).enableTask(bean.sId!, bean.isDisabled!);
   }
 
   void pinTask() {

@@ -31,7 +31,10 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 
 abstract class ThemeColors {
   Color taskTitleColor();
+
   Color searchBarBg();
+
+  Color pinColor();
 }
 
 class LightartThemeColors extends ThemeColors {
@@ -40,9 +43,13 @@ class LightartThemeColors extends ThemeColors {
     return Color(0xff333333);
   }
 
-
   @override
   Color searchBarBg() {
+    return const Color(0xffF7F7F7);
+  }
+
+  @override
+  Color pinColor() {
     return const Color(0xffF7F7F7);
   }
 }
@@ -53,10 +60,13 @@ class DartThemeColors extends ThemeColors {
     return Colors.white;
   }
 
-
-
   @override
   Color searchBarBg() {
     return const Color(0xff2E312E);
+  }
+
+  @override
+  Color pinColor() {
+    return  Colors.black12;
   }
 }

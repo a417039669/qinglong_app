@@ -108,4 +108,28 @@ class TaskViewModel extends BaseViewModel {
       }
     }
   }
+
+  void enableTask(String sId, int isDisabled) async {
+    if (isDisabled == 0) {
+      HttpResponse<NullResponse> response = await Api.disableTask(sId);
+
+      if (response.success) {
+        list.firstWhere((element) => element.sId == sId).isDisabled = 1;
+        sortList();
+        success();
+      } else {
+        failToast(response.message, notify: true);
+      }
+    } else {
+      HttpResponse<NullResponse> response = await Api.enableTask(sId);
+
+      if (response.success) {
+        list.firstWhere((element) => element.sId == sId).isDisabled = 0;
+        sortList();
+        success();
+      } else {
+        failToast(response.message, notify: true);
+      }
+    }
+  }
 }

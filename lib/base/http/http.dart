@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:dio_log/dio_log.dart';
 import 'package:flutter/foundation.dart';
@@ -27,16 +30,36 @@ class Http {
     _dio?.interceptors.add(TokenInterceptor());
   }
 
-  static Future<HttpResponse<T>> post<T>(String uri, Map<String, dynamic> json, {bool compute = true}) async {
-    if (userInfoViewModel.host == null || userInfoViewModel.host!.isEmpty) {
-      return HttpResponse(success: false, code: NOT_LOGIN, message: "未登录");
-    }
-
+  static void _init() {
     if (_dio == null) {
       initDioConfig(UserInfoViewModel.getInstance().host!);
     }
+  }
 
+  static Future<HttpResponse<T>> get<T>(String uri, Map<String, String> json, {bool compute = true}) async {
+    _init();
+    var response = await _dio!.get(uri, queryParameters: json);
+
+    return decodeResponse<T>(response, compute);
+  }
+
+  static Future<HttpResponse<T>> post<T>(String uri, dynamic json, {bool compute = true}) async {
+    _init();
     var response = await _dio!.post(uri, data: json);
+
+    return decodeResponse<T>(response, compute);
+  }
+
+  static Future<HttpResponse<T>> delete<T>(String uri, dynamic json, {bool compute = true}) async {
+    _init();
+    var response = await _dio!.delete(uri, data: json);
+
+    return decodeResponse<T>(response, compute);
+  }
+
+  static Future<HttpResponse<T>> put<T>(String uri, dynamic json, {bool compute = true}) async {
+    _init();
+    var response = await _dio!.put(uri, data: json);
 
     return decodeResponse<T>(response, compute);
   }
@@ -45,30 +68,73 @@ class Http {
     Response<dynamic> response,
     bool compute,
   ) {
-    late HttpResponse<T> result;
-
     int code = 0;
 
     if (response.statusCode == 200) {
-      if (compute) {
-        try {
-          if (response.data["code"] == 200) {
+      try {
+        if (response.data["code"] == 200) {
+          if (response.data["data"] != null) {
+            if (T is Void) {
+              return HttpResponse<T>(
+                success: true,
+                code: 200,
+              );
+            }
+
             dynamic data = response.data["data"];
-            T bean = DeserializeAction.invokeJson(DeserializeAction<T>(data));
-            result = HttpResponse<T>(success: true, code: 200, bean: bean);
+            T t;
+            if (T is String) {
+              if (data is String) {
+                t = data as T;
+              } else {
+                t = jsonEncode(data) as T;
+              }
+              return HttpResponse<T>(
+                success: true,
+                code: 200,
+                bean: t,
+              );
+            } else {
+              T bean;
+              if (compute) {
+                bean = DeserializeAction.invokeJson(DeserializeAction<T>(data));
+              } else {
+                bean = JsonConversion$Json.fromJson<T>(data);
+              }
+              return HttpResponse<T>(
+                success: true,
+                code: 200,
+                bean: bean,
+              );
+            }
           } else {
-            result = HttpResponse<T>(success: false, code: -1000, message: "服务器返回数据异常");
+            return HttpResponse<T>(
+              success: false,
+              code: 200,
+            );
           }
-        } catch (e) {
-          result = HttpResponse<T>(success: false, code: -1000, message: "json解析失败");
+        } else {
+          return HttpResponse<T>(
+            success: false,
+            code: -1000,
+            message: "服务器返回数据异常",
+          );
         }
+      } catch (e) {
+        return HttpResponse<T>(
+          success: false,
+          code: -1000,
+          message: "json解析失败",
+        );
       }
     } else {
       code = response.statusCode ?? 0;
-      result = HttpResponse(success: false, code: code, message: response.statusMessage);
+      return HttpResponse(
+        success: false,
+        code: code,
+        message: response.statusMessage,
+      );
     }
-
-    return result;
   }
 }
 

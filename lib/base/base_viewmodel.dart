@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-
-class ViewModel extends ChangeNotifier{}
-
+class ViewModel extends ChangeNotifier {}
 
 class BaseViewModel extends ViewModel {
   PageState currentState = PageState.START;
+  String? failReason;
 
   void loading({bool notify = false}) {
     currentState = PageState.LOADING;
@@ -21,8 +20,9 @@ class BaseViewModel extends ViewModel {
     }
   }
 
-  void failed({bool notify = false}) {
+  void failed(String? reason, {bool notify = false}) {
     currentState = PageState.FAILED;
+    failReason = reason;
     if (notify) {
       notifyListeners();
     }

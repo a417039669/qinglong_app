@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
+import 'package:qinglong_app/base/theme.dart';
+import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
 
 class TaskPage extends StatefulWidget {
@@ -19,18 +21,18 @@ class _TaskPageState extends State<TaskPage> {
       builder: (context, model, child) {
         return RefreshIndicator(
           onRefresh: () async {
-            return Future.delayed(Duration(seconds: 1), () {});
+            return model.loadData(false);
           },
           child: ListView.separated(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 15,
             ),
             itemBuilder: (context, index) {
-              return TaskItemCell();
+              return TaskItemCell(model.list[index]);
             },
             itemCount: model.list.length,
             separatorBuilder: (BuildContext context, int index) {
-              return SizedBox(
+              return const SizedBox(
                 height: 10,
               );
             },
@@ -45,11 +47,13 @@ class _TaskPageState extends State<TaskPage> {
   }
 }
 
-class TaskItemCell extends StatelessWidget {
-  const TaskItemCell({Key? key}) : super(key: key);
+class TaskItemCell extends ConsumerWidget {
+  final TaskBean bean;
+
+  const TaskItemCell(this.bean, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Slidable(
       key: const ValueKey(0),
       startActionPane: ActionPane(
@@ -98,34 +102,49 @@ class TaskItemCell extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
-                  "东东农场",
+                  bean.name ?? "",
+                  maxLines: 1,
                   style: TextStyle(
-                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis,
+                    color: bean.isDisabled == 1 ? Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
                     fontSize: 18,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
-                SizedBox(
-                  width: 15,
-                  height: 15,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
+                bean.status == 1
+                    ? const SizedBox.shrink()
+                    : const SizedBox(
+                        width: 15,
+                        height: 15,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      ),
+                const Spacer(),
+                Text(
+                  "${bean.lastRunningTime ?? "-"}",
+                  maxLines: 1,
+                  style: const TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    color: Color(0xff999999),
+                    fontSize: 12,
                   ),
                 ),
-                Spacer(),
-                Text("2020/12/12 12:23"),
               ],
             ),
             const SizedBox(
               height: 5,
             ),
-            const Text(
-              "12/12/12",
-              style: TextStyle(
+            Text(
+              bean.schedule ?? "",
+              maxLines: 1,
+              style: const TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: Color(0xff999999),
                 fontSize: 12,
               ),
             ),

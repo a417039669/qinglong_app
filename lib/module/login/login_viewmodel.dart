@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/base_viewmodel.dart';
+import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/http/url.dart';
 import 'package:qinglong_app/main.dart';
@@ -19,13 +20,7 @@ class LoginViewModel extends ViewModel {
     msg = "";
 
     notifyListeners();
-    HttpResponse<LoginBean> response = await Http.post<LoginBean>(
-      Url.LOGIN,
-      {
-        "username": userName,
-        "password": password,
-      },
-    );
+    HttpResponse<LoginBean> response = await Api.login(userName, password);
 
     if (response.success) {
       userInfoViewModel.updateToken(response.bean?.token ?? "");

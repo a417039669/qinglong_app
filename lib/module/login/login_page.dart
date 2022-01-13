@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    showDebugBtn(context, btnColor: Colors.blue);
+
   }
 
   @override

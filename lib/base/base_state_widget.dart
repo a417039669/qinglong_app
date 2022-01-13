@@ -50,7 +50,7 @@ class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseS
     if (viewModel.currentState == PageState.FAILED) {
       return Container(
         alignment: Alignment.center,
-        child: Text("请求失败"),
+        child: Text(viewModel.failReason ??""),
       );
     }
 

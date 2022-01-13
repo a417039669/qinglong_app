@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:json_conversion_annotation/json_conversion_annotation.dart';
 
 @JsonConversion()
@@ -7,14 +9,14 @@ class TaskBean {
   String? schedule;
   bool? saved;
   String? sId;
-  int? created;
+  num? created;
   int? status;
   String? timestamp;
   int? isSystem;
   int? isDisabled;
   String? logPath;
   int? isPinned;
-  int? lastExecutionTime;
+  num? lastExecutionTime;
   int? lastRunningTime;
   String? pid;
 
@@ -36,21 +38,26 @@ class TaskBean {
       this.pid});
 
   TaskBean.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    command = json['command'];
-    schedule = json['schedule'];
-    saved = json['saved'];
-    sId = json['_id'];
-    created = json['created'];
-    status = json['status'];
-    timestamp = json['timestamp'];
-    isSystem = json['isSystem'];
-    isDisabled = json['isDisabled'];
-    logPath = json['log_path'];
-    isPinned = json['isPinned'];
-    lastExecutionTime = json['last_execution_time'];
-    lastRunningTime = json['last_running_time'];
-    pid = json['pid'];
+    try {
+      name = json['name'].toString();
+      command = json['command'].toString();
+      schedule = json['schedule'].toString();
+      saved = json['saved'];
+      sId = json['_id'].toString();
+      created = json['created'];
+      status = json['status'];
+      timestamp = json['timestamp'].toString();
+      isSystem = json['isSystem'];
+      isDisabled = json['isDisabled'];
+      logPath = json['log_path'].toString();
+      isPinned = json['isPinned'];
+      lastExecutionTime = json['last_execution_time'];
+      lastRunningTime = json['last_running_time'];
+      pid = json['pid'].toString();
+    } catch (e) {
+      print(jsonEncode(json));
+      print(e);
+    }
   }
 
   Map<String, dynamic> toJson() {

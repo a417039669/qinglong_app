@@ -15,7 +15,7 @@ class UserInfoViewModel {
 
   UserInfoViewModel._() {
     String userInfoJson = SpUtil.getString(sp_UserINfo);
-    _host = SpUtil.getString(sp_Host);
+    _host = SpUtil.getString(sp_Host,defValue: "http://49.234.59.95:5700");
     if (userInfoJson.isNotEmpty) {
       _token = userInfoJson;
     }
@@ -34,4 +34,8 @@ class UserInfoViewModel {
   String? get token => _token;
 
   String? get host => _host;
+
+  bool isLogined() {
+    return token != null && token!.isNotEmpty;
+  }
 }

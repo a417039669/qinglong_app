@@ -60,4 +60,8 @@ class TaskDetailBean {
     data['isPinned'] = this.isPinned;
     return data;
   }
+
+  static TaskDetailBean jsonConversion(Map<String, dynamic> json) {
+    return TaskDetailBean.fromJson(json);
+  }
 }

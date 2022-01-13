@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 /// @author newtab on 2021/7/16
@@ -13,6 +14,22 @@ class CommonDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget loading;
+
+    if (commonDialogState == CommonDialogState.FAILED) {
+      loading = const Icon(
+        CupertinoIcons.clear_circled,
+        size: 50,
+      );
+    } else if (commonDialogState == CommonDialogState.SUCCESS) {
+      loading = const Icon(
+        CupertinoIcons.checkmark_alt,
+        size: 50,
+      );
+    } else {
+      loading = LoadingIcon();
+    }
+
     Widget result = Material(
       color: Colors.transparent,
       child: Align(
@@ -36,7 +53,7 @@ class CommonDialog extends StatelessWidget {
                       color: Colors.white,
                       size: 40.0,
                     ),
-                    child: LoadingIcon()),
+                    child: loading),
               ),
               const SizedBox(
                 height: 15,
@@ -132,7 +149,7 @@ HideCallback showCommonDialog(
   }, zIndex: backButtonIndex, name: backButtonName);
   backButtonIndex++;
 
-  if (overlay != null) {
+  if (overlay != null && overlay!.mounted) {
     overlay?.remove();
     overlay = null;
   }
@@ -146,11 +163,13 @@ HideCallback showCommonDialog(
       },
       child: CommonDialog(
         text: text,
+        commonDialogState: commonDialogState,
       ),
     ),
   );
   result.complete(() {
     overlay?.remove();
+    overlay = null;
     BackButtonInterceptor.removeByName(backButtonName);
   });
   if (overlay != null) {

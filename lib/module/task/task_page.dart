@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
+import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/module/task/intime_log/intime_log_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
+import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
 import 'package:qinglong_app/utils/utils.dart';
 
@@ -97,13 +99,26 @@ class _TaskPageState extends State<TaskPage> {
   }
 }
 
-class TaskItemCell extends ConsumerWidget {
+class TaskItemCell extends ConsumerStatefulWidget {
   final TaskBean bean;
 
   const TaskItemCell(this.bean, {Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _TaskItemCellState createState() => _TaskItemCellState();
+}
+
+class _TaskItemCellState extends ConsumerState<TaskItemCell> {
+  late TaskBean bean;
+
+  @override
+  void initState() {
+    bean = widget.bean;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Slidable(
       key: const ValueKey(0),
       startActionPane: ActionPane(
@@ -299,6 +314,15 @@ class TaskItemCell extends ConsumerWidget {
             child: const Text('编辑'),
             onPressed: () {
               Navigator.pop(context);
+              Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean).then((value) {
+                if (value != null) {
+                  var result = value as TaskDetailBean;
+                  bean.name = result.name;
+                  bean.schedule = result.schedule;
+                  bean.command = result.command;
+                  setState(() {});
+                }
+              });
             },
           ),
           CupertinoActionSheetAction(

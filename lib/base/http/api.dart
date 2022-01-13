@@ -34,8 +34,11 @@ class Api {
     return await Http.get<String>(Url.INTIME_LOG(cron), null);
   }
 
-
   static Future<HttpResponse<TaskDetailBean>> taskDetail(String cron) async {
-    return await Http.get<TaskDetailBean>(Url.TASK_DETAIL+cron, null);
+    return await Http.get<TaskDetailBean>(Url.TASK_DETAIL + cron, null);
+  }
+
+  static Future<HttpResponse<TaskDetailBean>> addTask(String name, String command, String cron, {String? id}) async {
+    return await Http.put<TaskDetailBean>(Url.ADD_TASK, {"name": name, "command": command, "schedule": cron, "_id": id});
   }
 }

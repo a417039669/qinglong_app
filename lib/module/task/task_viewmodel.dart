@@ -8,6 +8,8 @@ var taskProvider = ChangeNotifierProvider((ref) => TaskViewModel());
 
 class TaskViewModel extends BaseViewModel {
   List<TaskBean> list = [];
+  List<TaskBean> running = [];
+  List<TaskBean> disabled = [];
 
   Future<void> loadData([isLoading = true]) async {
     if (isLoading) {
@@ -31,14 +33,10 @@ class TaskViewModel extends BaseViewModel {
     list.sort((a, b) {
       return b.created!.compareTo(a.created!);
     });
-    list.sort((a, b) {
-      return a.isDisabled!.compareTo(b.isDisabled!);
-    });
-
-    list.sort((a, b) {
-      return a.status!.compareTo(b.status!);
-    });
-
+    running.clear();
+    running.addAll(list.where((element) => element.status == 0));
+    disabled.clear();
+    disabled.addAll(list.where((element) => element.isDisabled == 1));
   }
 
   Future<void> runCrons(String cron) async {

@@ -6,6 +6,7 @@ import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/module/config/config_viewmodel.dart';
+import 'package:qinglong_app/utils/qinglong_theme.dart';
 
 class ConfigEditPage extends ConsumerStatefulWidget {
   final String content;
@@ -33,7 +34,13 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
       files: files,
       styleOptions: EditorModelStyleOptions(
         fontSize: 13,
+        heightOfContainer: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 150,
+        editorBorderColor: Theme.of(context).scaffoldBackgroundColor,
+        editButtonBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        editorColor: Theme.of(context).scaffoldBackgroundColor,
+        theme: qinglongLightTheme,
       ),
+
     );
     return Scaffold(
       appBar: QlAppBar(

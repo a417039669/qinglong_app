@@ -9,8 +9,7 @@ var configProvider = ChangeNotifierProvider((ref) => ConfigViewModel());
 class ConfigViewModel extends BaseViewModel {
   List<ConfigBean> list = [];
 
-  String content = "";
-  String title = "";
+  Map<String, String> content = {};
 
   Future<void> loadData([isLoading = true]) async {
     if (isLoading) {
@@ -22,9 +21,12 @@ class ConfigViewModel extends BaseViewModel {
     if (result.success && result.bean != null) {
       list.clear();
       list.addAll(result.bean!);
-      title = list[0].value!;
+
+      for (var element in list) {
+        await loadContent(element.value!);
+      }
+
       success();
-      loadContent(list[0].value!);
     } else {
       list.clear();
       failed(result.message, notify: true);
@@ -32,15 +34,10 @@ class ConfigViewModel extends BaseViewModel {
   }
 
   Future<void> loadContent(String name) async {
-    title = name;
-    notifyListeners();
     HttpResponse<String> result = await Api.content(name);
 
     if (result.success && result.bean != null) {
-      content = result.bean!;
-      success();
-    } else {
-      failToast(result.message, notify: false);
+      content[name] = result.bean!;
     }
   }
 }

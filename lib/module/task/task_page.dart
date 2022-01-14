@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
+import 'package:qinglong_app/base/ui/abs_underline_tabindicator.dart';
 import 'package:qinglong_app/module/task/intime_log/intime_log_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
@@ -30,27 +31,41 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     return BaseStateWidget<TaskViewModel>(
       builder: (ref, model, child) {
-        return RefreshIndicator(
-          color: Theme.of(context).primaryColor,
-          onRefresh: () async {
-            return model.loadData(false);
-          },
-          child: ListView.builder(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            itemBuilder: (context, index) {
-              if (index == 0) {
-                return searchCell(ref);
-              }
-
-              TaskBean item = model.list[index - 1];
-
-              if ((item.name == null || item.name!.contains(_searchKey ?? "")) || (item.command == null || item.command!.contains(_searchKey ?? ""))) {
-                return TaskItemCell(item, ref);
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-            itemCount: model.list.length + 1,
+        return DefaultTabController(
+          length: 3,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TabBar(
+                tabs: const [
+                  Tab(
+                    text: "全部",
+                  ),
+                  Tab(
+                    text: "正在运行",
+                  ),
+                  Tab(
+                    text: "已禁用",
+                  ),
+                ],
+                isScrollable: true,
+                indicator: AbsUnderlineTabIndicator(
+                    wantWidth: 20,
+                    borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                      width: 2,
+                    )),
+              ),
+              Expanded(
+                child: TabBarView(
+                  children: [
+                    body(model, model.list, ref),
+                    body(model, model.running, ref),
+                    body(model, model.disabled, ref),
+                  ],
+                ),
+              ),
+            ],
           ),
         );
       },
@@ -58,6 +73,32 @@ class _TaskPageState extends State<TaskPage> {
       onReady: (viewModel) {
         viewModel.loadData();
       },
+    );
+  }
+
+  Widget body(TaskViewModel model, List<TaskBean> list, WidgetRef ref) {
+    return RefreshIndicator(
+      color: Theme.of(context).primaryColor,
+      onRefresh: () async {
+        return model.loadData(false);
+      },
+      child: ListView.builder(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        itemBuilder: (context, index) {
+          // if (index == 0) {
+          //   return searchCell(ref);
+          // }
+
+          TaskBean item = list[index ];
+
+          if ((item.name == null || item.name!.contains(_searchKey ?? "")) || (item.command == null || item.command!.contains(_searchKey ?? ""))) {
+            return TaskItemCell(item, ref);
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+        itemCount: list.length,
+      ),
     );
   }
 
@@ -112,6 +153,7 @@ class TaskItemCell extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Slidable(
+          enabled: false,
           key: const ValueKey(0),
           startActionPane: ActionPane(
             motion: const ScrollMotion(),
@@ -220,7 +262,10 @@ class TaskItemCell extends StatelessWidget {
             ),
           ),
         ),
-        const Divider(height: 1,indent: 15,),
+        const Divider(
+          height: 1,
+          indent: 15,
+        ),
       ],
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qinglong_app/utils/qinglong_theme.dart';
 
 var themeProvider = ChangeNotifierProvider((ref) => ThemeViewModel());
 const Color _primaryColor = Color(0xFF299343);
@@ -48,7 +49,19 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   progressIndicatorTheme: const ProgressIndicatorThemeData(
     color: _primaryColor,
   ),
-
+  tabBarTheme: const TabBarTheme(
+    labelStyle: TextStyle(
+      fontSize: 16,
+    ),
+    unselectedLabelStyle: TextStyle(
+      fontSize: 16,
+    ),
+    labelColor: _primaryColor,
+    unselectedLabelColor:  Color(0xff999999),
+    indicator: UnderlineTabIndicator(
+      borderSide: BorderSide(color: _primaryColor),
+    ),
+  ),
 );
 
 abstract class ThemeColors {
@@ -57,6 +70,8 @@ abstract class ThemeColors {
   Color searchBarBg();
 
   Color pinColor();
+
+  Map<String, TextStyle> codeEditorTheme();
 }
 
 class LightartThemeColors extends ThemeColors {
@@ -74,6 +89,11 @@ class LightartThemeColors extends ThemeColors {
   Color pinColor() {
     return const Color(0xffF7F7F7);
   }
+
+  @override
+  Map<String, TextStyle> codeEditorTheme() {
+    return qinglongLightTheme;
+  }
 }
 
 class DartThemeColors extends ThemeColors {
@@ -90,5 +110,10 @@ class DartThemeColors extends ThemeColors {
   @override
   Color pinColor() {
     return Colors.black12;
+  }
+
+  @override
+  Map<String, TextStyle> codeEditorTheme() {
+    return qinglongDarkTheme;
   }
 }

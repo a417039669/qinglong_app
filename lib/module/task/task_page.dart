@@ -6,6 +6,7 @@ import 'package:qinglong_app/base/base_state_widget.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/ui/abs_underline_tabindicator.dart';
+import 'package:qinglong_app/base/ui/menu.dart';
 import 'package:qinglong_app/module/task/intime_log/intime_log_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
@@ -89,7 +90,7 @@ class _TaskPageState extends State<TaskPage> {
           //   return searchCell(ref);
           // }
 
-          TaskBean item = list[index ];
+          TaskBean item = list[index];
 
           if ((item.name == null || item.name!.contains(_searchKey ?? "")) || (item.command == null || item.command!.contains(_searchKey ?? ""))) {
             return TaskItemCell(item, ref);
@@ -148,58 +149,82 @@ class TaskItemCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Slidable(
-          enabled: false,
-          key: const ValueKey(0),
-          startActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            extentRatio: 0.3,
-            dragDismissible: false,
-            children: [
-              SlidableAction(
-                flex: 1,
-                icon: bean.status == 0 ? CupertinoIcons.stop_circle : CupertinoIcons.memories,
-                foregroundColor: Colors.white,
-                backgroundColor: const Color(0xFF0F77FE),
-                onPressed: (BuildContext context) {
-                  if (bean.status == 0) {
-                    stopCron(context, ref);
-                  } else {
-                    startCron(context, ref);
-                  }
-                },
-              ),
-              SlidableAction(
-                flex: 1,
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                icon: CupertinoIcons.clock_fill,
-                onPressed: (BuildContext context) {
-                  logCron(context, ref);
-                },
-              ),
-            ],
+    return CupertinoContextMenu(
+      actions: [
+        QLCupertinoContextMenuAction(
+          child: Text(
+            bean.status! == 1 ? "运行" : "停止运行",
           ),
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            extentRatio: 0.15,
-            children: [
-              SlidableAction(
-                backgroundColor: Colors.cyan,
-                flex: 1,
-                onPressed: (_) {
-                  more(context, ref);
-                },
-                foregroundColor: Colors.white,
-                icon: CupertinoIcons.ellipsis,
+          trailingIcon: bean.status! == 1 ? CupertinoIcons.memories : CupertinoIcons.stop_circle,
+          onPressed: () {
+            Navigator.of(context).pop();
+            startCron(context, ref);
+          },
+        ),
+        QLCupertinoContextMenuAction(
+          child: Text("查看日志"),
+          onPressed: () {
+            Navigator.of(context).pop();
+            logCron(context, ref);
+          },
+          trailingIcon: CupertinoIcons.clock,
+        ),
+        QLCupertinoContextMenuAction(
+          child: const Text("编辑"),
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean);
+          },
+          trailingIcon: CupertinoIcons.pencil_outline,
+        ),
+        QLCupertinoContextMenuAction(
+          child: Text(bean.isPinned! == 0 ? "置顶" : "取消置顶"),
+          onPressed: () {
+            Navigator.of(context).pop();
+            pinTask();
+          },
+          trailingIcon: bean.isPinned! == 0 ? CupertinoIcons.pin : CupertinoIcons.pin_slash,
+        ),
+        QLCupertinoContextMenuAction(
+          child: Text(bean.isDisabled! == 0 ? "禁用" : "启用"),
+          onPressed: () {
+            Navigator.of(context).pop();
+            enableTask();
+          },
+          isDestructiveAction: true,
+          trailingIcon: bean.isDisabled! == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
+        ),
+        QLCupertinoContextMenuAction(
+          child: const Text("删除"),
+          onPressed: () {
+            Navigator.of(context).pop();
+            delTask(context, ref);
+          },
+          isDestructiveAction: true,
+          trailingIcon: CupertinoIcons.delete,
+        ),
+      ],
+      previewBuilder: (context, anima, child) {
+        return IntrinsicWidth(
+          child: Material(
+            color: Colors.transparent,
+            child: Text(
+              bean.name ?? "",
+              maxLines: 1,
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: bean.isDisabled == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                fontSize: 18,
               ),
-            ],
+            ),
           ),
-          child: Container(
+        );
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
             color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
             padding: const EdgeInsets.symmetric(
               horizontal: 15,
@@ -261,12 +286,12 @@ class TaskItemCell extends StatelessWidget {
               ],
             ),
           ),
-        ),
-        const Divider(
-          height: 1,
-          indent: 15,
-        ),
-      ],
+          const Divider(
+            height: 1,
+            indent: 15,
+          ),
+        ],
+      ),
     );
   }
 

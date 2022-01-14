@@ -33,6 +33,9 @@ class _ConfigPageState extends State<ConfigPage> {
           styleOptions: EditorModelStyleOptions(
             fontSize: 13,
             heightOfContainer: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 150,
+            editorBorderColor: Theme.of(context).scaffoldBackgroundColor,
+            editButtonBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            editorColor: Theme.of(context).scaffoldBackgroundColor,
           ),
         );
         myController.text = model.content;
@@ -57,19 +60,20 @@ class _ConfigPageState extends State<ConfigPage> {
                 ),
                 const Spacer(),
                 CupertinoButton(
-                    child:  Text(
-                      "编辑",
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 16,
-                      ),
+                  child: Text(
+                    "编辑",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16,
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(Routes.route_ConfigEdit, arguments: {
-                        "title": model.title,
-                        "content": model.content,
-                      });
-                    }),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(Routes.route_ConfigEdit, arguments: {
+                      "title": model.title,
+                      "content": model.content,
+                    });
+                  },
+                ),
               ],
             ),
             Expanded(

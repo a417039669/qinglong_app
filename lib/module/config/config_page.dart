@@ -57,7 +57,13 @@ class _ConfigPageState extends State<ConfigPage> {
                 ),
                 const Spacer(),
                 CupertinoButton(
-                    child: const Text("编辑"),
+                    child:  Text(
+                      "编辑",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 16,
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.of(context).pushNamed(Routes.route_ConfigEdit, arguments: {
                         "title": model.title,

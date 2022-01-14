@@ -1,7 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.qinglong_app">
+    package="work.master.qinglongapp">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="qinglong_app"
+        android:label="青龙"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -83,7 +83,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     "名称:",
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(
@@ -115,7 +115,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     "命令:",
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(
@@ -149,7 +149,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     "定时:",
                     style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(

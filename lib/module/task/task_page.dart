@@ -31,6 +31,7 @@ class _TaskPageState extends State<TaskPage> {
     return BaseStateWidget<TaskViewModel>(
       builder: (ref, model, child) {
         return RefreshIndicator(
+          color: Theme.of(context).primaryColor,
           onRefresh: () async {
             return model.loadData(false);
           },
@@ -106,90 +107,108 @@ class TaskItemCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      key: const ValueKey(0),
-      startActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        extentRatio: 0.3,
-        dragDismissible: false,
-        children: [
-          SlidableAction(
-            flex: 1,
-            icon: bean.status == 0 ? CupertinoIcons.stop_circle : CupertinoIcons.memories,
-            foregroundColor: Colors.white,
-            backgroundColor: const Color(0xFF0F77FE),
-            onPressed: (BuildContext context) {
-              if (bean.status == 0) {
-                stopCron(context, ref);
-              } else {
-                startCron(context, ref);
-              }
-            },
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Slidable(
+          key: const ValueKey(0),
+          startActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.3,
+            dragDismissible: false,
+            children: [
+              SlidableAction(
+                flex: 1,
+                icon: bean.status == 0 ? CupertinoIcons.stop_circle : CupertinoIcons.memories,
+                foregroundColor: Colors.white,
+                backgroundColor: const Color(0xFF0F77FE),
+                onPressed: (BuildContext context) {
+                  if (bean.status == 0) {
+                    stopCron(context, ref);
+                  } else {
+                    startCron(context, ref);
+                  }
+                },
+              ),
+              SlidableAction(
+                flex: 1,
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                icon: CupertinoIcons.clock_fill,
+                onPressed: (BuildContext context) {
+                  logCron(context, ref);
+                },
+              ),
+            ],
           ),
-          SlidableAction(
-            flex: 1,
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            icon: CupertinoIcons.clock_fill,
-            onPressed: (BuildContext context) {
-              logCron(context, ref);
-            },
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.15,
+            children: [
+              SlidableAction(
+                backgroundColor: Colors.cyan,
+                flex: 1,
+                onPressed: (_) {
+                  more(context, ref);
+                },
+                foregroundColor: Colors.white,
+                icon: CupertinoIcons.ellipsis,
+              ),
+            ],
           ),
-        ],
-      ),
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        extentRatio: 0.15,
-        children: [
-          SlidableAction(
-            backgroundColor: Colors.cyan,
-            flex: 1,
-            onPressed: (_) {
-              more(context, ref);
-            },
-            foregroundColor: Colors.white,
-            icon: CupertinoIcons.ellipsis,
-          ),
-        ],
-      ),
-      child: Container(
-        color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 8,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+          child: Container(
+            color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 8,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  bean.name ?? "",
-                  maxLines: 1,
-                  style: TextStyle(
-                    overflow: TextOverflow.ellipsis,
-                    color: bean.isDisabled == 1 ? Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
-                    fontSize: 18,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      bean.name ?? "",
+                      maxLines: 1,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: bean.isDisabled == 1 ? Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    bean.status == 1
+                        ? const SizedBox.shrink()
+                        : const SizedBox(
+                            width: 15,
+                            height: 15,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
+                          ),
+                    const Spacer(),
+                    Text(
+                      (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
+                      maxLines: 1,
+                      style: const TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: Color(0xff999999),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
-                  width: 5,
+                  height: 8,
                 ),
-                bean.status == 1
-                    ? const SizedBox.shrink()
-                    : const SizedBox(
-                        width: 15,
-                        height: 15,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
-                      ),
-                const Spacer(),
                 Text(
-                  (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
+                  bean.schedule ?? "",
                   maxLines: 1,
                   style: const TextStyle(
                     overflow: TextOverflow.ellipsis,
@@ -199,21 +218,10 @@ class TaskItemCell extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              bean.schedule ?? "",
-              maxLines: 1,
-              style: const TextStyle(
-                overflow: TextOverflow.ellipsis,
-                color: Color(0xff999999),
-                fontSize: 12,
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        const Divider(height: 1,indent: 15,),
+      ],
     );
   }
 

@@ -44,168 +44,170 @@ class _LoginPageState extends State<LoginPage> {
         }
         return SizedBox(
           height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 6,
+          child: Stack(
+            children: [
+              Positioned(
+                bottom: 0,
+                child: Image.asset(
+                  "assets/images/login_bg.png",
+                  width: MediaQuery.of(context).size.width,
                 ),
-                Image.asset(
-                  "assets/images/ql.png",
-                  width: 60,
-                  height: 60,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  "青龙控制面板",
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 10,
-                ),
-                Padding(
+              ),
+              SingleChildScrollView(
+                child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
+                    horizontal: 40,
                   ),
-                  child: Row(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        child: Text(
-                          "域名:",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        width: 60,
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 6,
                       ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                        child: TextField(
-                          onChanged: (_) {
-                            setState(() {});
-                          },
-                          controller: _hostController,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            hintText: "http://1.1.1.1:5700",
-                          ),
-                          autofocus: false,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        child: Text(
-                          "用户名:",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        width: 60,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                        child: TextField(
-                          onChanged: (_) {
-                            setState(() {});
-                          },
-                          controller: _userNameController,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            hintText: "请输入用户名",
-                          ),
-                          autofocus: false,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 10,
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        child: Text(
-                          "密码:",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        width: 60,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Expanded(
-                        child: TextField(
-                          onChanged: (_) {
-                            setState(() {});
-                          },
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            hintText: "请输入密码",
-                          ),
-                          autofocus: false,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width - 30,
-                  child: IgnorePointer(
-                    ignoring: _hostController.text.isEmpty || _userNameController.text.isEmpty || _passwordController.text.isEmpty || model.isLoading,
-                    child: CupertinoButton(
-                        color:
-                            (_hostController.text.isNotEmpty && _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty && !model.isLoading)
-                                ? Theme.of(context).primaryColor
-                                : Theme.of(context).primaryColor.withOpacity(0.4),
-                        child: model.isLoading
-                            ? const CupertinoActivityIndicator()
-                            : const Text(
+                      SizedBox(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: 0,
+                              left: 40,
+                              child: Image.asset(
+                                "assets/images/login_tip.png",
+                                height: 45,
+                              ),
+                            ),
+                            const Positioned(
+                              top: 10,
+                              left: 40,
+                              child: Text(
                                 "登录",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                        onPressed: () {
-                          Utils.hideKeyBoard(context);
-                          userInfoViewModel.updateHost(_hostController.text);
-                          model.login(_userNameController.text, _passwordController.text);
-                        }),
+                            ),
+                            Positioned(
+                              top: 5,
+                              right: 40,
+                              child: Image.asset(
+                                "assets/images/ql.png",
+                                height: 45,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 10,
+                      ),
+                      const Text(
+                        "域名:",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        onChanged: (_) {
+                          setState(() {});
+                        },
+                        controller: _hostController,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          hintText: "http://1.1.1.1:5700",
+                        ),
+                        autofocus: false,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "用户名:",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        onChanged: (_) {
+                          setState(() {});
+                        },
+                        controller: _userNameController,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          hintText: "请输入用户名",
+                        ),
+                        autofocus: false,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        "密码:",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      TextField(
+                        onChanged: (_) {
+                          setState(() {});
+                        },
+                        controller: _passwordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                          hintText: "请输入密码",
+                        ),
+                        autofocus: false,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - 80,
+                        child: IgnorePointer(
+                          ignoring: _hostController.text.isEmpty || _userNameController.text.isEmpty || _passwordController.text.isEmpty || model.isLoading,
+                          child: CupertinoButton(
+                              color: (_hostController.text.isNotEmpty &&
+                                      _userNameController.text.isNotEmpty &&
+                                      _passwordController.text.isNotEmpty &&
+                                      !model.isLoading)
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).primaryColor.withOpacity(0.4),
+                              child: model.isLoading
+                                  ? const CupertinoActivityIndicator()
+                                  : const Text(
+                                      "登 录",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                              onPressed: () {
+                                Utils.hideKeyBoard(context);
+                                userInfoViewModel.updateHost(_hostController.text);
+                                model.login(_userNameController.text, _passwordController.text);
+                              }),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+
+            ],
           ),
         );
       }),

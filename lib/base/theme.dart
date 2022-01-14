@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 var themeProvider = ChangeNotifierProvider((ref) => ThemeViewModel());
+const Color _primaryColor = Color(0xFF299343);
 
 class ThemeViewModel extends ChangeNotifier {
   ThemeData currentTheme = lightTheme;
@@ -25,8 +26,29 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   primaryColor: const Color(0xffffffff),
 );
 ThemeData lightTheme = ThemeData.light().copyWith(
-  primaryColor: const Color(0xFF0F77FE),
+  primaryColor: _primaryColor,
   scaffoldBackgroundColor: Colors.white,
+  inputDecorationTheme: const InputDecorationTheme(
+    labelStyle: TextStyle(color: _primaryColor),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(
+        color: _primaryColor,
+      ),
+    ),
+  ),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: _primaryColor,
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: _primaryColor,
+  ),
+  buttonTheme: const ButtonThemeData(
+    buttonColor: _primaryColor,
+  ),
+  progressIndicatorTheme: const ProgressIndicatorThemeData(
+    color: _primaryColor,
+  ),
+
 );
 
 abstract class ThemeColors {
@@ -67,6 +89,6 @@ class DartThemeColors extends ThemeColors {
 
   @override
   Color pinColor() {
-    return  Colors.black12;
+    return Colors.black12;
   }
 }

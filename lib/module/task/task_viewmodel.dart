@@ -38,9 +38,7 @@ class TaskViewModel extends BaseViewModel {
     list.sort((a, b) {
       return a.status!.compareTo(b.status!);
     });
-    list.sort((a, b) {
-      return b.isPinned!.compareTo(a.isPinned!);
-    });
+
   }
 
   Future<void> runCrons(String cron) async {

@@ -162,7 +162,7 @@ class TaskItemCell extends StatelessWidget {
           },
         ),
         QLCupertinoContextMenuAction(
-          child: Text("查看日志"),
+          child: const Text("查看日志"),
           onPressed: () {
             Navigator.of(context).pop();
             logCron(context, ref);
@@ -238,13 +238,16 @@ class TaskItemCell extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      bean.name ?? "",
-                      maxLines: 1,
-                      style: TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        color: bean.isDisabled == 1 ? Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
-                        fontSize: 18,
+                    Material(
+                      color:Colors.transparent,
+                      child: Text(
+                        bean.name ?? "",
+                        maxLines: 1,
+                        style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: bean.isDisabled == 1 ? Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -260,13 +263,16 @@ class TaskItemCell extends StatelessWidget {
                             ),
                           ),
                     const Spacer(),
-                    Text(
-                      (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
-                      maxLines: 1,
-                      style: const TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        color: Color(0xff999999),
-                        fontSize: 12,
+                    Material(
+                      color:Colors.transparent,
+                      child: Text(
+                        (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
+                        maxLines: 1,
+                        style: const TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          color: Color(0xff999999),
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   ],
@@ -274,13 +280,16 @@ class TaskItemCell extends StatelessWidget {
                 const SizedBox(
                   height: 8,
                 ),
-                Text(
-                  bean.schedule ?? "",
-                  maxLines: 1,
-                  style: const TextStyle(
-                    overflow: TextOverflow.ellipsis,
-                    color: Color(0xff999999),
-                    fontSize: 12,
+                Material(
+                  color:Colors.transparent,
+                  child: Text(
+                    bean.schedule ?? "",
+                    maxLines: 1,
+                    style: const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      color: Color(0xff999999),
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ],

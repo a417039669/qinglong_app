@@ -9,12 +9,12 @@ const Color _primaryColor = Color(0xFF299343);
 class ThemeViewModel extends ChangeNotifier {
   ThemeData currentTheme = lightTheme;
 
-  ThemeColors themeColor = LightartThemeColors();
+  ThemeColors themeColor = LightThemeColors();
 
   void changeTheme() {
     if (currentTheme == darkTheme) {
       currentTheme = lightTheme;
-      themeColor = LightartThemeColors();
+      themeColor = LightThemeColors();
     } else {
       currentTheme = darkTheme;
       themeColor = DartThemeColors();
@@ -46,12 +46,17 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
     labelColor: Color(0xffffffff),
     unselectedLabelColor: Color(0xff999999),
   ),
-  colorScheme: const ColorScheme.light(secondary: _primaryColor,primary: _primaryColor,),
+  colorScheme: const ColorScheme.light(
+    secondary: _primaryColor,
+    primary: _primaryColor,
+  ),
 );
 ThemeData lightTheme = ThemeData.light().copyWith(
   primaryColor: _primaryColor,
-
-  colorScheme: const ColorScheme.light(secondary: _primaryColor,primary: _primaryColor,),
+  colorScheme: const ColorScheme.light(
+    secondary: _primaryColor,
+    primary: _primaryColor,
+  ),
   scaffoldBackgroundColor: Colors.white,
   inputDecorationTheme: const InputDecorationTheme(
     labelStyle: TextStyle(color: _primaryColor),
@@ -93,14 +98,14 @@ abstract class ThemeColors {
 
   Color descColor();
 
-  Color searchBarBg();
+  Color backGround();
 
   Color pinColor();
 
   Map<String, TextStyle> codeEditorTheme();
 }
 
-class LightartThemeColors extends ThemeColors {
+class LightThemeColors extends ThemeColors {
   @override
   Color taskTitleColor() {
     return Color(0xff333333);
@@ -124,6 +129,11 @@ class LightartThemeColors extends ThemeColors {
   @override
   Color descColor() {
     return Color(0xff999999);
+  }
+
+  @override
+  Color backGround() {
+    return Color(0xffF5F5F5);
   }
 }
 
@@ -151,5 +161,10 @@ class DartThemeColors extends ThemeColors {
   @override
   Color descColor() {
     return Color(0xff999999);
+  }
+
+  @override
+  Color backGround() {
+    return Colors.black;
   }
 }

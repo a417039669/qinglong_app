@@ -86,24 +86,27 @@ class _HomePageState extends ConsumerState<HomePage> {
         title: _title,
         actions: actions,
       ),
-      body: IndexedStack(
-        index: _index,
-        children: [
-          const Positioned.fill(
-            child: TaskPage(),
-          ),
-          const Positioned.fill(
-            child: EnvPage(),
-          ),
-          Positioned.fill(
-            child: ConfigPage(
-              key: configKey,
+      body: ColoredBox(
+        color: ref.watch(themeProvider).themeColor.backGround(),
+        child: IndexedStack(
+          index: _index,
+          children: [
+            const Positioned.fill(
+              child: TaskPage(),
             ),
-          ),
-          const Positioned.fill(
-            child: OtherPage(),
-          ),
-        ],
+            const Positioned.fill(
+              child: EnvPage(),
+            ),
+            Positioned.fill(
+              child: ConfigPage(
+                key: configKey,
+              ),
+            ),
+            const Positioned.fill(
+              child: OtherPage(),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: titles

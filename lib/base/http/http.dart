@@ -6,9 +6,11 @@ import 'package:dio_log/dio_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:qinglong_app/base/http/token_interceptor.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
+import 'package:qinglong_app/utils/QlNavigatorObserver.dart';
 
 import '../../json.jc.dart';
 import '../../main.dart';
+import '../routes.dart';
 
 class Http {
   static const int NOT_LOGIN = 1000;
@@ -43,6 +45,9 @@ class Http {
 
       return decodeResponse<T>(response, compute);
     } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        exitLogin();
+      }
       return HttpResponse(success: false, message: e.message, code: 0);
     }
   }
@@ -54,6 +59,9 @@ class Http {
 
       return decodeResponse<T>(response, compute);
     } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        exitLogin();
+      }
       return HttpResponse(success: false, message: e.message, code: 0);
     }
   }
@@ -65,6 +73,9 @@ class Http {
 
       return decodeResponse<T>(response, compute);
     } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        exitLogin();
+      }
       return HttpResponse(success: false, message: e.message, code: 0);
     }
   }
@@ -75,7 +86,19 @@ class Http {
       var response = await _dio!.put(uri, data: json);
       return decodeResponse<T>(response, compute);
     } on DioError catch (e) {
+      if (e.response?.statusCode == 401) {
+        exitLogin();
+      }
       return HttpResponse(success: false, message: e.message, code: 0);
+    }
+  }
+
+  static bool pushedLoginPage = false;
+
+  static void exitLogin() {
+    if (!pushedLoginPage) {
+      pushedLoginPage = true;
+      navigatorState.currentState?.pushReplacementNamed(Routes.route_LOGIN);
     }
   }
 
@@ -84,7 +107,6 @@ class Http {
     bool compute,
   ) {
     int code = 0;
-
     if (response.statusCode == 200) {
       try {
         if (response.data["code"] == 200) {
@@ -191,3 +213,5 @@ void decode<T>() async {
 }
 
 class NullResponse {}
+
+class NotLoginException implements Exception {}

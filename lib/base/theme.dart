@@ -25,6 +25,9 @@ class ThemeViewModel extends ChangeNotifier {
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
   primaryColor: const Color(0xffffffff),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.black,
+  ),
   inputDecorationTheme: const InputDecorationTheme(
     labelStyle: TextStyle(color: _primaryColor),
     focusedBorder: UnderlineInputBorder(
@@ -41,12 +44,14 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
       fontSize: 14,
     ),
     labelColor: Color(0xffffffff),
-    unselectedLabelColor:  Color(0xff999999),
-
+    unselectedLabelColor: Color(0xff999999),
   ),
+  colorScheme: const ColorScheme.light(secondary: _primaryColor,primary: _primaryColor,),
 );
 ThemeData lightTheme = ThemeData.light().copyWith(
   primaryColor: _primaryColor,
+
+  colorScheme: const ColorScheme.light(secondary: _primaryColor,primary: _primaryColor,),
   scaffoldBackgroundColor: Colors.white,
   inputDecorationTheme: const InputDecorationTheme(
     labelStyle: TextStyle(color: _primaryColor),
@@ -76,7 +81,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
       fontSize: 14,
     ),
     labelColor: _primaryColor,
-    unselectedLabelColor:  Color(0xff999999),
+    unselectedLabelColor: Color(0xff999999),
     indicator: UnderlineTabIndicator(
       borderSide: BorderSide(color: _primaryColor),
     ),
@@ -85,6 +90,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 
 abstract class ThemeColors {
   Color taskTitleColor();
+
   Color descColor();
 
   Color searchBarBg();

@@ -37,9 +37,9 @@ class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseS
   @override
   Widget build(BuildContext context) {
     var viewModel = ref.watch<T>(widget.model);
-    if (viewModel.failReason != null) {
+    if (viewModel.failedToast != null) {
       WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        failDialog(context, viewModel.failReason!);
+        failDialog(context, viewModel.failedToast!);
         viewModel.clearToast();
       });
     }

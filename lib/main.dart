@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/module/login/login_page.dart';
+import 'package:qinglong_app/utils/QlNavigatorObserver.dart';
 import 'package:qinglong_app/utils/sp_utils.dart';
 
 import 'base/routes.dart';
@@ -23,6 +24,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SpUtil.getInstance();
   getIt.registerSingleton<UserInfoViewModel>(UserInfoViewModel());
+  getIt.registerSingleton<QlNavigatorObserver>(QlNavigatorObserver());
 
   runApp(
     ProviderScope(
@@ -39,7 +41,6 @@ void main() async {
 }
 
 class MyApp extends ConsumerWidget {
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -50,6 +51,7 @@ class MyApp extends ConsumerWidget {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: MaterialApp(
+        navigatorObservers: [getIt<QlNavigatorObserver>()],
         navigatorKey: navigatorState,
         theme: ref.watch<ThemeViewModel>(themeProvider).currentTheme,
         onGenerateRoute: (setting) {

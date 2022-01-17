@@ -89,12 +89,20 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: IndexedStack(
         index: _index,
         children: [
-          const TaskPage(),
-          const EnvPage(),
-          ConfigPage(
-            key: configKey,
+          const Positioned.fill(
+            child: TaskPage(),
           ),
-          const OtherPage(),
+          const Positioned.fill(
+            child: EnvPage(),
+          ),
+          Positioned.fill(
+            child: ConfigPage(
+              key: configKey,
+            ),
+          ),
+          const Positioned.fill(
+            child: OtherPage(),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

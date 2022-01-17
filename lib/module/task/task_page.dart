@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_highlight/theme_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
 import 'package:qinglong_app/base/routes.dart';
@@ -32,42 +33,50 @@ class _TaskPageState extends State<TaskPage> {
   Widget build(BuildContext context) {
     return BaseStateWidget<TaskViewModel>(
       builder: (ref, model, child) {
-        return DefaultTabController(
-          length: 3,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TabBar(
-                tabs: const [
-                  Tab(
-                    text: "全部",
-                  ),
-                  Tab(
-                    text: "正在运行",
-                  ),
-                  Tab(
-                    text: "已禁用",
-                  ),
-                ],
-                isScrollable: true,
-                indicator: AbsUnderlineTabIndicator(
-                    wantWidth: 20,
-                    borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor,
-                      width: 2,
-                    )),
-              ),
-              Expanded(
-                child: TabBarView(
+        return Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            searchCell(ref),
+            Expanded(
+              child: DefaultTabController(
+                length: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    body(model, model.list, ref),
-                    body(model, model.running, ref),
-                    body(model, model.disabled, ref),
+                    TabBar(
+                      tabs: const [
+                        Tab(
+                          text: "全部",
+                        ),
+                        Tab(
+                          text: "正在运行",
+                        ),
+                        Tab(
+                          text: "已禁用",
+                        ),
+                      ],
+                      isScrollable: true,
+                      indicator: AbsUnderlineTabIndicator(
+                          wantWidth: 20,
+                          borderSide: BorderSide(
+                            color: Theme.of(context).primaryColor,
+                            width: 2,
+                          )),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          body(model, model.list, ref),
+                          body(model, model.running, ref),
+                          body(model, model.disabled, ref),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         );
       },
       model: taskProvider,
@@ -103,35 +112,42 @@ class _TaskPageState extends State<TaskPage> {
 
   Widget searchCell(WidgetRef context) {
     return Container(
-      color: context.watch(themeProvider).themeColor.searchBarBg(),
       padding: const EdgeInsets.symmetric(
         horizontal: 15,
         vertical: 10,
       ),
       child: CupertinoSearchTextField(
         onSubmitted: (value) {
-          setState(() {
-            _searchKey = value;
-          });
+          setState(() {});
         },
         onSuffixTap: () {
           _searchController.text = "";
-          setState(() {
-            _searchKey = "";
-          });
+          setState(() {});
         },
         controller: _searchController,
         borderRadius: BorderRadius.circular(
           30,
         ),
         padding: const EdgeInsets.symmetric(
-          horizontal: 15,
+          horizontal: 5,
           vertical: 5,
+        ),
+        suffixInsets: const EdgeInsets.only(
+          top: 8,
+          bottom: 8,
+          right: 15,
         ),
         prefixInsets: const EdgeInsets.only(
           top: 10,
           bottom: 6,
           left: 15,
+        ),
+        placeholderStyle: TextStyle(
+          fontSize: 14,
+          color: context.watch(themeProvider).themeColor.descColor(),
+        ),
+        style: const TextStyle(
+          fontSize: 14,
         ),
         placeholder: "搜索",
       ),
@@ -364,7 +380,10 @@ class TaskItemCell extends StatelessWidget {
             content: InTimeLogPage(bean.sId!, bean.status == 0),
             actions: [
               CupertinoDialogAction(
-                child: const Text("知道了"),
+                child:  Text(
+                  "知道了",
+                  style: TextStyle(color: Theme.of(context).primaryColor),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

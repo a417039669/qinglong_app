@@ -15,8 +15,8 @@ class Url {
   static const ENVS = "/api/envs";
   static const ADD_ENV = "/api/envs";
   static const DEL_ENV = "/api/envs";
-  static const DISABLE_ENVS = "/api/disable";
-  static const ENABLE_ENVS = "/api/enable";
+  static const DISABLE_ENVS = "/api/envs/disable";
+  static const ENABLE_ENVS = "/api/envs/enable";
 
   static INTIME_LOG(String cronId) {
     return "/api/crons/$cronId/log";

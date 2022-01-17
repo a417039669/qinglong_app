@@ -1,14 +1,14 @@
+import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
-import 'package:qinglong_app/base/routes.dart';
+import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/ui/empty_widget.dart';
-import 'package:qinglong_app/base/ui/menu.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/env/env_viewmodel.dart';
-import 'package:qinglong_app/utils/utils.dart';
 
 class EnvPage extends StatefulWidget {
   const EnvPage({Key? key}) : super(key: key);
@@ -18,34 +18,102 @@ class EnvPage extends StatefulWidget {
 }
 
 class _EnvPageState extends State<EnvPage> {
-  String _searchKey = "";
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BaseStateWidget<EnvViewModel>(
       builder: (ref, model, child) {
-        return RefreshIndicator(
-          color: Theme.of(context).primaryColor,
-          onRefresh: () async {
-            return model.loadData(false);
-          },
-          child: model.list.isEmpty
-              ? const EmptyWidget()
-              : ListView.builder(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  itemBuilder: (context, index) {
-                    EnvBean item = model.list[index];
+        List<EnvItemCell> list = [];
 
-                    return EnvItemCell(item, ref);
+        for (var value in model.list) {
+          if (_searchController.text.isEmpty ||
+              (value.name?.contains(_searchController.text) ?? false) ||
+              (value.value?.contains(_searchController.text) ?? false) ||
+              (value.remarks?.contains(_searchController.text) ?? false)) {
+            list.add(EnvItemCell(value, ref,key: ValueKey(value.sId),));
+          }
+        }
+
+        return model.list.isEmpty
+            ? const EmptyWidget()
+            : RefreshIndicator(
+                color: Theme.of(context).primaryColor,
+                onRefresh: () async {
+                  return model.loadData(false);
+                },
+                child: ReorderableListView(
+                  header: searchCell(ref),
+                  onReorder: (int oldIndex, int newIndex) {
+                    if (list.length != model.list.length) {
+                      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                        failDialog(context, "请先清空搜索关键词");
+                      });
+                      return;
+                    }
+
+                    setState(() {
+                      //交换数据
+                      if (newIndex > oldIndex) {
+                        newIndex -= 1;
+                      }
+                      final EnvBean item = model.list.removeAt(oldIndex);
+                      model.list.insert(newIndex, item);
+                      model.update();
+                    });
                   },
-                  itemCount: model.list.length,
+                  children: list,
                 ),
-        );
+              );
       },
       model: envProvider,
       onReady: (viewModel) {
         viewModel.loadData();
       },
+    );
+  }
+
+  Widget searchCell(WidgetRef context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 10,
+      ),
+      child: CupertinoSearchTextField(
+        onSubmitted: (value) {
+          setState(() {});
+        },
+        onSuffixTap: () {
+          _searchController.text = "";
+          setState(() {});
+        },
+        controller: _searchController,
+        borderRadius: BorderRadius.circular(
+          30,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 5,
+          vertical: 5,
+        ),
+        suffixInsets: const EdgeInsets.only(
+          top: 8,
+          bottom: 8,
+          right: 15,
+        ),
+        prefixInsets: const EdgeInsets.only(
+          top: 10,
+          bottom: 6,
+          left: 15,
+        ),
+        placeholderStyle: TextStyle(
+          fontSize: 14,
+          color: context.watch(themeProvider).themeColor.descColor(),
+        ),
+        style: const TextStyle(
+          fontSize: 14,
+        ),
+        placeholder: "搜索",
+      ),
     );
   }
 }
@@ -58,51 +126,39 @@ class EnvItemCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoContextMenu(
-      actions: [
-        QLCupertinoContextMenuAction(
-          child: const Text("编辑"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean);
-          },
-          trailingIcon: CupertinoIcons.pencil_outline,
-        ),
-        QLCupertinoContextMenuAction(
-          child: Text(bean.status! == 0 ? "禁用" : "启用"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            enableEnv();
-          },
-          isDestructiveAction: true,
-          trailingIcon: bean.status! == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
-        ),
-        QLCupertinoContextMenuAction(
-          child: const Text("删除"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            delEnv(context, ref);
-          },
-          isDestructiveAction: true,
-          trailingIcon: CupertinoIcons.delete,
-        ),
-      ],
-      previewBuilder: (context, anima, child) {
-        return IntrinsicWidth(
-          child: Material(
-            color: Colors.transparent,
-            child: Text(
-              bean.name ?? "",
-              maxLines: 1,
-              style: TextStyle(
-                overflow: TextOverflow.ellipsis,
-                color: bean.status == 0 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
-                fontSize: 18,
-              ),
-            ),
+    return Slidable(
+      key: ValueKey(bean.sId),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        extentRatio: 0.45,
+        children: [
+          SlidableAction(
+            backgroundColor: Colors.grey,
+            flex: 1,
+            onPressed: (_) {},
+            foregroundColor: Colors.white,
+            icon: CupertinoIcons.pencil_outline,
           ),
-        );
-      },
+          SlidableAction(
+            backgroundColor: Colors.orange,
+            flex: 1,
+            onPressed: (_) {
+              enableEnv();
+            },
+            foregroundColor: Colors.white,
+            icon: bean.status == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
+          ),
+          SlidableAction(
+            backgroundColor: Colors.red,
+            flex: 1,
+            onPressed: (_) {
+              delEnv(context, ref);
+            },
+            foregroundColor: Colors.white,
+            icon: CupertinoIcons.delete,
+          ),
+        ],
+      ),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Column(

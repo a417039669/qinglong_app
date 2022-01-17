@@ -60,7 +60,7 @@ class EnvViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.enableEnv(sId);
 
       if (response.success) {
-        list.firstWhere((element) => element.sId == sId).status = 1;
+        list.firstWhere((element) => element.sId == sId).status = 0;
         sortList();
         success();
       } else {
@@ -70,12 +70,15 @@ class EnvViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.disableEnv(sId);
 
       if (response.success) {
-        list.firstWhere((element) => element.sId == sId).status = 0;
+        list.firstWhere((element) => element.sId == sId).status = 1;
         sortList();
         success();
       } else {
         failToast(response.message, notify: true);
       }
     }
+  }
+  void update(){
+    // update
   }
 }

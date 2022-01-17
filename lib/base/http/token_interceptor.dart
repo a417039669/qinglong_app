@@ -6,7 +6,7 @@ import '../userinfo_viewmodel.dart';
 class TokenInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (getIt<UserInfoViewModel>().token != null) {
+    if (getIt<UserInfoViewModel>().token != null && getIt<UserInfoViewModel>().token!.isNotEmpty) {
       options.headers["Authorization"] = "Bearer " + getIt<UserInfoViewModel>().token!;
     }
     options.queryParameters["t"] = (DateTime.now().millisecondsSinceEpoch~/1000).toString();

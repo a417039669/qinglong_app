@@ -48,7 +48,7 @@ class TaskViewModel extends BaseViewModel {
       list.firstWhere((element) => element.sId == cron).status = 0;
       notifyListeners();
     } else {
-      failed(result.message, notify: true);
+      failToast(result.message, notify: true);
     }
   }
 
@@ -58,7 +58,7 @@ class TaskViewModel extends BaseViewModel {
       list.firstWhere((element) => element.sId == cron).status = 1;
       notifyListeners();
     } else {
-      failed(result.message, notify: true);
+      failToast(result.message, notify: true);
     }
   }
 
@@ -68,7 +68,7 @@ class TaskViewModel extends BaseViewModel {
       list.removeWhere((element) => element.sId == id);
       notifyListeners();
     } else {
-      failed(result.message, notify: true);
+      failToast(result.message, notify: true);
     }
   }
 

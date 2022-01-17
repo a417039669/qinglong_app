@@ -1,8 +1,8 @@
-import 'package:dio_log/dio_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/common_dialog.dart';
+import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    getIt<UserInfoViewModel>().updateToken("");
   }
 
   @override
@@ -197,6 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                               onPressed: () {
+                                Http.pushedLoginPage = false;
                                 Utils.hideKeyBoard(context);
                                 getIt<UserInfoViewModel>().updateHost(_hostController.text);
                                 model.login(_userNameController.text, _passwordController.text);
@@ -207,7 +209,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-
             ],
           ),
         );

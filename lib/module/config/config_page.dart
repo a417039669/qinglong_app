@@ -57,6 +57,9 @@ class ConfigPageState extends State<ConfigPage> with SingleTickerProviderStateMi
                         child: HighlightView(
                           model.content[e.title] ?? "",
                           language: "sh",
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                          ),
                           theme: ref.watch(themeProvider).themeColor.codeEditorTheme(),
                           tabSize: 14,
                         ),

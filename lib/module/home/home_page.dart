@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/routes.dart';
-import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/module/config/config_page.dart';
 import 'package:qinglong_app/module/env/env_page.dart';
 import 'package:qinglong_app/module/others/other_page.dart';
@@ -40,6 +39,25 @@ class _HomePageState extends ConsumerState<HomePage> {
         onTap: () {
           Navigator.of(context).pushNamed(
             Routes.route_AddTask,
+          );
+        },
+        child: const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 15,
+          ),
+          child: Center(
+            child: Icon(
+              CupertinoIcons.add,
+              size: 20,
+            ),
+          ),
+        ),
+      ));
+    } else if (_index == 1) {
+      actions.add(InkWell(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            Routes.route_AddEnv,
           );
         },
         child: const Padding(

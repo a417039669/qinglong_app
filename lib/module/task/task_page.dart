@@ -99,7 +99,10 @@ class _TaskPageState extends State<TaskPage> {
               itemBuilder: (context, index) {
                 TaskBean item = list[index];
 
-                if ((item.name == null || item.name!.contains(_searchKey ?? "")) || (item.command == null || item.command!.contains(_searchKey ?? ""))) {
+                if (_searchController.text.isEmpty ||
+                    (item.name?.contains(_searchController.text) ?? false) ||
+                    (item.command?.contains(_searchController.text) ?? false) ||
+                    (item.schedule?.contains(_searchController.text) ?? false)) {
                   return TaskItemCell(item, ref);
                 } else {
                   return const SizedBox.shrink();
@@ -163,157 +166,160 @@ class TaskItemCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoContextMenu(
-      actions: [
-        QLCupertinoContextMenuAction(
-          child: Text(
-            bean.status! == 1 ? "运行" : "停止运行",
-          ),
-          trailingIcon: bean.status! == 1 ? CupertinoIcons.memories : CupertinoIcons.stop_circle,
-          onPressed: () {
-            Navigator.of(context).pop();
-            startCron(context, ref);
-          },
-        ),
-        QLCupertinoContextMenuAction(
-          child: const Text("查看日志"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            logCron(context, ref);
-          },
-          trailingIcon: CupertinoIcons.clock,
-        ),
-        QLCupertinoContextMenuAction(
-          child: const Text("编辑"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean);
-          },
-          trailingIcon: CupertinoIcons.pencil_outline,
-        ),
-        QLCupertinoContextMenuAction(
-          child: Text(bean.isPinned! == 0 ? "置顶" : "取消置顶"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            pinTask();
-          },
-          trailingIcon: bean.isPinned! == 0 ? CupertinoIcons.pin : CupertinoIcons.pin_slash,
-        ),
-        QLCupertinoContextMenuAction(
-          child: Text(bean.isDisabled! == 0 ? "禁用" : "启用"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            enableTask();
-          },
-          isDestructiveAction: true,
-          trailingIcon: bean.isDisabled! == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
-        ),
-        QLCupertinoContextMenuAction(
-          child: const Text("删除"),
-          onPressed: () {
-            Navigator.of(context).pop();
-            delTask(context, ref);
-          },
-          isDestructiveAction: true,
-          trailingIcon: CupertinoIcons.delete,
-        ),
-      ],
-      previewBuilder: (context, anima, child) {
-        return IntrinsicWidth(
-          child: Material(
-            color: Colors.transparent,
+    return ColoredBox(
+      color: ref.watch(themeProvider).themeColor.settingBgColor(),
+      child: CupertinoContextMenu(
+        actions: [
+          QLCupertinoContextMenuAction(
             child: Text(
-              bean.name ?? "",
-              maxLines: 1,
-              style: TextStyle(
-                overflow: TextOverflow.ellipsis,
-                color: bean.isDisabled == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
-                fontSize: 18,
-              ),
+              bean.status! == 1 ? "运行" : "停止运行",
             ),
+            trailingIcon: bean.status! == 1 ? CupertinoIcons.memories : CupertinoIcons.stop_circle,
+            onPressed: () {
+              Navigator.of(context).pop();
+              startCron(context, ref);
+            },
           ),
-        );
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 8,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Material(
-                      color: Colors.transparent,
-                      child: Text(
-                        bean.name ?? "",
-                        maxLines: 1,
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          color: bean.isDisabled == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 5,
-                    ),
-                    bean.status == 1
-                        ? const SizedBox.shrink()
-                        : const SizedBox(
-                            width: 15,
-                            height: 15,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          ),
-                    const Spacer(),
-                    Material(
-                      color: Colors.transparent,
-                      child: Text(
-                        (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
-                        maxLines: 1,
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          color: ref.watch(themeProvider).themeColor.descColor(),
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    bean.schedule ?? "",
-                    maxLines: 1,
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      color: ref.watch(themeProvider).themeColor.descColor(),
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          QLCupertinoContextMenuAction(
+            child: const Text("查看日志"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              logCron(context, ref);
+            },
+            trailingIcon: CupertinoIcons.clock,
           ),
-          const Divider(
-            height: 1,
-            indent: 15,
+          QLCupertinoContextMenuAction(
+            child: const Text("编辑"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean);
+            },
+            trailingIcon: CupertinoIcons.pencil_outline,
+          ),
+          QLCupertinoContextMenuAction(
+            child: Text(bean.isPinned! == 0 ? "置顶" : "取消置顶"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              pinTask();
+            },
+            trailingIcon: bean.isPinned! == 0 ? CupertinoIcons.pin : CupertinoIcons.pin_slash,
+          ),
+          QLCupertinoContextMenuAction(
+            child: Text(bean.isDisabled! == 0 ? "禁用" : "启用"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              enableTask();
+            },
+            isDestructiveAction: true,
+            trailingIcon: bean.isDisabled! == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
+          ),
+          QLCupertinoContextMenuAction(
+            child: const Text("删除"),
+            onPressed: () {
+              Navigator.of(context).pop();
+              delTask(context, ref);
+            },
+            isDestructiveAction: true,
+            trailingIcon: CupertinoIcons.delete,
           ),
         ],
+        previewBuilder: (context, anima, child) {
+          return IntrinsicWidth(
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                bean.name ?? "",
+                maxLines: 1,
+                style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  color: bean.isDisabled == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                  fontSize: 18,
+                ),
+              ),
+            ),
+          );
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 8,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          bean.name ?? "",
+                          maxLines: 1,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: bean.isDisabled == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      bean.status == 1
+                          ? const SizedBox.shrink()
+                          : const SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ),
+                      const Spacer(),
+                      Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
+                          maxLines: 1,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      bean.schedule ?? "",
+                      maxLines: 1,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: ref.watch(themeProvider).themeColor.descColor(),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              height: 1,
+              indent: 15,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -380,7 +386,7 @@ class TaskItemCell extends StatelessWidget {
             content: InTimeLogPage(bean.sId!, bean.status == 0),
             actions: [
               CupertinoDialogAction(
-                child:  Text(
+                child: Text(
                   "知道了",
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 ),

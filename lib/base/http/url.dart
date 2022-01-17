@@ -12,6 +12,11 @@ class Url {
   static const FILES = "/api/configs/files";
   static const CONFIG_CONTENT = "/api/configs/";
   static const SAVE_FILE = "/api/configs/save";
+  static const ENVS = "/api/envs";
+  static const ADD_ENV = "/api/envs";
+  static const DEL_ENV = "/api/envs";
+  static const DISABLE_ENVS = "/api/disable";
+  static const ENABLE_ENVS = "/api/enable";
 
   static INTIME_LOG(String cronId) {
     return "/api/crons/$cronId/log";

@@ -136,6 +136,7 @@ class Http {
           );
         }
       } catch (e) {
+        logger.e(e);
         return HttpResponse<T>(
           success: false,
           code: -1000,

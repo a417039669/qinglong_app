@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/module/config/config_bean.dart';
+import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/login/login_bean.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
@@ -74,9 +75,36 @@ class Api {
   }
 
   static Future<HttpResponse<String>> content(String name) async {
-    return await Http.get<String>(Url.CONFIG_CONTENT+name, null);
+    return await Http.get<String>(Url.CONFIG_CONTENT + name, null);
   }
-  static Future<HttpResponse<NullResponse>> saveFile(String name,String content) async {
-    return await Http.post<NullResponse>(Url.SAVE_FILE, {"content":content,"name": name});
+
+  static Future<HttpResponse<NullResponse>> saveFile(String name, String content) async {
+    return await Http.post<NullResponse>(Url.SAVE_FILE, {"content": content, "name": name});
+  }
+
+  static Future<HttpResponse<List<EnvBean>>> envs(String search) async {
+    return await Http.get<List<EnvBean>>(Url.ENVS, {"searchValue": search});
+  }
+
+  static Future<HttpResponse<NullResponse>> enableEnv(String id) async {
+    return await Http.put<NullResponse>(Url.ENABLE_ENVS, [id]);
+  }
+
+  static Future<HttpResponse<NullResponse>> disableEnv(String id) async {
+    return await Http.put<NullResponse>(Url.DISABLE_ENVS, [id]);
+  }
+
+  static Future<HttpResponse<NullResponse>> delEnv(String id) async {
+    return await Http.delete<NullResponse>(Url.DEL_ENV, [id]);
+  }
+
+  static Future<HttpResponse<EnvBean>> addEnv(String value, String name, String remarks, {String? id}) async {
+    var data = {"value": name, "remarks": remarks, "name": name};
+
+    if (id != null) {
+      data["_id"] = id;
+      return await Http.put<EnvBean>(Url.ADD_ENV, data);
+    }
+    return await Http.post<EnvBean>(Url.ADD_ENV, data);
   }
 }

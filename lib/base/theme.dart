@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/sp_const.dart';
 import 'package:qinglong_app/utils/codeeditor_theme.dart';
@@ -14,8 +15,9 @@ class ThemeViewModel extends ChangeNotifier {
   ThemeColors themeColor = LightThemeColors();
 
   ThemeViewModel() {
-    bool dartMode = SpUtil.getBool(sp_Theme, defValue: false);
-    changeThemeReal(dartMode, false);
+    var brightness = SchedulerBinding.instance!.window.platformBrightness;
+    bool isDarkMode = brightness == Brightness.dark;
+    changeThemeReal(isDarkMode, false);
   }
 
   bool isInDartMode() {

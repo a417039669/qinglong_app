@@ -56,7 +56,13 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                 horizontal: 15,
               ),
               child: Center(
-                child: Text("提交"),
+                child: Text(
+                  "提交",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
           )
@@ -189,7 +195,9 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     taskBean.name = _nameController.text;
     taskBean.command = _commandController.text;
     taskBean.schedule = _cronController.text;
-    HttpResponse<TaskDetailBean> response = await Api.addTask(_nameController.text, _commandController.text, _cronController.text, id: taskBean.sId);
+    HttpResponse<TaskDetailBean> response = await Api.addTask(
+        _nameController.text, _commandController.text, _cronController.text,
+        id: taskBean.sId);
 
     if (response.success) {
       successDialog(context, "操作成功").then((value) {
@@ -197,7 +205,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
         Navigator.of(context).pop();
       });
     } else {
-      failDialog(context, response.message ??"");
+      failDialog(context, response.message ?? "");
     }
   }
 }

@@ -49,6 +49,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: Icon(
               CupertinoIcons.add,
               size: 20,
+              color: Colors.white,
             ),
           ),
         ),
@@ -68,6 +69,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             child: Icon(
               CupertinoIcons.add,
               size: 20,
+              color: Colors.white,
             ),
           ),
         ),
@@ -82,7 +84,13 @@ class _HomePageState extends ConsumerState<HomePage> {
             horizontal: 15,
           ),
           child: Center(
-            child: Text("编辑"),
+            child: Text(
+              "编辑",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+              ),
+            ),
           ),
         ),
       ));

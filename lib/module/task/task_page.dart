@@ -397,29 +397,31 @@ class TaskItemCell extends StatelessWidget {
   }
 
   logCron(BuildContext context, WidgetRef ref) {
-    showCupertinoDialog(
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            title: Text(
-              "${bean.name}运行日志",
-              maxLines: 1,
-              style: const TextStyle(overflow: TextOverflow.ellipsis),
-            ),
-            content: InTimeLogPage(bean.sId!, bean.status == 0),
-            actions: [
-              CupertinoDialogAction(
-                child: Text(
-                  "知道了",
-                  style: TextStyle(color: Theme.of(context).primaryColor),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      showCupertinoDialog(
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: Text(
+                "${bean.name}运行日志",
+                maxLines: 1,
+                style: const TextStyle(overflow: TextOverflow.ellipsis),
               ),
-            ],
-          );
-        },
-        context: context);
+              content: InTimeLogPage(bean.sId!, bean.status == 0),
+              actions: [
+                CupertinoDialogAction(
+                  child: Text(
+                    "知道了",
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+          context: context);
+    });
   }
 
   more(BuildContext context, WidgetRef ref) {

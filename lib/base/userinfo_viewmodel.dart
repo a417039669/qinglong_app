@@ -6,14 +6,7 @@ class UserInfoViewModel {
   String? _token;
   String? _host = "";
 
-  static UserInfoViewModel? _userInfoViewModel;
-
-  static UserInfoViewModel getInstance() {
-    _userInfoViewModel ??= UserInfoViewModel._();
-    return _userInfoViewModel!;
-  }
-
-  UserInfoViewModel._() {
+  UserInfoViewModel() {
     String userInfoJson = SpUtil.getString(sp_UserINfo);
     _host = SpUtil.getString(sp_Host,defValue: "http://49.234.59.95:5700");
     if (userInfoJson.isNotEmpty) {

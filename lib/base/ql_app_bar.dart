@@ -35,6 +35,7 @@ class QlAppBar extends StatelessWidget with PreferredSizeWidget {
         );
 
     return AppBar(
+      elevation: 0,
       leading: canBack ? back : null,
       automaticallyImplyLeading: canBack,
       title: Text(title),

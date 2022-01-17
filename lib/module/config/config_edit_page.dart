@@ -1,12 +1,11 @@
-import 'package:code_editor/code_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
+import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/module/config/config_viewmodel.dart';
-import 'package:qinglong_app/utils/qinglong_theme.dart';
 
 class ConfigEditPage extends ConsumerStatefulWidget {
   final String content;
@@ -21,34 +20,23 @@ class ConfigEditPage extends ConsumerStatefulWidget {
 class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
   String? value;
 
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    _controller = TextEditingController(text: widget.content);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<FileEditor> files = [
-      FileEditor(
-        name: widget.title,
-        language: "sh",
-        code: widget.content, // [code] needs a string
-      ),
-    ];
-    EditorModel editMode = EditorModel(
-      files: files,
-      styleOptions: EditorModelStyleOptions(
-        fontSize: 13,
-        heightOfContainer: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 150,
-        editorBorderColor: Theme.of(context).scaffoldBackgroundColor,
-        editButtonBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        editorColor: Theme.of(context).scaffoldBackgroundColor,
-        theme: qinglongLightTheme,
-      ),
-
-    );
     return Scaffold(
       appBar: QlAppBar(
         canBack: true,
         backCall: () {
           Navigator.of(context).pop();
         },
-        title: '编辑文件',
+        title: '编辑${widget.title}',
         actions: [
           InkWell(
             onTap: () async {
@@ -56,7 +44,7 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
                 failDialog(context, "请先点击保存");
                 return;
               }
-              HttpResponse<NullResponse> response = await Api.saveFile(widget.title, value!);
+              HttpResponse<NullResponse> response = await Api.saveFile(widget.title, _controller.text);
               if (response.success) {
                 ref.read(configProvider).loadContent(widget.title);
                 Navigator.of(context).pop();
@@ -76,13 +64,21 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
         ],
       ),
       body: Container(
-        child: CodeEditor(
-          model: editMode,
-          edit: true,
-          onSubmit: (title, v) {
-            value = v;
-          },
-          disableNavigationbar: false,
+        padding: const EdgeInsets.only(
+          left: 15,
+          right: 15,
+        ),
+        child: SingleChildScrollView(
+          child: TextField(
+            focusNode: FocusNode(),
+            style: TextStyle(
+              color: ref.read(themeProvider).themeColor.descColor(),
+              fontSize: 14,
+            ),
+            controller: _controller,
+            minLines: 1,
+            maxLines: 100,
+          ),
         ),
       ),
     );

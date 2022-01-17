@@ -9,18 +9,20 @@ import 'package:qinglong_app/module/env/env_page.dart';
 import 'package:qinglong_app/module/others/other_page.dart';
 import 'package:qinglong_app/module/task/task_page.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   int _index = 0;
   String _title = "";
 
   List<IndexBean> titles = [];
+
+  GlobalKey<ConfigPageState> configKey = GlobalKey();
 
   @override
   void initState() {
@@ -52,6 +54,20 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ));
+    } else if (_index == 2) {
+      actions.add(InkWell(
+        onTap: () {
+          configKey.currentState?.editMe(ref);
+        },
+        child: const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 15,
+          ),
+          child: Center(
+            child: Text("编辑"),
+          ),
+        ),
+      ));
     }
 
     actions.add(
@@ -72,11 +88,13 @@ class _HomePageState extends State<HomePage> {
       ),
       body: IndexedStack(
         index: _index,
-        children: const [
-          TaskPage(),
-          EnvPage(),
-          ConfigPage(),
-          OtherPage(),
+        children: [
+          const TaskPage(),
+          const EnvPage(),
+          ConfigPage(
+            key: configKey,
+          ),
+          const OtherPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

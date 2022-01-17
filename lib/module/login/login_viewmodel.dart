@@ -3,6 +3,7 @@ import 'package:qinglong_app/base/base_viewmodel.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/http/url.dart';
+import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
 
 import 'login_bean.dart';
@@ -23,7 +24,7 @@ class LoginViewModel extends ViewModel {
     HttpResponse<LoginBean> response = await Api.login(userName, password);
 
     if (response.success) {
-      userInfoViewModel.updateToken(response.bean?.token ?? "");
+      getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
       loginSuccess = true;
       isLoading = false;
     } else {

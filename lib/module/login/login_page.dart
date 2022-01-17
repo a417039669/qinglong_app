@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/routes.dart';
+import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
 import 'package:qinglong_app/module/login/login_viewmodel.dart';
 import 'package:qinglong_app/utils/utils.dart';
@@ -16,7 +17,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _hostController = TextEditingController(text: userInfoViewModel.host);
+  final TextEditingController _hostController = TextEditingController(text: getIt<UserInfoViewModel>().host);
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -63,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 6,
+                        height: MediaQuery.of(context).size.height / 10,
                       ),
                       SizedBox(
                         height: 50,
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Positioned(
                               top: 0,
-                              left: 40,
+                              left: 0,
                               child: Image.asset(
                                 "assets/images/login_tip.png",
                                 height: 45,
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             const Positioned(
                               top: 10,
-                              left: 40,
+                              left: 0,
                               child: Text(
                                 "登录",
                                 style: TextStyle(
@@ -91,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             Positioned(
                               top: 5,
-                              right: 40,
+                              right: 0,
                               child: Image.asset(
                                 "assets/images/ql.png",
                                 height: 45,
@@ -197,7 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ),
                               onPressed: () {
                                 Utils.hideKeyBoard(context);
-                                userInfoViewModel.updateHost(_hostController.text);
+                                getIt<UserInfoViewModel>().updateHost(_hostController.text);
                                 model.login(_userNameController.text, _passwordController.text);
                               }),
                         ),

@@ -8,6 +8,7 @@ import 'package:qinglong_app/base/http/token_interceptor.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 
 import '../../json.jc.dart';
+import '../../main.dart';
 
 class Http {
   static const int NOT_LOGIN = 1000;
@@ -31,7 +32,7 @@ class Http {
 
   static void _init() {
     if (_dio == null) {
-      initDioConfig(UserInfoViewModel.getInstance().host!);
+      initDioConfig(getIt<UserInfoViewModel>().host!);
     }
   }
 

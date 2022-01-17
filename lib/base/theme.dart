@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qinglong_app/utils/qinglong_theme.dart';
+import 'package:qinglong_app/utils/codeeditor_theme.dart';
 
 var themeProvider = ChangeNotifierProvider((ref) => ThemeViewModel());
 const Color _primaryColor = Color(0xFF299343);
@@ -25,6 +25,25 @@ class ThemeViewModel extends ChangeNotifier {
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
   primaryColor: const Color(0xffffffff),
+  inputDecorationTheme: const InputDecorationTheme(
+    labelStyle: TextStyle(color: _primaryColor),
+    focusedBorder: UnderlineInputBorder(
+      borderSide: BorderSide(
+        color: _primaryColor,
+      ),
+    ),
+  ),
+  tabBarTheme: const TabBarTheme(
+    labelStyle: TextStyle(
+      fontSize: 14,
+    ),
+    unselectedLabelStyle: TextStyle(
+      fontSize: 14,
+    ),
+    labelColor: Color(0xffffffff),
+    unselectedLabelColor:  Color(0xff999999),
+
+  ),
 );
 ThemeData lightTheme = ThemeData.light().copyWith(
   primaryColor: _primaryColor,
@@ -51,10 +70,10 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   ),
   tabBarTheme: const TabBarTheme(
     labelStyle: TextStyle(
-      fontSize: 16,
+      fontSize: 14,
     ),
     unselectedLabelStyle: TextStyle(
-      fontSize: 16,
+      fontSize: 14,
     ),
     labelColor: _primaryColor,
     unselectedLabelColor:  Color(0xff999999),
@@ -66,6 +85,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 
 abstract class ThemeColors {
   Color taskTitleColor();
+  Color descColor();
 
   Color searchBarBg();
 
@@ -94,6 +114,11 @@ class LightartThemeColors extends ThemeColors {
   Map<String, TextStyle> codeEditorTheme() {
     return qinglongLightTheme;
   }
+
+  @override
+  Color descColor() {
+    return Color(0xff999999);
+  }
 }
 
 class DartThemeColors extends ThemeColors {
@@ -115,5 +140,10 @@ class DartThemeColors extends ThemeColors {
   @override
   Map<String, TextStyle> codeEditorTheme() {
     return qinglongDarkTheme;
+  }
+
+  @override
+  Color descColor() {
+    return Color(0xff999999);
   }
 }

@@ -33,6 +33,9 @@ class TaskViewModel extends BaseViewModel {
     list.sort((a, b) {
       return b.created!.compareTo(a.created!);
     });
+    list.sort((a, b) {
+      return b.isPinned!.compareTo(a.isPinned!);
+    });
     running.clear();
     running.addAll(list.where((element) => element.status == 0));
     disabled.clear();

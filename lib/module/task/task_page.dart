@@ -6,6 +6,7 @@ import 'package:qinglong_app/base/base_state_widget.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/ui/abs_underline_tabindicator.dart';
+import 'package:qinglong_app/base/ui/empty_widget.dart';
 import 'package:qinglong_app/base/ui/menu.dart';
 import 'package:qinglong_app/module/task/intime_log/intime_log_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
@@ -83,23 +84,21 @@ class _TaskPageState extends State<TaskPage> {
       onRefresh: () async {
         return model.loadData(false);
       },
-      child: ListView.builder(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        itemBuilder: (context, index) {
-          // if (index == 0) {
-          //   return searchCell(ref);
-          // }
+      child: list.isEmpty
+          ? const EmptyWidget()
+          : ListView.builder(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              itemBuilder: (context, index) {
+                TaskBean item = list[index];
 
-          TaskBean item = list[index];
-
-          if ((item.name == null || item.name!.contains(_searchKey ?? "")) || (item.command == null || item.command!.contains(_searchKey ?? ""))) {
-            return TaskItemCell(item, ref);
-          } else {
-            return const SizedBox.shrink();
-          }
-        },
-        itemCount: list.length,
-      ),
+                if ((item.name == null || item.name!.contains(_searchKey ?? "")) || (item.command == null || item.command!.contains(_searchKey ?? ""))) {
+                  return TaskItemCell(item, ref);
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
+              itemCount: list.length,
+            ),
     );
   }
 
@@ -239,13 +238,13 @@ class TaskItemCell extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Material(
-                      color:Colors.transparent,
+                      color: Colors.transparent,
                       child: Text(
                         bean.name ?? "",
                         maxLines: 1,
                         style: TextStyle(
                           overflow: TextOverflow.ellipsis,
-                          color: bean.isDisabled == 1 ? Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          color: bean.isDisabled == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
                           fontSize: 18,
                         ),
                       ),
@@ -264,13 +263,13 @@ class TaskItemCell extends StatelessWidget {
                           ),
                     const Spacer(),
                     Material(
-                      color:Colors.transparent,
+                      color: Colors.transparent,
                       child: Text(
                         (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
                         maxLines: 1,
-                        style: const TextStyle(
+                        style: TextStyle(
                           overflow: TextOverflow.ellipsis,
-                          color: Color(0xff999999),
+                          color: ref.watch(themeProvider).themeColor.descColor(),
                           fontSize: 12,
                         ),
                       ),
@@ -281,13 +280,13 @@ class TaskItemCell extends StatelessWidget {
                   height: 8,
                 ),
                 Material(
-                  color:Colors.transparent,
+                  color: Colors.transparent,
                   child: Text(
                     bean.schedule ?? "",
                     maxLines: 1,
-                    style: const TextStyle(
+                    style: TextStyle(
                       overflow: TextOverflow.ellipsis,
-                      color: Color(0xff999999),
+                      color: ref.watch(themeProvider).themeColor.descColor(),
                       fontSize: 12,
                     ),
                   ),

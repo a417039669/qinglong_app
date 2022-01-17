@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
-import 'package:code_editor/code_editor.dart';
+import 'package:qinglong_app/base/code_editor/code_editor.dart';
+import 'package:qinglong_app/base/code_editor/EditorModel.dart';
+import 'package:qinglong_app/base/code_editor/EditorModelStyleOptions.dart';
+import 'package:qinglong_app/base/code_editor/FileEditor.dart';
+import 'package:qinglong_app/base/http/url.dart';
+import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
-import 'package:qinglong_app/utils/qinglong_theme.dart';
+import 'package:qinglong_app/main.dart';
 
 import 'config_viewmodel.dart';
 
@@ -10,10 +16,12 @@ class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);
 
   @override
-  _ConfigPageState createState() => _ConfigPageState();
+  ConfigPageState createState() => ConfigPageState();
 }
 
-class _ConfigPageState extends State<ConfigPage> {
+class ConfigPageState extends State<ConfigPage> {
+  GlobalKey<CodeEditorState> globalKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return BaseStateWidget<ConfigViewModel>(
@@ -31,6 +39,7 @@ class _ConfigPageState extends State<ConfigPage> {
           files: files,
           styleOptions: EditorModelStyleOptions(
             fontSize: 13,
+            editorNormalFilenameColor: ref.read(themeProvider).themeColor.descColor(),
             heightOfContainer: MediaQuery.of(context).size.height - kToolbarHeight - kBottomNavigationBarHeight - 90,
             editorBorderColor: Theme.of(context).scaffoldBackgroundColor,
             editButtonBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -40,6 +49,7 @@ class _ConfigPageState extends State<ConfigPage> {
           ),
         );
         return CodeEditor(
+          key: globalKey,
           model: editMode,
           edit: false,
           disableNavigationbar: false,
@@ -50,5 +60,12 @@ class _ConfigPageState extends State<ConfigPage> {
         viewModel.loadData();
       },
     );
+  }
+
+  void editMe(WidgetRef ref) {
+    int index = globalKey.currentState?.getCurrentIndex() ?? 0;
+
+    navigatorState.currentState?.pushNamed(Routes.route_ConfigEdit,
+        arguments: {"title": ref.read(configProvider).list[index].title, "content": ref.read(configProvider).content[ref.read(configProvider).list[index].title]});
   }
 }

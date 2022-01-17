@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_highlight/theme_map.dart';
@@ -102,7 +104,8 @@ class _TaskPageState extends State<TaskPage> {
                 if (_searchController.text.isEmpty ||
                     (item.name?.contains(_searchController.text) ?? false) ||
                     (item.command?.contains(_searchController.text) ?? false) ||
-                    (item.schedule?.contains(_searchController.text) ?? false)) {
+                    (item.schedule?.contains(_searchController.text) ??
+                        false)) {
                   return TaskItemCell(item, ref);
                 } else {
                   return const SizedBox.shrink();
@@ -136,21 +139,19 @@ class _TaskPageState extends State<TaskPage> {
           vertical: 5,
         ),
         suffixInsets: const EdgeInsets.only(
-          top: 8,
-          bottom: 8,
           right: 15,
         ),
-        prefixInsets: const EdgeInsets.only(
-          top: 10,
+        prefixInsets: EdgeInsets.only(
+          top: Platform.isAndroid ? 10 : 6,
           bottom: 6,
           left: 15,
         ),
         placeholderStyle: TextStyle(
-          fontSize: 14,
+          fontSize: 16,
           color: context.watch(themeProvider).themeColor.descColor(),
         ),
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: 16,
         ),
         placeholder: "搜索",
       ),
@@ -174,7 +175,9 @@ class TaskItemCell extends StatelessWidget {
             child: Text(
               bean.status! == 1 ? "运行" : "停止运行",
             ),
-            trailingIcon: bean.status! == 1 ? CupertinoIcons.memories : CupertinoIcons.stop_circle,
+            trailingIcon: bean.status! == 1
+                ? CupertinoIcons.memories
+                : CupertinoIcons.stop_circle,
             onPressed: () {
               Navigator.of(context).pop();
               startCron(context, ref);
@@ -192,7 +195,8 @@ class TaskItemCell extends StatelessWidget {
             child: const Text("编辑"),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean);
+              Navigator.of(context)
+                  .pushNamed(Routes.route_AddTask, arguments: bean);
             },
             trailingIcon: CupertinoIcons.pencil_outline,
           ),
@@ -202,7 +206,9 @@ class TaskItemCell extends StatelessWidget {
               Navigator.of(context).pop();
               pinTask();
             },
-            trailingIcon: bean.isPinned! == 0 ? CupertinoIcons.pin : CupertinoIcons.pin_slash,
+            trailingIcon: bean.isPinned! == 0
+                ? CupertinoIcons.pin
+                : CupertinoIcons.pin_slash,
           ),
           QLCupertinoContextMenuAction(
             child: Text(bean.isDisabled! == 0 ? "禁用" : "启用"),
@@ -211,7 +217,9 @@ class TaskItemCell extends StatelessWidget {
               enableTask();
             },
             isDestructiveAction: true,
-            trailingIcon: bean.isDisabled! == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
+            trailingIcon: bean.isDisabled! == 0
+                ? Icons.dnd_forwardslash
+                : Icons.check_circle_outline_sharp,
           ),
           QLCupertinoContextMenuAction(
             child: const Text("删除"),
@@ -232,7 +240,9 @@ class TaskItemCell extends StatelessWidget {
                 maxLines: 1,
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
-                  color: bean.isDisabled == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                  color: bean.isDisabled == 1
+                      ? const Color(0xffF85152)
+                      : ref.watch(themeProvider).themeColor.taskTitleColor(),
                   fontSize: 18,
                 ),
               ),
@@ -244,7 +254,9 @@ class TaskItemCell extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
+              color: bean.isPinned == 1
+                  ? ref.watch(themeProvider).themeColor.pinColor()
+                  : Colors.transparent,
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 8,
@@ -264,7 +276,12 @@ class TaskItemCell extends StatelessWidget {
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color: bean.isDisabled == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            color: bean.isDisabled == 1
+                                ? const Color(0xffF85152)
+                                : ref
+                                    .watch(themeProvider)
+                                    .themeColor
+                                    .taskTitleColor(),
                             fontSize: 18,
                           ),
                         ),
@@ -285,11 +302,16 @@ class TaskItemCell extends StatelessWidget {
                       Material(
                         color: Colors.transparent,
                         child: Text(
-                          (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
+                          (bean.lastExecutionTime == null ||
+                                  bean.lastExecutionTime == 0)
+                              ? "-"
+                              : Utils.formatMessageTime(
+                                  bean.lastExecutionTime!),
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            color:
+                                ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 12,
                           ),
                         ),
@@ -410,7 +432,8 @@ class TaskItemCell extends StatelessWidget {
             child: const Text('编辑'),
             onPressed: () {
               Navigator.pop(context);
-              Navigator.of(context).pushNamed(Routes.route_AddTask, arguments: bean);
+              Navigator.of(context)
+                  .pushNamed(Routes.route_AddTask, arguments: bean);
             },
           ),
           CupertinoActionSheetAction(

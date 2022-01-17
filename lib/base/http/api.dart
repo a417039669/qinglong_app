@@ -98,13 +98,13 @@ class Api {
     return await Http.delete<NullResponse>(Url.DEL_ENV, [id]);
   }
 
-  static Future<HttpResponse<EnvBean>> addEnv(String value, String name, String remarks, {String? id}) async {
-    var data = {"value": name, "remarks": remarks, "name": name};
+  static Future<HttpResponse<NullResponse>> addEnv(String name, String value, String remarks, {String? id}) async {
+    var data = {"value": value, "remarks": remarks, "name": name};
 
     if (id != null) {
       data["_id"] = id;
-      return await Http.put<EnvBean>(Url.ADD_ENV, data);
+      return await Http.put<NullResponse>(Url.ADD_ENV, data);
     }
-    return await Http.post<EnvBean>(Url.ADD_ENV, data);
+    return await Http.post<NullResponse>(Url.ADD_ENV, [data]);
   }
 }

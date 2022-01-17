@@ -48,7 +48,7 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.message, code: 0);
+      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
     }
   }
 
@@ -62,7 +62,7 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.message, code: 0);
+      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
     }
   }
 
@@ -76,7 +76,7 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.message, code: 0);
+      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
     }
   }
 
@@ -89,7 +89,7 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.message, code: 0);
+      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
     }
   }
 

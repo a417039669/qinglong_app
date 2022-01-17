@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,10 +50,12 @@ class _EnvPageState extends State<EnvPage> {
                   return model.loadData(false);
                 },
                 child: ReorderableListView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   header: searchCell(ref),
                   onReorder: (int oldIndex, int newIndex) {
                     if (list.length != model.list.length) {
-                      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                      WidgetsBinding.instance
+                          ?.addPostFrameCallback((timeStamp) {
                         failDialog(context, "请先清空搜索关键词");
                       });
                       return;
@@ -101,21 +105,19 @@ class _EnvPageState extends State<EnvPage> {
           vertical: 5,
         ),
         suffixInsets: const EdgeInsets.only(
-          top: 8,
-          bottom: 8,
           right: 15,
         ),
-        prefixInsets: const EdgeInsets.only(
-          top: 10,
+        prefixInsets: EdgeInsets.only(
+          top: Platform.isAndroid ? 10 : 6,
           bottom: 6,
           left: 15,
         ),
         placeholderStyle: TextStyle(
-          fontSize: 14,
+          fontSize: 16,
           color: context.watch(themeProvider).themeColor.descColor(),
         ),
         style: const TextStyle(
-          fontSize: 14,
+          fontSize: 16,
         ),
         placeholder: "搜索",
       ),
@@ -143,7 +145,8 @@ class EnvItemCell extends StatelessWidget {
               backgroundColor: Colors.grey,
               flex: 1,
               onPressed: (_) {
-                Navigator.of(context).pushNamed(Routes.route_AddEnv, arguments: bean);
+                Navigator.of(context)
+                    .pushNamed(Routes.route_AddEnv, arguments: bean);
               },
               foregroundColor: Colors.white,
               icon: CupertinoIcons.pencil,
@@ -155,7 +158,9 @@ class EnvItemCell extends StatelessWidget {
                 enableEnv();
               },
               foregroundColor: Colors.white,
-              icon: bean.status == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
+              icon: bean.status == 0
+                  ? Icons.dnd_forwardslash
+                  : Icons.check_circle_outline_sharp,
             ),
             SlidableAction(
               backgroundColor: Colors.red,
@@ -195,7 +200,12 @@ class EnvItemCell extends StatelessWidget {
                               maxLines: 1,
                               style: TextStyle(
                                 overflow: TextOverflow.ellipsis,
-                                color: bean.status == 1 ? const Color(0xffF85152) : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                                color: bean.status == 1
+                                    ? const Color(0xffF85152)
+                                    : ref
+                                        .watch(themeProvider)
+                                        .themeColor
+                                        .taskTitleColor(),
                                 fontSize: 18,
                               ),
                             ),
@@ -211,7 +221,10 @@ class EnvItemCell extends StatelessWidget {
                             maxLines: 1,
                             style: TextStyle(
                               overflow: TextOverflow.ellipsis,
-                              color: ref.watch(themeProvider).themeColor.descColor(),
+                              color: ref
+                                  .watch(themeProvider)
+                                  .themeColor
+                                  .descColor(),
                               fontSize: 12,
                             ),
                           ),
@@ -228,7 +241,8 @@ class EnvItemCell extends StatelessWidget {
                         maxLines: 1,
                         style: TextStyle(
                           overflow: TextOverflow.ellipsis,
-                          color: ref.watch(themeProvider).themeColor.descColor(),
+                          color:
+                              ref.watch(themeProvider).themeColor.descColor(),
                           fontSize: 12,
                         ),
                       ),

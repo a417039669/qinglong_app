@@ -42,9 +42,15 @@ class ThemeViewModel extends ChangeNotifier {
 }
 
 ThemeData darkTheme = ThemeData.dark().copyWith(
+  brightness: Brightness.dark,
   primaryColor: const Color(0xffffffff),
+  scaffoldBackgroundColor: Colors.black,
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.black,
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 18,
+    ),
   ),
   inputDecorationTheme: const InputDecorationTheme(
     labelStyle: TextStyle(color: _primaryColor),
@@ -70,6 +76,7 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
 );
 ThemeData lightTheme = ThemeData.light().copyWith(
+  brightness: Brightness.light,
   primaryColor: _primaryColor,
   colorScheme: const ColorScheme.light(
     secondary: _primaryColor,
@@ -86,6 +93,10 @@ ThemeData lightTheme = ThemeData.light().copyWith(
   ),
   appBarTheme: const AppBarTheme(
     backgroundColor: _primaryColor,
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 18,
+    ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     selectedItemColor: _primaryColor,
@@ -120,13 +131,15 @@ abstract class ThemeColors {
 
   Color pinColor();
 
+  Color buttonBgColor();
+
   Map<String, TextStyle> codeEditorTheme();
 }
 
 class LightThemeColors extends ThemeColors {
   @override
   Color taskTitleColor() {
-    return Color(0xff333333);
+    return const Color(0xff333333);
   }
 
   @override
@@ -141,12 +154,17 @@ class LightThemeColors extends ThemeColors {
 
   @override
   Color descColor() {
-    return Color(0xff999999);
+    return const Color(0xff999999);
   }
 
   @override
   Color settingBgColor() {
     return Colors.white;
+  }
+
+  @override
+  Color buttonBgColor() {
+    return _primaryColor;
   }
 }
 
@@ -168,11 +186,16 @@ class DartThemeColors extends ThemeColors {
 
   @override
   Color descColor() {
-    return Color(0xff999999);
+    return const Color(0xff999999);
   }
 
   @override
   Color settingBgColor() {
     return Colors.black;
+  }
+
+  @override
+  Color buttonBgColor() {
+    return const Color(0xff333333);
   }
 }

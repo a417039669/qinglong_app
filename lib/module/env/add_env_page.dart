@@ -185,7 +185,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
     envBean.name = _nameController.text;
     envBean.value = _valueController.text;
     envBean.remarks = _remarkController.text;
-    HttpResponse<EnvBean> response = await Api.addEnv(_nameController.text, _valueController.text, _remarkController.text, id: envBean.sId);
+    HttpResponse<NullResponse> response = await Api.addEnv(_nameController.text, _valueController.text, _remarkController.text, id: envBean.sId);
 
     if (response.success) {
       successDialog(context, "操作成功").then((value) {

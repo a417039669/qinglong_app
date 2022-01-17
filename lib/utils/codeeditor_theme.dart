@@ -40,7 +40,7 @@ const qinglongLightTheme = {
 
 const qinglongDarkTheme = {
   'root':
-  TextStyle(color: Color(0xff333333), backgroundColor: Color(0xff2E312E)),
+  TextStyle(color: Color(0xff333333), backgroundColor: Colors.black),
   'comment': TextStyle(color: Color(0xff999988), fontStyle: FontStyle.italic),
   'quote': TextStyle(color: Color(0xff999988), fontStyle: FontStyle.italic),
   'keyword': TextStyle(color: Color(0xff333333), fontWeight: FontWeight.bold),

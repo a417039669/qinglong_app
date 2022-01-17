@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
+import 'package:qinglong_app/base/userinfo_viewmodel.dart';
+import 'package:qinglong_app/main.dart';
 
 class OtherPage extends ConsumerStatefulWidget {
   const OtherPage({Key? key}) : super(key: key);
@@ -36,16 +39,21 @@ class _OtherPageState extends ConsumerState<OtherPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 15,
+                  padding: const EdgeInsets.only(
+                    top: 12,
+                    bottom: 8,
+                    left: 15,
+                    right: 15,
                   ),
                   child: Row(
                     children: [
                       Text(
-                        "查看日志",
+                        "脚本管理",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          color: ref
+                              .watch(themeProvider)
+                              .themeColor
+                              .taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -57,7 +65,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ],
                   ),
                 ),
-                Divider(
+                const Divider(
                   indent: 15,
                 ),
                 Padding(
@@ -68,9 +76,12 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   child: Row(
                     children: [
                       Text(
-                        "查看日志",
+                        "依赖管理",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          color: ref
+                              .watch(themeProvider)
+                              .themeColor
+                              .taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -82,7 +93,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ],
                   ),
                 ),
-                Divider(
+                const Divider(
                   indent: 15,
                 ),
                 Padding(
@@ -93,9 +104,40 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   child: Row(
                     children: [
                       Text(
-                        "查看日志",
+                        "任务日志",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          color: ref
+                              .watch(themeProvider)
+                              .themeColor
+                              .taskTitleColor(),
+                          fontSize: 16,
+                        ),
+                      ),
+                      const Spacer(),
+                      const Icon(
+                        CupertinoIcons.right_chevron,
+                        size: 16,
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  indent: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 15,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        "登录日志",
+                        style: TextStyle(
+                          color: ref
+                              .watch(themeProvider)
+                              .themeColor
+                              .taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -128,7 +170,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 5,
-                    bottom: 0,
+                    bottom: 5,
                     left: 15,
                     right: 15,
                   ),
@@ -139,7 +181,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "夜间模式",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          color: ref
+                              .watch(themeProvider)
+                              .themeColor
+                              .taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -152,57 +197,24 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ],
                   ),
                 ),
-                const Divider(
-                  indent: 15,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 15,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "查看日志",
-                        style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
-                          fontSize: 16,
-                        ),
-                      ),
-                      const Spacer(),
-                      const Icon(
-                        CupertinoIcons.right_chevron,
-                        size: 16,
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(
-                  indent: 15,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 15,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "查看日志",
-                        style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
-                          fontSize: 16,
-                        ),
-                      ),
-                      const Spacer(),
-                      const Icon(
-                        CupertinoIcons.right_chevron,
-                        size: 16,
-                      ),
-                    ],
-                  ),
-                ),
               ],
+            ),
+          ),
+          Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width - 40,
+              child: CupertinoButton(
+                  color: ref.watch(themeProvider).themeColor.buttonBgColor(),
+                  child: const Text(
+                    "退出登录",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  onPressed: () {
+                    getIt<UserInfoViewModel>().updateToken("");
+                    Navigator.of(context).pushReplacementNamed(Routes.route_LOGIN);
+                  }),
             ),
           ),
         ],

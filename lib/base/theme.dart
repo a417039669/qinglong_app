@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qinglong_app/base/sp_const.dart';
 import 'package:qinglong_app/utils/codeeditor_theme.dart';
+import 'package:qinglong_app/utils/sp_utils.dart';
 
 var themeProvider = ChangeNotifierProvider((ref) => ThemeViewModel());
 const Color _primaryColor = Color(0xFF299343);
@@ -11,15 +13,31 @@ class ThemeViewModel extends ChangeNotifier {
 
   ThemeColors themeColor = LightThemeColors();
 
-  void changeTheme() {
-    if (currentTheme == darkTheme) {
+  ThemeViewModel() {
+    bool dartMode = SpUtil.getBool(sp_Theme, defValue: false);
+    changeThemeReal(dartMode, false);
+  }
+
+  bool isInDartMode() {
+    return SpUtil.getBool(sp_Theme, defValue: false);
+  }
+
+  void changeThemeReal(bool dark, [bool notify = true]) {
+    SpUtil.putBool(sp_Theme, dark);
+    if (!dark) {
       currentTheme = lightTheme;
       themeColor = LightThemeColors();
     } else {
       currentTheme = darkTheme;
       themeColor = DartThemeColors();
     }
-    notifyListeners();
+    if (notify) {
+      notifyListeners();
+    }
+  }
+
+  void changeTheme() {
+    changeThemeReal(!SpUtil.getBool(sp_Theme, defValue: false), true);
   }
 }
 
@@ -57,7 +75,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     secondary: _primaryColor,
     primary: _primaryColor,
   ),
-  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: const Color(0xfff5f5f5),
   inputDecorationTheme: const InputDecorationTheme(
     labelStyle: TextStyle(color: _primaryColor),
     focusedBorder: UnderlineInputBorder(
@@ -94,11 +112,11 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 );
 
 abstract class ThemeColors {
+  Color settingBgColor();
+
   Color taskTitleColor();
 
   Color descColor();
-
-  Color backGround();
 
   Color pinColor();
 
@@ -109,11 +127,6 @@ class LightThemeColors extends ThemeColors {
   @override
   Color taskTitleColor() {
     return Color(0xff333333);
-  }
-
-  @override
-  Color searchBarBg() {
-    return const Color(0xffF7F7F7);
   }
 
   @override
@@ -132,8 +145,8 @@ class LightThemeColors extends ThemeColors {
   }
 
   @override
-  Color backGround() {
-    return Color(0xffF5F5F5);
+  Color settingBgColor() {
+    return Colors.white;
   }
 }
 
@@ -141,11 +154,6 @@ class DartThemeColors extends ThemeColors {
   @override
   Color taskTitleColor() {
     return Colors.white;
-  }
-
-  @override
-  Color searchBarBg() {
-    return const Color(0xff2E312E);
   }
 
   @override
@@ -164,7 +172,7 @@ class DartThemeColors extends ThemeColors {
   }
 
   @override
-  Color backGround() {
+  Color settingBgColor() {
     return Colors.black;
   }
 }

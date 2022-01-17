@@ -70,43 +70,30 @@ class _HomePageState extends ConsumerState<HomePage> {
       ));
     }
 
-    actions.add(
-      Consumer(builder: (context, ref, child) {
-        return InkWell(
-          onTap: () {
-            ref.read(themeProvider).changeTheme();
-          },
-          child: const Center(child: Text("改变主题")),
-        );
-      }),
-    );
     return Scaffold(
       appBar: QlAppBar(
         canBack: false,
         title: _title,
         actions: actions,
       ),
-      body: ColoredBox(
-        color: ref.watch(themeProvider).themeColor.backGround(),
-        child: IndexedStack(
-          index: _index,
-          children: [
-            const Positioned.fill(
-              child: TaskPage(),
+      body: IndexedStack(
+        index: _index,
+        children: [
+          const Positioned.fill(
+            child: TaskPage(),
+          ),
+          const Positioned.fill(
+            child: EnvPage(),
+          ),
+          Positioned.fill(
+            child: ConfigPage(
+              key: configKey,
             ),
-            const Positioned.fill(
-              child: EnvPage(),
-            ),
-            Positioned.fill(
-              child: ConfigPage(
-                key: configKey,
-              ),
-            ),
-            const Positioned.fill(
-              child: OtherPage(),
-            ),
-          ],
-        ),
+          ),
+          const Positioned.fill(
+            child: OtherPage(),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: titles

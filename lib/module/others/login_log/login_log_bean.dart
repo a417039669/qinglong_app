@@ -9,7 +9,8 @@ class LoginLogBean {
   String? platform;
   int? status; //0代表成功,1代表失败
 
-  LoginLogBean({this.timestamp, this.address, this.ip, this.platform, this.status});
+  LoginLogBean(
+      {this.timestamp, this.address, this.ip, this.platform, this.status});
 
   LoginLogBean.fromJson(Map<String, dynamic> json) {
     timestamp = json['timestamp'];

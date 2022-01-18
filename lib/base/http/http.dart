@@ -40,7 +40,7 @@ class Http {
 
   static Future<HttpResponse<T>> get<T>(
     String uri,
-    Map<String, String>? json, {
+    Map<String, String?>? json, {
     bool compute = true,
     String serializationName = "data",
   }) async {
@@ -53,7 +53,10 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
+      return HttpResponse(
+          success: false,
+          message: e.response?.statusMessage ?? e.message,
+          code: 0);
     }
   }
 
@@ -76,7 +79,10 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
+      return HttpResponse(
+          success: false,
+          message: e.response?.statusMessage ?? e.message,
+          code: 0);
     }
   }
 
@@ -99,7 +105,10 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
+      return HttpResponse(
+          success: false,
+          message: e.response?.statusMessage ?? e.message,
+          code: 0);
     }
   }
 
@@ -121,7 +130,10 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
+      return HttpResponse(
+          success: false,
+          message: e.response?.statusMessage ?? e.message,
+          code: 0);
     }
   }
 
@@ -215,7 +227,8 @@ class HttpResponse<T> {
   late int code;
   T? bean;
 
-  HttpResponse({required this.success, this.message, required this.code, this.bean});
+  HttpResponse(
+      {required this.success, this.message, required this.code, this.bean});
 }
 
 class DeserializeAction<T> {

@@ -14,13 +14,13 @@ class DependencyBean {
 
   DependencyBean(
       {this.sId,
-        this.created,
-        this.status,
-        this.type,
-        this.timestamp,
-        this.name,
-        this.log,
-        this.remark});
+      this.created,
+      this.status,
+      this.type,
+      this.timestamp,
+      this.name,
+      this.log,
+      this.remark});
 
   DependencyBean.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -45,6 +45,7 @@ class DependencyBean {
     data['remark'] = this.remark;
     return data;
   }
+
   static DependencyBean jsonConversion(Map<String, dynamic> json) {
     return DependencyBean.fromJson(json);
   }

@@ -46,19 +46,27 @@ class _TaskLogPageState extends ConsumerState<TaskLogPage> {
                     title: Text(
                       item.name ?? "",
                       style: TextStyle(
-                        color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                        color: ref
+                            .watch(themeProvider)
+                            .themeColor
+                            .taskTitleColor(),
                         fontSize: 16,
                       ),
                     ),
                     children: item.files!
                         .map((e) => ListTile(
                               onTap: () {
-                                Navigator.of(context).pushNamed(Routes.routeTaskLogDetail, arguments: e);
+                                Navigator.of(context).pushNamed(
+                                    Routes.routeTaskLogDetail,
+                                    arguments: e);
                               },
                               title: Text(
-                                e ?? "",
+                                e,
                                 style: TextStyle(
-                                  color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                                  color: ref
+                                      .watch(themeProvider)
+                                      .themeColor
+                                      .taskTitleColor(),
                                   fontSize: 14,
                                 ),
                               ),
@@ -67,12 +75,16 @@ class _TaskLogPageState extends ConsumerState<TaskLogPage> {
                   )
                 : ListTile(
                     onTap: () {
-                      Navigator.of(context).pushNamed(Routes.routeTaskLogDetail, arguments: item.name);
+                      Navigator.of(context).pushNamed(Routes.routeTaskLogDetail,
+                          arguments: item.name);
                     },
                     title: Text(
                       item.name ?? "",
                       style: TextStyle(
-                        color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                        color: ref
+                            .watch(themeProvider)
+                            .themeColor
+                            .taskTitleColor(),
                         fontSize: 16,
                       ),
                     ),

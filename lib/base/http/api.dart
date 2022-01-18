@@ -12,7 +12,8 @@ import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 import 'url.dart';
 
 class Api {
-  static Future<HttpResponse<LoginBean>> login(String userName, String passWord) async {
+  static Future<HttpResponse<LoginBean>> login(
+      String userName, String passWord) async {
     return await Http.post<LoginBean>(
       Url.login,
       {
@@ -29,14 +30,16 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<NullResponse>> startTasks(List<String> crons) async {
+  static Future<HttpResponse<NullResponse>> startTasks(
+      List<String> crons) async {
     return await Http.put<NullResponse>(
       Url.runTasks,
       crons,
     );
   }
 
-  static Future<HttpResponse<NullResponse>> stopTasks(List<String> crons) async {
+  static Future<HttpResponse<NullResponse>> stopTasks(
+      List<String> crons) async {
     return await Http.put<NullResponse>(
       Url.runTasks,
       crons,
@@ -57,7 +60,9 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<TaskDetailBean>> addTask(String name, String command, String cron, {String? id}) async {
+  static Future<HttpResponse<TaskDetailBean>> addTask(
+      String name, String command, String cron,
+      {String? id}) async {
     var data = {"name": name, "command": command, "schedule": cron};
 
     if (id != null) {
@@ -122,7 +127,8 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<NullResponse>> saveFile(String name, String content) async {
+  static Future<HttpResponse<NullResponse>> saveFile(
+      String name, String content) async {
     return await Http.post<NullResponse>(
       Url.saveFile,
       {"content": content, "name": name},
@@ -157,7 +163,9 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<NullResponse>> addEnv(String name, String value, String remarks, {String? id}) async {
+  static Future<HttpResponse<NullResponse>> addEnv(
+      String name, String value, String remarks,
+      {String? id}) async {
     var data = {
       "value": value,
       "remarks": remarks,
@@ -177,7 +185,8 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<NullResponse>> moveEnv(String id, int fromIndex, int toIndex) async {
+  static Future<HttpResponse<NullResponse>> moveEnv(
+      String id, int fromIndex, int toIndex) async {
     return await Http.put<NullResponse>(
       Url.envMove(id),
       {"fromIndex": fromIndex, "toIndex": toIndex},
@@ -192,7 +201,8 @@ class Api {
   }
 
   static Future<HttpResponse<List<TaskLogBean>>> taskLog() async {
-    return await Http.get<List<TaskLogBean>>(Url.taskLog, null, serializationName: "dirs");
+    return await Http.get<List<TaskLogBean>>(Url.taskLog, null,
+        serializationName: "dirs");
   }
 
   static Future<HttpResponse<String>> taskLogDetail(String name) async {
@@ -209,7 +219,8 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<String>> scriptDetail(String name, String path) async {
+  static Future<HttpResponse<String>> scriptDetail(
+      String name, String? path) async {
     return await Http.get<String>(
       Url.scriptDetail + name,
       {
@@ -218,7 +229,8 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<List<DependencyBean>>> dependencies(String type) async {
+  static Future<HttpResponse<List<DependencyBean>>> dependencies(
+      String type) async {
     return await Http.get<List<DependencyBean>>(
       Url.dependencies,
       {
@@ -227,7 +239,8 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<NullResponse>> dependencyReinstall(String id) async {
+  static Future<HttpResponse<NullResponse>> dependencyReinstall(
+      String id) async {
     return await Http.put<NullResponse>(
       Url.dependencies,
       [id],
@@ -241,7 +254,8 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<NullResponse>> addDependency(String name, int type) async {
+  static Future<HttpResponse<NullResponse>> addDependency(
+      String name, int type) async {
     return await Http.post<NullResponse>(
       Url.dependencies,
       [

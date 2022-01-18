@@ -44,7 +44,7 @@ class _TaskLogDetailPageState extends ConsumerState<TaskLogDetailPage> {
           horizontal: 15,
         ),
         child: SelectableText(
-          (content == null || content!.isEmpty)?"暂无数据":content!,
+          (content == null || content!.isEmpty) ? "暂无数据" : content!,
         ),
       ),
     );

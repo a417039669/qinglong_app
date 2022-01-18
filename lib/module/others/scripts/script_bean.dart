@@ -12,11 +12,11 @@ class ScriptBean {
 
   ScriptBean(
       {this.title,
-        this.value,
-        this.key,
-        this.mtime,
-        this.disabled,
-        this.children});
+      this.value,
+      this.key,
+      this.mtime,
+      this.disabled,
+      this.children});
 
   ScriptBean.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -44,10 +44,10 @@ class ScriptBean {
     }
     return data;
   }
+
   static ScriptBean jsonConversion(Map<String, dynamic> json) {
     return ScriptBean.fromJson(json);
   }
-
 }
 
 class ScriptChildren {

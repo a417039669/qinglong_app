@@ -6,6 +6,8 @@ import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/home/home_page.dart';
 import 'package:qinglong_app/module/login/login_page.dart';
 import 'package:qinglong_app/module/others/login_log/login_log_page.dart';
+import 'package:qinglong_app/module/others/scripts/script_detail_page.dart';
+import 'package:qinglong_app/module/others/scripts/script_page.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_detail_page.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_page.dart';
 import 'package:qinglong_app/module/task/add_task_page.dart';
@@ -20,6 +22,8 @@ class Routes {
   static const String routeLoginLog = "/log/login";
   static const String routeTaskLog = "/log/task";
   static const String routeTaskLogDetail = "/log/taskDetail";
+  static const String routeScript = "/script";
+  static const String routeScriptDetail = "/script/detail";
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -60,11 +64,23 @@ class Routes {
         return CupertinoPageRoute(
           builder: (context) => const TaskLogPage(),
         );
+      case routeScript:
+        return CupertinoPageRoute(
+          builder: (context) => const ScriptPage(),
+        );
       case routeTaskLogDetail:
         return CupertinoPageRoute(
-            builder: (context) => TaskLogDetailPage(
-                  title: settings.arguments as String,
-                ));
+          builder: (context) => TaskLogDetailPage(
+            title: settings.arguments as String,
+          ),
+        );
+      case routeScriptDetail:
+        return CupertinoPageRoute(
+          builder: (context) => ScriptDetailPage(
+            title: (settings.arguments as Map)["title"],
+            path: (settings.arguments as Map)["path"],
+          ),
+        );
     }
 
     return null;

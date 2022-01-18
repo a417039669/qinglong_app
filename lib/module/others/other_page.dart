@@ -38,28 +38,39 @@ class _OtherPageState extends ConsumerState<OtherPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 12,
-                    bottom: 8,
-                    left: 15,
-                    right: 15,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "脚本管理",
-                        style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
-                          fontSize: 16,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      Routes.routeScript,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 12,
+                      bottom: 8,
+                      left: 15,
+                      right: 15,
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "脚本管理",
+                          style: TextStyle(
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .taskTitleColor(),
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      const Icon(
-                        CupertinoIcons.right_chevron,
-                        size: 16,
-                      ),
-                    ],
+                        const Spacer(),
+                        const Icon(
+                          CupertinoIcons.right_chevron,
+                          size: 16,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(
@@ -75,7 +86,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "依赖管理",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          color: ref
+                              .watch(themeProvider)
+                              .themeColor
+                              .taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -107,7 +121,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "任务日志",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .taskTitleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -141,7 +158,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "登录日志",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .taskTitleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -186,7 +206,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "夜间模式",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          color: ref
+                              .watch(themeProvider)
+                              .themeColor
+                              .taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -218,7 +241,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   ),
                   onPressed: () {
                     getIt<UserInfoViewModel>().updateToken("");
-                    Navigator.of(context).pushReplacementNamed(Routes.routeLogin);
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.routeLogin);
                   }),
             ),
           ),

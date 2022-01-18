@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio_log/overlay_draggable_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,8 +36,7 @@ void main() async {
     ),
   );
   if (Platform.isAndroid) {
-    SystemUiOverlayStyle style =
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemUiOverlayStyle style = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(style);
   }
 }
@@ -52,7 +52,7 @@ class MyApp extends ConsumerWidget {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: MaterialApp(
-        locale: const Locale('zh','cn'),
+        locale: const Locale('zh', 'cn'),
         navigatorObservers: [getIt<QlNavigatorObserver>()],
         navigatorKey: navigatorState,
         theme: ref.watch<ThemeViewModel>(themeProvider).currentTheme,
@@ -61,10 +61,10 @@ class MyApp extends ConsumerWidget {
         },
         home: Builder(
           builder: (context) {
-            showDebugBtn(context, btnColor: Colors.blue);
-            return getIt<UserInfoViewModel>().isLogined()
-                ? const HomePage()
-                : LoginPage();
+            if (!kReleaseMode) {
+              showDebugBtn(context, btnColor: Colors.blue);
+            }
+            return getIt<UserInfoViewModel>().isLogined() ? const HomePage() : LoginPage();
           },
         ),
         // home: LoginPage(),

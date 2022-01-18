@@ -32,7 +32,7 @@ void main() async {
       overrides: [
         themeProvider,
       ],
-      child: const MyApp(),
+      child: const QlApp(),
     ),
   );
   if (Platform.isAndroid) {
@@ -41,11 +41,16 @@ void main() async {
   }
 }
 
-class MyApp extends ConsumerWidget {
-  const MyApp({Key? key}) : super(key: key);
+class QlApp extends ConsumerStatefulWidget {
+  const QlApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<QlApp> createState() => QlAppState();
+}
+
+class QlAppState extends ConsumerState<QlApp> {
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -64,7 +69,7 @@ class MyApp extends ConsumerWidget {
             if (!kReleaseMode) {
               showDebugBtn(context, btnColor: Colors.blue);
             }
-            return getIt<UserInfoViewModel>().isLogined() ? const HomePage() : LoginPage();
+            return getIt<UserInfoViewModel>().isLogined() ? const HomePage() : const LoginPage();
           },
         ),
         // home: LoginPage(),

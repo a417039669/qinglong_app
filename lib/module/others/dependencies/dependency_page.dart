@@ -95,7 +95,9 @@ class _DependcyPageState extends State<DependencyPage> with TickerProviderStateM
             Expanded(
               child: BaseStateWidget<DependencyViewModel>(
                 onReady: (model) {
-                  model.loadData(types[_tabController!.index].name.toLowerCase());
+                  model.loadData(types[0].name.toLowerCase());
+                  model.loadData(types[1].name.toLowerCase());
+                  model.loadData(types[2].name.toLowerCase());
                 },
                 model: dependencyProvider,
                 builder: (context, model, child) {

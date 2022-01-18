@@ -233,8 +233,27 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ),
                   ),
                   onPressed: () {
-                    getIt<UserInfoViewModel>().updateToken("");
-                    Navigator.of(context).pushReplacementNamed(Routes.routeLogin);
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) => CupertinoAlertDialog(
+                        title: const Text("确定退出登录吗?"),
+                        actions: [
+                          CupertinoDialogAction(
+                            child: const Text("取消"),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          CupertinoDialogAction(
+                            child: const Text("确定"),
+                            onPressed: () {
+                              getIt<UserInfoViewModel>().updateToken("");
+                              Navigator.of(context).pushReplacementNamed(Routes.routeLogin);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
                   }),
             ),
           ),

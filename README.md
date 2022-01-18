@@ -8,10 +8,21 @@ Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下
 
 禁止用于任何商业用途
 
-<center class="images">
-     <img src="./art/1.jpg" width="200"/><img src="./art/2.jpg" width="200"/><img src="./art/3.jpg" width="200"/>
-</center>
 
-<center class="images">
-     <img src="./art/4.jpg" width="200"/><img src="./art/5.jpg" width="200"/><img src="./art/6.jpg" width="200"/>
-</center>
+<p float="left">
+  <img src="./art/1.jpg" width="100" />
+  <img src="./art/2.jpg" width="100" /> 
+  <img src="./art/3.jpg" width="100" />
+</p>
+
+<p float="left">
+  <img src="./art/4.jpg" width="100" />
+  <img src="./art/5.jpg" width="100" /> 
+  <img src="./art/6.jpg" width="100" />
+</p>
+
+### 尚未完成的功能
+>* 两步验证
+>* 应用设置
+>* 通知设置
+>* 脚本管理中的增删改和调试 

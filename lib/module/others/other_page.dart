@@ -213,7 +213,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   ),
                   onPressed: () {
                     getIt<UserInfoViewModel>().updateToken("");
-                    Navigator.of(context).pushReplacementNamed(Routes.route_LOGIN);
+                    Navigator.of(context)
+                        .pushReplacementNamed(Routes.routeLogin);
                   }),
             ),
           ),

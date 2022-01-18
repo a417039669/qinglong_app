@@ -2,7 +2,6 @@ import 'package:json_conversion_annotation/json_conversion_annotation.dart';
 
 @JsonConversion()
 class ConfigBean {
-
   String? title;
   String? value;
 
@@ -19,6 +18,7 @@ class ConfigBean {
     data['value'] = this.value;
     return data;
   }
+
   static ConfigBean jsonConversion(Map<String, dynamic> json) {
     return ConfigBean.fromJson(json);
   }

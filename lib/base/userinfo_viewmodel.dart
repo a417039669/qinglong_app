@@ -8,7 +8,7 @@ class UserInfoViewModel {
 
   UserInfoViewModel() {
     String userInfoJson = SpUtil.getString(sp_UserINfo);
-    _host = SpUtil.getString(sp_Host,defValue: "http://49.234.59.95:5700");
+    _host = SpUtil.getString(sp_Host, defValue: "http://49.234.59.95:5700");
     if (userInfoJson.isNotEmpty) {
       _token = userInfoJson;
     }

@@ -12,12 +12,12 @@ class EnvBean {
 
   EnvBean(
       {this.value,
-        this.sId,
-        this.created,
-        this.status,
-        this.timestamp,
-        this.name,
-        this.remarks});
+      this.sId,
+      this.created,
+      this.status,
+      this.timestamp,
+      this.name,
+      this.remarks});
 
   EnvBean.fromJson(Map<String, dynamic> json) {
     value = json['value'];
@@ -40,6 +40,7 @@ class EnvBean {
     data['remarks'] = this.remarks;
     return data;
   }
+
   static EnvBean jsonConversion(Map<String, dynamic> json) {
     return EnvBean.fromJson(json);
   }

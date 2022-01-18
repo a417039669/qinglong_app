@@ -11,11 +11,11 @@ class LoginBean {
 
   LoginBean(
       {this.token,
-        this.lastip,
-        this.lastaddr,
-        this.lastlogon,
-        this.retries,
-        this.platform});
+      this.lastip,
+      this.lastaddr,
+      this.lastlogon,
+      this.retries,
+      this.platform});
 
   LoginBean.fromJson(Map<String, dynamic> json) {
     token = json['token'];
@@ -36,6 +36,7 @@ class LoginBean {
     data['platform'] = this.platform;
     return data;
   }
+
   static LoginBean jsonConversion(Map<String, dynamic> json) {
     return LoginBean.fromJson(json);
   }

@@ -9,19 +9,19 @@ import 'package:qinglong_app/module/task/add_task_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 
 class Routes {
-  static const String route_HomePage = "/home/homepage";
-  static const String route_LOGIN = "/login";
-  static const String route_AddTask = "/task/add";
-  static const String route_AddEnv = "/env/add";
-  static const String route_ConfigEdit = "/config/edit";
+  static const String routeHomePage = "/home/homepage";
+  static const String routeLogin = "/login";
+  static const String routeAddTask = "/task/add";
+  static const String routeAddEnv = "/env/add";
+  static const String routeConfigEdit = "/config/edit";
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case route_HomePage:
+      case routeHomePage:
         return MaterialPageRoute(builder: (context) => const HomePage());
-      case route_LOGIN:
+      case routeLogin:
         return MaterialPageRoute(builder: (context) => const LoginPage());
-      case route_AddTask:
+      case routeAddTask:
         if (settings.arguments != null) {
           return CupertinoPageRoute(
               builder: (context) => AddTaskPage(
@@ -30,7 +30,7 @@ class Routes {
         } else {
           return CupertinoPageRoute(builder: (context) => const AddTaskPage());
         }
-      case route_AddEnv:
+      case routeAddEnv:
         if (settings.arguments != null) {
           return CupertinoPageRoute(
               builder: (context) => AddEnvPage(
@@ -39,7 +39,7 @@ class Routes {
         } else {
           return CupertinoPageRoute(builder: (context) => const AddEnvPage());
         }
-      case route_ConfigEdit:
+      case routeConfigEdit:
         return CupertinoPageRoute(
           builder: (context) => ConfigEditPage(
             (settings.arguments as Map)["title"],

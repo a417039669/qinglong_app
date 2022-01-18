@@ -19,18 +19,11 @@ class EnvViewModel extends BaseViewModel {
     if (result.success && result.bean != null) {
       list.clear();
       list.addAll(result.bean!);
-      sortList();
       success();
     } else {
       list.clear();
       failed(result.message, notify: true);
     }
-  }
-
-  void sortList() {
-    list.sort((a, b) {
-      return a.status!.compareTo(b.status!);
-    });
   }
 
   Future<void> delEnv(String id) async {
@@ -61,7 +54,6 @@ class EnvViewModel extends BaseViewModel {
 
       if (response.success) {
         list.firstWhere((element) => element.sId == sId).status = 0;
-        sortList();
         success();
       } else {
         failToast(response.message, notify: true);
@@ -71,14 +63,15 @@ class EnvViewModel extends BaseViewModel {
 
       if (response.success) {
         list.firstWhere((element) => element.sId == sId).status = 1;
-        sortList();
         success();
       } else {
         failToast(response.message, notify: true);
       }
     }
   }
-  void update(){
-    // update
+
+  void update(String id, int newIndex, int oldIndex) async {
+    await Api.moveEnv(id, oldIndex, newIndex);
+    loadData(false);
   }
 }

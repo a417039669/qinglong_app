@@ -35,7 +35,8 @@ void main() async {
     ),
   );
   if (Platform.isAndroid) {
-    SystemUiOverlayStyle style = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemUiOverlayStyle style =
+        const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(style);
   }
 }
@@ -60,7 +61,9 @@ class MyApp extends ConsumerWidget {
         home: Builder(
           builder: (context) {
             showDebugBtn(context, btnColor: Colors.blue);
-            return getIt<UserInfoViewModel>().isLogined() ? const HomePage() : LoginPage();
+            return getIt<UserInfoViewModel>().isLogined()
+                ? const HomePage()
+                : LoginPage();
           },
         ),
         // home: LoginPage(),

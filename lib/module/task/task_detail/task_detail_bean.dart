@@ -17,17 +17,17 @@ class TaskDetailBean {
 
   TaskDetailBean(
       {this.name,
-        this.command,
-        this.schedule,
-        this.saved,
-        this.sId,
-        this.created,
-        this.status,
-        this.timestamp,
-        this.isSystem,
-        this.isDisabled,
-        this.logPath,
-        this.isPinned});
+      this.command,
+      this.schedule,
+      this.saved,
+      this.sId,
+      this.created,
+      this.status,
+      this.timestamp,
+      this.isSystem,
+      this.isDisabled,
+      this.logPath,
+      this.isPinned});
 
   TaskDetailBean.fromJson(Map<String, dynamic> json) {
     name = json['name'];

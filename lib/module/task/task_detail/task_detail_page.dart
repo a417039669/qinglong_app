@@ -27,7 +27,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
         builder: (WidgetRef context, TaskDetailViewModel value, Widget? child) {
           return Container();
         },
-        onReady: (model){
+        onReady: (model) {
           model.loadDetail(widget.taskBean.sId!);
         },
       ),

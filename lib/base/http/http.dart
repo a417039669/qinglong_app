@@ -38,7 +38,8 @@ class Http {
     }
   }
 
-  static Future<HttpResponse<T>> get<T>(String uri, Map<String, String>? json, {bool compute = true}) async {
+  static Future<HttpResponse<T>> get<T>(String uri, Map<String, String>? json,
+      {bool compute = true}) async {
     try {
       _init();
       var response = await _dio!.get(uri, queryParameters: json);
@@ -48,11 +49,15 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
+      return HttpResponse(
+          success: false,
+          message: e.response?.statusMessage ?? e.message,
+          code: 0);
     }
   }
 
-  static Future<HttpResponse<T>> post<T>(String uri, dynamic json, {bool compute = true}) async {
+  static Future<HttpResponse<T>> post<T>(String uri, dynamic json,
+      {bool compute = true}) async {
     try {
       _init();
       var response = await _dio!.post(uri, data: json);
@@ -62,11 +67,15 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
+      return HttpResponse(
+          success: false,
+          message: e.response?.statusMessage ?? e.message,
+          code: 0);
     }
   }
 
-  static Future<HttpResponse<T>> delete<T>(String uri, dynamic json, {bool compute = true}) async {
+  static Future<HttpResponse<T>> delete<T>(String uri, dynamic json,
+      {bool compute = true}) async {
     try {
       _init();
       var response = await _dio!.delete(uri, data: json);
@@ -76,11 +85,15 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
+      return HttpResponse(
+          success: false,
+          message: e.response?.statusMessage ?? e.message,
+          code: 0);
     }
   }
 
-  static Future<HttpResponse<T>> put<T>(String uri, dynamic json, {bool compute = true}) async {
+  static Future<HttpResponse<T>> put<T>(String uri, dynamic json,
+      {bool compute = true}) async {
     try {
       _init();
       var response = await _dio!.put(uri, data: json);
@@ -89,7 +102,10 @@ class Http {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
+      return HttpResponse(
+          success: false,
+          message: e.response?.statusMessage ?? e.message,
+          code: 0);
     }
   }
 
@@ -98,7 +114,7 @@ class Http {
   static void exitLogin() {
     if (!pushedLoginPage) {
       pushedLoginPage = true;
-      navigatorState.currentState?.pushReplacementNamed(Routes.route_LOGIN);
+      navigatorState.currentState?.pushReplacementNamed(Routes.routeLogin);
     }
   }
 
@@ -182,7 +198,8 @@ class HttpResponse<T> {
   late int code;
   T? bean;
 
-  HttpResponse({required this.success, this.message, required this.code, this.bean});
+  HttpResponse(
+      {required this.success, this.message, required this.code, this.bean});
 }
 
 class DeserializeAction<T> {

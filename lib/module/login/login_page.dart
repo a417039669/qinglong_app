@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
+import 'package:qinglong_app/utils/extension.dart';
 import 'package:qinglong_app/utils/utils.dart';
 
 import 'login_bean.dart';
@@ -180,24 +180,24 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               isLoading,
                           child: CupertinoButton(
                               color: (_hostController.text.isNotEmpty &&
-                                  _userNameController.text.isNotEmpty &&
-                                  _passwordController.text.isNotEmpty &&
-                                  !isLoading)
+                                      _userNameController.text.isNotEmpty &&
+                                      _passwordController.text.isNotEmpty &&
+                                      !isLoading)
                                   ? ref
-                                  .watch(themeProvider)
-                                  .themeColor
-                                  .buttonBgColor()
+                                      .watch(themeProvider)
+                                      .themeColor
+                                      .buttonBgColor()
                                   : Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.4),
+                                      .primaryColor
+                                      .withOpacity(0.4),
                               child: isLoading
                                   ? const CupertinoActivityIndicator()
                                   : const Text(
-                                "登 录",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
+                                      "登 录",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
                               onPressed: () {
                                 Http.pushedLoginPage = false;
                                 Utils.hideKeyBoard(context);
@@ -227,9 +227,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     HttpResponse<LoginBean> response = await Api.login(userName, password);
     if (response.success) {
       getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
-      Navigator.of(context).pushReplacementNamed(Routes.route_HomePage);
+      Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
     } else {
-      failDialog(context, response.message ?? "请检查网络情况");
+      (response.message ?? "请检查网络情况").toast();
       isLoading = false;
       setState(() {});
     }

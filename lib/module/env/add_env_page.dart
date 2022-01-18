@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/env/env_viewmodel.dart';
-import 'package:qinglong_app/module/task/task_bean.dart';
-import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
-import 'package:qinglong_app/module/task/task_viewmodel.dart';
+import 'package:qinglong_app/utils/extension.dart';
 
 class AddEnvPage extends ConsumerStatefulWidget {
   final EnvBean? taskBean;
@@ -180,11 +177,11 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
 
   void submit() async {
     if (_nameController.text.isEmpty) {
-      failDialog(context, "名称不能为空");
+      "名称不能为空".toast();
       return;
     }
     if (_valueController.text.isEmpty) {
-      failDialog(context, "值不能为空");
+      "值不能为空".toast();
       return;
     }
 
@@ -196,12 +193,11 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
         id: envBean.sId);
 
     if (response.success) {
-      successDialog(context, "操作成功").then((value) {
-        ref.read(envProvider).updateEnv(envBean);
-        Navigator.of(context).pop();
-      });
+      "操作成功".toast();
+      ref.read(envProvider).updateEnv(envBean);
+      Navigator.of(context).pop();
     } else {
-      failDialog(context, response.message ?? "");
+      (response.message ?? "").toast();
     }
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
+import 'package:qinglong_app/utils/extension.dart';
 
 class AddTaskPage extends ConsumerStatefulWidget {
   final TaskBean? taskBean;
@@ -180,15 +180,15 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
 
   void submit() async {
     if (_nameController.text.isEmpty) {
-      failDialog(context, "任务名称不能为空");
+      "任务名称不能为空".toast();
       return;
     }
     if (_commandController.text.isEmpty) {
-      failDialog(context, "命令不能为空");
+      "命令不能为空".toast();
       return;
     }
     if (_cronController.text.isEmpty) {
-      failDialog(context, "定时不能为空");
+      "定时不能为空".toast();
       return;
     }
 
@@ -200,12 +200,11 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
         id: taskBean.sId);
 
     if (response.success) {
-      successDialog(context, "操作成功").then((value) {
-        ref.read(taskProvider).updateBean(taskBean);
-        Navigator.of(context).pop();
-      });
+      "操作成功".toast();
+      ref.read(taskProvider).updateBean(taskBean);
+      Navigator.of(context).pop();
     } else {
-      failDialog(context, response.message ?? "");
+      response.message.toast();
     }
   }
 }

@@ -7,7 +7,7 @@ class EmptyWidget extends ConsumerWidget {
   const EmptyWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context,WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -16,7 +16,7 @@ class EmptyWidget extends ConsumerWidget {
             "暂无数据",
             style: TextStyle(
               fontSize: 14,
-              color:ref.watch(themeProvider).themeColor.descColor(),
+              color: ref.watch(themeProvider).themeColor.descColor(),
             ),
           ),
         ],

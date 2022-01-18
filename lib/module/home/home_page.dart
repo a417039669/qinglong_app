@@ -38,7 +38,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       actions.add(InkWell(
         onTap: () {
           Navigator.of(context).pushNamed(
-            Routes.route_AddTask,
+            Routes.routeAddTask,
           );
         },
         child: const Padding(
@@ -58,7 +58,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       actions.add(InkWell(
         onTap: () {
           Navigator.of(context).pushNamed(
-            Routes.route_AddEnv,
+            Routes.routeAddEnv,
           );
         },
         child: const Padding(

@@ -9,7 +9,8 @@ class InTimeLogPage extends StatefulWidget {
   final String cronId;
   final bool needTimer;
 
-  const InTimeLogPage(this.cronId, this.needTimer, {Key? key}) : super(key: key);
+  const InTimeLogPage(this.cronId, this.needTimer, {Key? key})
+      : super(key: key);
 
   @override
   _InTimeLogPageState createState() => _InTimeLogPageState();

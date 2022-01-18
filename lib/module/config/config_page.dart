@@ -16,7 +16,8 @@ class ConfigPage extends StatefulWidget {
   ConfigPageState createState() => ConfigPageState();
 }
 
-class ConfigPageState extends State<ConfigPage> with SingleTickerProviderStateMixin {
+class ConfigPageState extends State<ConfigPage>
+    with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
   @override
@@ -28,7 +29,8 @@ class ConfigPageState extends State<ConfigPage> with SingleTickerProviderStateMi
   Widget build(BuildContext context) {
     return BaseStateWidget<ConfigViewModel>(
       builder: (ref, model, child) {
-        _tabController ??= TabController(length: model.list.length, vsync: this);
+        _tabController ??=
+            TabController(length: model.list.length, vsync: this);
 
         return Column(
           children: [
@@ -60,7 +62,10 @@ class ConfigPageState extends State<ConfigPage> with SingleTickerProviderStateMi
                           padding: const EdgeInsets.symmetric(
                             horizontal: 15,
                           ),
-                          theme: ref.watch(themeProvider).themeColor.codeEditorTheme(),
+                          theme: ref
+                              .watch(themeProvider)
+                              .themeColor
+                              .codeEditorTheme(),
                           tabSize: 14,
                         ),
                       ),
@@ -80,9 +85,10 @@ class ConfigPageState extends State<ConfigPage> with SingleTickerProviderStateMi
 
   void editMe(WidgetRef ref) {
     if (_tabController == null || _tabController!.length == 0) return;
-    navigatorState.currentState?.pushNamed(Routes.route_ConfigEdit, arguments: {
+    navigatorState.currentState?.pushNamed(Routes.routeConfigEdit, arguments: {
       "title": ref.read(configProvider).list[_tabController?.index ?? 0].title,
-      "content": ref.read(configProvider).content[ref.read(configProvider).list[_tabController?.index ?? 0].title]
+      "content": ref.read(configProvider).content[
+          ref.read(configProvider).list[_tabController?.index ?? 0].title]
     });
   }
 }

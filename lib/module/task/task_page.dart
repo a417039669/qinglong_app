@@ -196,7 +196,7 @@ class TaskItemCell extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
               Navigator.of(context)
-                  .pushNamed(Routes.route_AddTask, arguments: bean);
+                  .pushNamed(Routes.routeAddTask, arguments: bean);
             },
             trailingIcon: CupertinoIcons.pencil_outline,
           ),
@@ -435,7 +435,7 @@ class TaskItemCell extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
               Navigator.of(context)
-                  .pushNamed(Routes.route_AddTask, arguments: bean);
+                  .pushNamed(Routes.routeAddTask, arguments: bean);
             },
           ),
           CupertinoActionSheetAction(

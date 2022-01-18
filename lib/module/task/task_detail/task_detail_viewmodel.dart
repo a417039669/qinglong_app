@@ -4,7 +4,8 @@ import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 
-var taskDetailProvider = AutoDisposeChangeNotifierProvider<TaskDetailViewModel>((ref) {
+var taskDetailProvider =
+    AutoDisposeChangeNotifierProvider<TaskDetailViewModel>((ref) {
   return TaskDetailViewModel();
 });
 

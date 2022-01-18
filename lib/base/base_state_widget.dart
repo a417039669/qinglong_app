@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qinglong_app/base/common_dialog.dart';
+import 'package:qinglong_app/utils/extension.dart';
 import 'base_viewmodel.dart';
 
 class BaseStateWidget<T extends BaseViewModel> extends ConsumerStatefulWidget {
@@ -21,7 +21,8 @@ class BaseStateWidget<T extends BaseViewModel> extends ConsumerStatefulWidget {
   _BaseStateWidgetState<T> createState() => _BaseStateWidgetState<T>();
 }
 
-class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseStateWidget<T>> {
+class _BaseStateWidgetState<T extends BaseViewModel>
+    extends ConsumerState<BaseStateWidget<T>> {
   @override
   void initState() {
     super.initState();
@@ -39,7 +40,7 @@ class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseS
     var viewModel = ref.watch<T>(widget.model);
     if (viewModel.failedToast != null) {
       WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-        failDialog(context, viewModel.failedToast!);
+        (viewModel.failedToast ?? "").toast();
         viewModel.clearToast();
       });
     }

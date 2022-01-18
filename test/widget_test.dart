@@ -14,7 +14,4 @@ import 'package:qinglong_app/main.dart';
 import 'package:qinglong_app/module/login/login_bean.dart';
 import 'package:qinglong_app/module/login/login_viewmodel.dart';
 
-void main() {
-
-
-}
+void main() {}

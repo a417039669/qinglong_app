@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/module/config/config_viewmodel.dart';
+import 'package:qinglong_app/utils/extension.dart';
 
 class ConfigEditPage extends ConsumerStatefulWidget {
   final String content;
@@ -41,15 +41,16 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
           InkWell(
             onTap: () async {
               if (value == null) {
-                failDialog(context, "请先点击保存");
+                "请先点击保存".toast();
                 return;
               }
-              HttpResponse<NullResponse> response = await Api.saveFile(widget.title, _controller.text);
+              HttpResponse<NullResponse> response =
+                  await Api.saveFile(widget.title, _controller.text);
               if (response.success) {
                 ref.read(configProvider).loadContent(widget.title);
                 Navigator.of(context).pop();
               } else {
-                failDialog(context, response.message ?? "");
+                (response.message ?? "").toast();
               }
             },
             child: const Padding(

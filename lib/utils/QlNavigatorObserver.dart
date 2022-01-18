@@ -7,7 +7,7 @@ class QlNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route route, Route? previousRoute) {
     super.didPush(route, previousRoute);
-    if (Routes.route_LOGIN == route.settings.name) {
+    if (Routes.routeLogin == route.settings.name) {
       isInLoginPage = true;
     } else {
       isInLoginPage = false;

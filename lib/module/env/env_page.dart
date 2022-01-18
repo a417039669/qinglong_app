@@ -1,17 +1,16 @@
 import 'dart:io';
 
-import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
-import 'package:qinglong_app/base/common_dialog.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/ui/empty_widget.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/env/env_viewmodel.dart';
+import 'package:qinglong_app/utils/extension.dart';
 
 class EnvPage extends StatefulWidget {
   const EnvPage({Key? key}) : super(key: key);
@@ -50,14 +49,12 @@ class _EnvPageState extends State<EnvPage> {
                   return model.loadData(false);
                 },
                 child: ReorderableListView(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   header: searchCell(ref),
                   onReorder: (int oldIndex, int newIndex) {
                     if (list.length != model.list.length) {
-                      WidgetsBinding.instance
-                          ?.addPostFrameCallback((timeStamp) {
-                        failDialog(context, "请先清空搜索关键词");
-                      });
+                      "请先清空搜索关键词".toast();
                       return;
                     }
 
@@ -68,7 +65,7 @@ class _EnvPageState extends State<EnvPage> {
                       }
                       final EnvBean item = model.list.removeAt(oldIndex);
                       model.list.insert(newIndex, item);
-                      model.update();
+                      model.update(item.sId ?? "", newIndex, oldIndex);
                     });
                   },
                   children: list,
@@ -146,7 +143,7 @@ class EnvItemCell extends StatelessWidget {
               flex: 1,
               onPressed: (_) {
                 Navigator.of(context)
-                    .pushNamed(Routes.route_AddEnv, arguments: bean);
+                    .pushNamed(Routes.routeAddEnv, arguments: bean);
               },
               foregroundColor: Colors.white,
               icon: CupertinoIcons.pencil,

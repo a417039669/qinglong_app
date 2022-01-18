@@ -19,7 +19,7 @@ class QLCupertinoContextMenuAction extends StatefulWidget {
     this.isDestructiveAction = false,
     this.onPressed,
     this.trailingIcon,
-  }) : assert(child != null),
+  })  : assert(child != null),
         assert(isDefaultAction != null),
         assert(isDestructiveAction != null),
         super(key: key);
@@ -45,10 +45,12 @@ class QLCupertinoContextMenuAction extends StatefulWidget {
   final IconData? trailingIcon;
 
   @override
-  State<QLCupertinoContextMenuAction> createState() => _QLCupertinoContextMenuActionState();
+  State<QLCupertinoContextMenuAction> createState() =>
+      _QLCupertinoContextMenuActionState();
 }
 
-class _QLCupertinoContextMenuActionState extends State<QLCupertinoContextMenuAction> {
+class _QLCupertinoContextMenuActionState
+    extends State<QLCupertinoContextMenuAction> {
   static const Color _kBackgroundColor = Color(0xFFEEEEEE);
   static const Color _kBackgroundColorPressed = Color(0xFFDDDDDD);
   static const double _kButtonHeight = 30.0;
@@ -95,7 +97,6 @@ class _QLCupertinoContextMenuActionState extends State<QLCupertinoContextMenuAct
     }
     return _kActionSheetActionStyle;
   }
-
 
   @override
   Widget build(BuildContext context) {

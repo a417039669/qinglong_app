@@ -6,6 +6,8 @@ import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/home/home_page.dart';
 import 'package:qinglong_app/module/login/login_page.dart';
 import 'package:qinglong_app/module/others/login_log/login_log_page.dart';
+import 'package:qinglong_app/module/others/task_log/task_log_detail_page.dart';
+import 'package:qinglong_app/module/others/task_log/task_log_page.dart';
 import 'package:qinglong_app/module/task/add_task_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 
@@ -16,6 +18,8 @@ class Routes {
   static const String routeAddEnv = "/env/add";
   static const String routeConfigEdit = "/config/edit";
   static const String routeLoginLog = "/log/login";
+  static const String routeTaskLog = "/log/task";
+  static const String routeTaskLogDetail = "/log/taskDetail";
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -52,6 +56,15 @@ class Routes {
         return CupertinoPageRoute(
           builder: (context) => const LoginLogPage(),
         );
+      case routeTaskLog:
+        return CupertinoPageRoute(
+          builder: (context) => const TaskLogPage(),
+        );
+      case routeTaskLogDetail:
+        return CupertinoPageRoute(
+            builder: (context) => TaskLogDetailPage(
+                  title: settings.arguments as String,
+                ));
     }
 
     return null;

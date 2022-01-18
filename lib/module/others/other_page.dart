@@ -90,26 +90,34 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                 const Divider(
                   indent: 15,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 15,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "任务日志",
-                        style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
-                          fontSize: 16,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      Routes.routeTaskLog,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 15,
+                    ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "任务日志",
+                          style: TextStyle(
+                            color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      const Icon(
-                        CupertinoIcons.right_chevron,
-                        size: 16,
-                      ),
-                    ],
+                        const Spacer(),
+                        const Icon(
+                          CupertinoIcons.right_chevron,
+                          size: 16,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(

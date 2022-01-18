@@ -29,7 +29,7 @@ class QlAppBar extends StatelessWidget with PreferredSizeWidget {
           child: const Center(
             child: Icon(
               CupertinoIcons.left_chevron,
-              size: 20,
+              color: Colors.white,
             ),
           ),
         );

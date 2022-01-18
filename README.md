@@ -26,3 +26,4 @@ Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下
 >* 应用设置
 >* 通知设置
 >* 脚本管理中的增删改和调试 
+>* 暂不支持通过Client ID/Client Secret登录

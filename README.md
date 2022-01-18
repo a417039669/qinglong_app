@@ -10,15 +10,15 @@ Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下
 
 
 <p float="left">
-  <img src="./art/1.jpg" width="150" />
-  <img src="./art/2.jpg" width="150" /> 
-  <img src="./art/3.jpg" width="150" />
+  <img src="./art/1.jpg" width="200" />
+  <img src="./art/2.jpg" width="200" /> 
+  <img src="./art/3.jpg" width="200" />
 </p>
 
 <p float="left">
-  <img src="./art/4.jpg" width="150" />
-  <img src="./art/5.jpg" width="150" /> 
-  <img src="./art/6.jpg" width="150" />
+  <img src="./art/4.jpg" width="200" />
+  <img src="./art/5.jpg" width="200" /> 
+  <img src="./art/6.jpg" width="200" />
 </p>
 
 ### 尚未完成的功能

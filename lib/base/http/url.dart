@@ -19,7 +19,7 @@ class Url {
   static const enableEnvs = "/api/envs/enable";
   static const loginLog = "/api/user/login-log";
   static const taskLog = "/api/logs";
-  static const taskLogDetail = "/api/logs/code/";
+  static const taskLogDetail = "/api/logs/";
   static const scripts = "/api/scripts/files";
   static const scriptDetail = "/api/scripts/";
   static const dependencies = "/api/dependencies";

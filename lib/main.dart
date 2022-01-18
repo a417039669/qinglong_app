@@ -52,6 +52,7 @@ class MyApp extends ConsumerWidget {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: MaterialApp(
+        locale: const Locale('zh','cn'),
         navigatorObservers: [getIt<QlNavigatorObserver>()],
         navigatorKey: navigatorState,
         theme: ref.watch<ThemeViewModel>(themeProvider).currentTheme,

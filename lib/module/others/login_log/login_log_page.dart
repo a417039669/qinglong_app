@@ -1,11 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/theme.dart';
+import 'package:qinglong_app/base/ui/lazy_load_state.dart';
 import 'package:qinglong_app/utils/extension.dart';
 import 'package:qinglong_app/utils/utils.dart';
 
@@ -19,14 +21,8 @@ class LoginLogPage extends ConsumerStatefulWidget {
   _LoginLogPageState createState() => _LoginLogPageState();
 }
 
-class _LoginLogPageState extends ConsumerState<LoginLogPage> {
+class _LoginLogPageState extends ConsumerState<LoginLogPage> with LazyLoadState<LoginLogPage> {
   List<LoginLogBean> list = [];
-
-  @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +34,11 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> {
         },
         title: "任务日志",
       ),
-      body: ListView.builder(
+      body: list.isEmpty
+          ? const Center(
+        child: CupertinoActivityIndicator(),
+      )
+          : ListView.builder(
         itemBuilder: (context, index) {
           LoginLogBean item = list[index];
 
@@ -60,8 +60,10 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text(
+                  SelectableText(
                     "${item.address}",
+                    selectionWidthStyle: BoxWidthStyle.max,
+                    selectionHeightStyle: BoxHeightStyle.max,
                     style: TextStyle(
                       color: ref.watch(themeProvider).themeColor.descColor(),
                       fontSize: 14,
@@ -70,8 +72,10 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text(
+                  SelectableText(
                     "${item.ip}",
+                    selectionWidthStyle: BoxWidthStyle.max,
+                    selectionHeightStyle: BoxHeightStyle.max,
                     style: TextStyle(
                       color: ref.watch(themeProvider).themeColor.descColor(),
                       fontSize: 14,
@@ -108,5 +112,10 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> {
     } else {
       response.message?.toast();
     }
+  }
+
+  @override
+  void onLazyLoad() {
+    loadData();
   }
 }

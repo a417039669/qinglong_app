@@ -234,7 +234,7 @@ class Api {
     return await Http.get<List<DependencyBean>>(
       Url.dependencies,
       {
-        "type": type,
+        "type": type.toString(),
       },
     );
   }

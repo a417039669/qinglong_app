@@ -5,6 +5,8 @@ import 'package:qinglong_app/module/env/add_env_page.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/home/home_page.dart';
 import 'package:qinglong_app/module/login/login_page.dart';
+import 'package:qinglong_app/module/others/dependencies/add_dependency_page.dart';
+import 'package:qinglong_app/module/others/dependencies/dependency_page.dart';
 import 'package:qinglong_app/module/others/login_log/login_log_page.dart';
 import 'package:qinglong_app/module/others/scripts/script_detail_page.dart';
 import 'package:qinglong_app/module/others/scripts/script_page.dart';
@@ -17,6 +19,7 @@ class Routes {
   static const String routeHomePage = "/home/homepage";
   static const String routeLogin = "/login";
   static const String routeAddTask = "/task/add";
+  static const String routeAddDependency = "/task/dependency";
   static const String routeAddEnv = "/env/add";
   static const String routeConfigEdit = "/config/edit";
   static const String routeLoginLog = "/log/login";
@@ -24,6 +27,7 @@ class Routes {
   static const String routeTaskLogDetail = "/log/taskDetail";
   static const String routeScript = "/script";
   static const String routeScriptDetail = "/script/detail";
+  static const String routeDependency = "/Dependency";
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -40,6 +44,8 @@ class Routes {
         } else {
           return CupertinoPageRoute(builder: (context) => const AddTaskPage());
         }
+      case routeAddDependency:
+          return CupertinoPageRoute(builder: (context) => const AddDependenyPage());
       case routeAddEnv:
         if (settings.arguments != null) {
           return CupertinoPageRoute(
@@ -67,6 +73,10 @@ class Routes {
       case routeScript:
         return CupertinoPageRoute(
           builder: (context) => const ScriptPage(),
+        );
+      case routeDependency:
+        return CupertinoPageRoute(
+          builder: (context) => const DependencyPage(),
         );
       case routeTaskLogDetail:
         return CupertinoPageRoute(

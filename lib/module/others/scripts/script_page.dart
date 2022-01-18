@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
@@ -35,82 +36,74 @@ class _ScriptPageState extends ConsumerState<ScriptPage> {
         },
         title: "脚本管理",
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          ScriptBean item = list[index];
+      body: list.isEmpty
+          ? const Center(
+              child: CupertinoActivityIndicator(),
+            )
+          : ListView.builder(
+              itemBuilder: (context, index) {
+                ScriptBean item = list[index];
 
-          return ColoredBox(
-            color: ref.watch(themeProvider).themeColor.settingBgColor(),
-            child: (item.children != null && item.children!.isNotEmpty)
-                ? ExpansionTile(
-                    title: Text(
-                      item.title ?? "",
-                      style: TextStyle(
-                        color: (item.disabled ?? false)
-                            ? ref.watch(themeProvider).themeColor.descColor()
-                            : ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .taskTitleColor(),
-                        fontSize: 16,
-                      ),
-                    ),
-                    children: item.children!
-                        .map((e) => ListTile(
-                              onTap: () {
-                                Navigator.of(context).pushNamed(
-                                  Routes.routeScriptDetail,
-                                  arguments: {
-                                    "title": e.title,
-                                    "path": e.parent,
-                                  },
-                                );
+                return ColoredBox(
+                  color: ref.watch(themeProvider).themeColor.settingBgColor(),
+                  child: (item.children != null && item.children!.isNotEmpty)
+                      ? ExpansionTile(
+                          title: Text(
+                            item.title ?? "",
+                            style: TextStyle(
+                              color: (item.disabled ?? false)
+                                  ? ref.watch(themeProvider).themeColor.descColor()
+                                  : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                              fontSize: 16,
+                            ),
+                          ),
+                          children: item.children!
+                              .map((e) => ListTile(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                        Routes.routeScriptDetail,
+                                        arguments: {
+                                          "title": e.title,
+                                          "path": e.parent,
+                                        },
+                                      );
+                                    },
+                                    title: Text(
+                                      e.title ?? "",
+                                      style: TextStyle(
+                                        color: (item.disabled ?? false)
+                                            ? ref.watch(themeProvider).themeColor.descColor()
+                                            : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                        )
+                      : ListTile(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                              Routes.routeScriptDetail,
+                              arguments: {
+                                "title": item.title,
+                                "path": "",
                               },
-                              title: Text(
-                                e.title ?? "",
-                                style: TextStyle(
-                                  color: (item.disabled ?? false)
-                                      ? ref
-                                          .watch(themeProvider)
-                                          .themeColor
-                                          .descColor()
-                                      : ref
-                                          .watch(themeProvider)
-                                          .themeColor
-                                          .taskTitleColor(),
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                  )
-                : ListTile(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        Routes.routeScriptDetail,
-                        arguments: {
-                          "title": item.title,
-                          "path": "",
-                        },
-                      );
-                    },
-                    title: Text(
-                      item.title ?? "",
-                      style: TextStyle(
-                        color: (item.disabled ?? false)
-                            ? ref.watch(themeProvider).themeColor.descColor()
-                            : ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .taskTitleColor(),
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
-          );
-        },
-        itemCount: list.length,
-      ),
+                            );
+                          },
+                          title: Text(
+                            item.title ?? "",
+                            style: TextStyle(
+                              color: (item.disabled ?? false)
+                                  ? ref.watch(themeProvider).themeColor.descColor()
+                                  : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                );
+              },
+              itemCount: list.length,
+            ),
     );
   }
 

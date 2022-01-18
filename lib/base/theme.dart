@@ -9,6 +9,8 @@ import 'package:qinglong_app/utils/sp_utils.dart';
 var themeProvider = ChangeNotifierProvider((ref) => ThemeViewModel());
 const Color _primaryColor = Color(0xFF299343);
 
+get primaryColor => _primaryColor;
+
 class ThemeViewModel extends ChangeNotifier {
   ThemeData currentTheme = lightTheme;
 
@@ -221,7 +223,7 @@ class DartThemeColors extends ThemeColors {
 
   @override
   Color settingBgColor() {
-    return Colors.black;
+    return Colors.black12;
   }
 
   @override

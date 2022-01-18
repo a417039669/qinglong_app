@@ -17,6 +17,13 @@ class Url {
   static const delEnv = "/api/envs";
   static const disableEnvs = "/api/envs/disable";
   static const enableEnvs = "/api/envs/enable";
+  static const loginLog = "/api/user/login-log";
+  static const taskLog = "/api/logs";
+  static const taskLogDetail = "/api/logs/code/";
+  static const scripts = "/api/scripts/files";
+  static const scriptDetail = "/api/scripts/";
+  static const dependencies = "/api/dependencies";
+  static const dependencyReinstall = "/api/dependencies/reinstall";
 
   static intimeLog(String cronId) {
     return "/api/crons/$cronId/log";

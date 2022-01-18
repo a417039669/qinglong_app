@@ -50,10 +50,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "脚本管理",
                         style: TextStyle(
-                          color: ref
-                              .watch(themeProvider)
-                              .themeColor
-                              .taskTitleColor(),
+                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -78,10 +75,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "依赖管理",
                         style: TextStyle(
-                          color: ref
-                              .watch(themeProvider)
-                              .themeColor
-                              .taskTitleColor(),
+                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -106,10 +100,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "任务日志",
                         style: TextStyle(
-                          color: ref
-                              .watch(themeProvider)
-                              .themeColor
-                              .taskTitleColor(),
+                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -124,29 +115,35 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                 const Divider(
                   indent: 15,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 15,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "登录日志",
-                        style: TextStyle(
-                          color: ref
-                              .watch(themeProvider)
-                              .themeColor
-                              .taskTitleColor(),
-                          fontSize: 16,
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      Routes.routeLoginLog,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 15,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Text(
+                          "登录日志",
+                          style: TextStyle(
+                            color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      const Icon(
-                        CupertinoIcons.right_chevron,
-                        size: 16,
-                      ),
-                    ],
+                        const Spacer(),
+                        const Icon(
+                          CupertinoIcons.right_chevron,
+                          size: 16,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -181,10 +178,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "夜间模式",
                         style: TextStyle(
-                          color: ref
-                              .watch(themeProvider)
-                              .themeColor
-                              .taskTitleColor(),
+                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -204,7 +198,9 @@ class _OtherPageState extends ConsumerState<OtherPage> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 40,
               child: CupertinoButton(
-                  padding: const EdgeInsets.symmetric(vertical: 5,),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                  ),
                   color: ref.watch(themeProvider).themeColor.buttonBgColor(),
                   child: const Text(
                     "退出登录",
@@ -214,8 +210,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   ),
                   onPressed: () {
                     getIt<UserInfoViewModel>().updateToken("");
-                    Navigator.of(context)
-                        .pushReplacementNamed(Routes.routeLogin);
+                    Navigator.of(context).pushReplacementNamed(Routes.routeLogin);
                   }),
             ),
           ),

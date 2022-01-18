@@ -8,7 +8,13 @@ class Utils {
 
   static String formatMessageTime(int time) {
     DateTime current = DateTime.now();
-    DateTime chatTime = DateTime.fromMillisecondsSinceEpoch(time * 1000);
+    DateTime chatTime;
+    if (time.toString().length == 10) {
+      chatTime = DateTime.fromMillisecondsSinceEpoch(time * 1000);
+    } else {
+      chatTime = DateTime.fromMillisecondsSinceEpoch(time);
+    }
+
     if (current.year == chatTime.year) {
       if (current.day == chatTime.day) {
         if (chatTime.hour <= 12) {

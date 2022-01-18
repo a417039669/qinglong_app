@@ -38,74 +38,90 @@ class Http {
     }
   }
 
-  static Future<HttpResponse<T>> get<T>(String uri, Map<String, String>? json,
-      {bool compute = true}) async {
+  static Future<HttpResponse<T>> get<T>(
+    String uri,
+    Map<String, String>? json, {
+    bool compute = true,
+    String serializationName = "data",
+  }) async {
     try {
       _init();
       var response = await _dio!.get(uri, queryParameters: json);
 
-      return decodeResponse<T>(response, compute);
+      return decodeResponse<T>(response, serializationName, compute);
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(
-          success: false,
-          message: e.response?.statusMessage ?? e.message,
-          code: 0);
+      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
     }
   }
 
-  static Future<HttpResponse<T>> post<T>(String uri, dynamic json,
-      {bool compute = true}) async {
+  static Future<HttpResponse<T>> post<T>(
+    String uri,
+    dynamic json, {
+    bool compute = true,
+    String serializationName = "data",
+  }) async {
     try {
       _init();
       var response = await _dio!.post(uri, data: json);
 
-      return decodeResponse<T>(response, compute);
+      return decodeResponse<T>(
+        response,
+        serializationName,
+        compute,
+      );
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(
-          success: false,
-          message: e.response?.statusMessage ?? e.message,
-          code: 0);
+      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
     }
   }
 
-  static Future<HttpResponse<T>> delete<T>(String uri, dynamic json,
-      {bool compute = true}) async {
+  static Future<HttpResponse<T>> delete<T>(
+    String uri,
+    dynamic json, {
+    bool compute = true,
+    String serializationName = "data",
+  }) async {
     try {
       _init();
       var response = await _dio!.delete(uri, data: json);
 
-      return decodeResponse<T>(response, compute);
+      return decodeResponse<T>(
+        response,
+        serializationName,
+        compute,
+      );
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(
-          success: false,
-          message: e.response?.statusMessage ?? e.message,
-          code: 0);
+      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
     }
   }
 
-  static Future<HttpResponse<T>> put<T>(String uri, dynamic json,
-      {bool compute = true}) async {
+  static Future<HttpResponse<T>> put<T>(
+    String uri,
+    dynamic json, {
+    bool compute = true,
+    String serializationName = "data",
+  }) async {
     try {
       _init();
       var response = await _dio!.put(uri, data: json);
-      return decodeResponse<T>(response, compute);
+      return decodeResponse<T>(
+        response,
+        serializationName,
+        compute,
+      );
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         exitLogin();
       }
-      return HttpResponse(
-          success: false,
-          message: e.response?.statusMessage ?? e.message,
-          code: 0);
+      return HttpResponse(success: false, message: e.response?.statusMessage ?? e.message, code: 0);
     }
   }
 
@@ -120,13 +136,14 @@ class Http {
 
   static HttpResponse<T> decodeResponse<T>(
     Response<dynamic> response,
+    String serializationName,
     bool compute,
   ) {
     int code = 0;
     if (response.statusCode == 200) {
       try {
         if (response.data["code"] == 200) {
-          if (response.data["data"] != null) {
+          if (response.data[serializationName] != null) {
             if (T == NullResponse) {
               return HttpResponse<T>(
                 success: true,
@@ -134,7 +151,7 @@ class Http {
               );
             }
 
-            dynamic data = response.data["data"];
+            dynamic data = response.data[serializationName];
             T t;
             if (T == String) {
               if (data is String) {
@@ -198,8 +215,7 @@ class HttpResponse<T> {
   late int code;
   T? bean;
 
-  HttpResponse(
-      {required this.success, this.message, required this.code, this.bean});
+  HttpResponse({required this.success, this.message, required this.code, this.bean});
 }
 
 class DeserializeAction<T> {

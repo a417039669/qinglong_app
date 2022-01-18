@@ -67,110 +67,112 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
           )
         ],
       ),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  "名称:",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                    hintText: "请输入名称",
+                  const Text(
+                    "名称:",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  autofocus: false,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  "值:",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: _valueController,
-                  maxLines: 8,
-                  minLines: 1,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                    hintText: "请输入值",
+                  TextField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      hintText: "请输入名称",
+                    ),
+                    autofocus: false,
                   ),
-                  autofocus: false,
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 15,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  "备注:",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: _remarkController,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                    hintText: "请输入备注",
+                  const Text(
+                    "值:",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  autofocus: false,
-                ),
-              ],
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _valueController,
+                    maxLines: 8,
+                    minLines: 1,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      hintText: "请输入值",
+                    ),
+                    autofocus: false,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "备注:",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: _remarkController,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                      hintText: "请输入备注",
+                    ),
+                    autofocus: false,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

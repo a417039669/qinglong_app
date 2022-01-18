@@ -21,11 +21,11 @@ class ThemeViewModel extends ChangeNotifier {
   }
 
   bool isInDartMode() {
-    return SpUtil.getBool(sp_Theme, defValue: false);
+    return SpUtil.getBool(spTheme, defValue: false);
   }
 
   void changeThemeReal(bool dark, [bool notify = true]) {
-    SpUtil.putBool(sp_Theme, dark);
+    SpUtil.putBool(spTheme, dark);
     if (!dark) {
       currentTheme = lightTheme;
       themeColor = LightThemeColors();
@@ -39,7 +39,7 @@ class ThemeViewModel extends ChangeNotifier {
   }
 
   void changeTheme() {
-    changeThemeReal(!SpUtil.getBool(sp_Theme, defValue: false), true);
+    changeThemeReal(!SpUtil.getBool(spTheme, defValue: false), true);
   }
 }
 
@@ -75,6 +75,20 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
   colorScheme: const ColorScheme.light(
     secondary: _primaryColor,
     primary: _primaryColor,
+  ),
+  toggleableActiveColor: _primaryColor,
+  checkboxTheme: CheckboxThemeData(
+    checkColor: MaterialStateProperty.resolveWith(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Colors.transparent;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.white;
+        }
+        return Colors.white;
+      },
+    ),
   ),
 );
 ThemeData lightTheme = ThemeData.light().copyWith(
@@ -120,6 +134,20 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     unselectedLabelColor: Color(0xff999999),
     indicator: UnderlineTabIndicator(
       borderSide: BorderSide(color: _primaryColor),
+    ),
+  ),
+  toggleableActiveColor: _primaryColor,
+  checkboxTheme: CheckboxThemeData(
+    checkColor: MaterialStateProperty.resolveWith(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) {
+          return Colors.transparent;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return Colors.white;
+        }
+        return Colors.black;
+      },
     ),
   ),
 );

@@ -204,6 +204,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 40,
               child: CupertinoButton(
+                  padding: const EdgeInsets.symmetric(vertical: 5,),
                   color: ref.watch(themeProvider).themeColor.buttonBgColor(),
                   child: const Text(
                     "退出登录",

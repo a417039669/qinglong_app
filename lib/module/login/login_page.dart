@@ -20,14 +20,25 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController _hostController =
-      TextEditingController(text: getIt<UserInfoViewModel>().host);
+  final TextEditingController _hostController = TextEditingController(text: getIt<UserInfoViewModel>().host);
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  bool rememberPassword = false;
 
   @override
   void initState() {
     super.initState();
+
+    if (getIt<UserInfoViewModel>().userName != null && getIt<UserInfoViewModel>().userName!.isNotEmpty) {
+      _userNameController.text = getIt<UserInfoViewModel>().userName!;
+      rememberPassword = true;
+    } else {
+      rememberPassword = false;
+    }
+    if (getIt<UserInfoViewModel>().passWord != null && getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
+      _passwordController.text = getIt<UserInfoViewModel>().passWord!;
+    }
     getIt<UserInfoViewModel>().updateToken("");
   }
 
@@ -96,7 +107,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height / 10,
+                        height: MediaQuery.of(context).size.height / 15,
                       ),
                       const Text(
                         "域名:",
@@ -104,9 +115,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
                       ),
                       TextField(
                         onChanged: (_) {
@@ -120,7 +128,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         autofocus: false,
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       const Text(
                         "用户名:",
@@ -128,9 +136,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
                       ),
                       TextField(
                         onChanged: (_) {
@@ -144,7 +149,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         autofocus: false,
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       const Text(
                         "密码:",
@@ -152,9 +157,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
                       ),
                       TextField(
                         onChanged: (_) {
@@ -169,27 +171,40 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         autofocus: false,
                       ),
                       const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: rememberPassword,
+                            onChanged: (checked) {
+                              rememberPassword = checked ?? false;
+                              setState(() {});
+                            },
+                          ),
+                          const Text(
+                            "记住密码",
+                            style: TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
                         height: 30,
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 80,
                         child: IgnorePointer(
-                          ignoring: _hostController.text.isEmpty ||
-                              _userNameController.text.isEmpty ||
-                              _passwordController.text.isEmpty ||
-                              isLoading,
+                          ignoring: _hostController.text.isEmpty || _userNameController.text.isEmpty || _passwordController.text.isEmpty || isLoading,
                           child: CupertinoButton(
-                              color: (_hostController.text.isNotEmpty &&
-                                      _userNameController.text.isNotEmpty &&
-                                      _passwordController.text.isNotEmpty &&
-                                      !isLoading)
-                                  ? ref
-                                      .watch(themeProvider)
-                                      .themeColor
-                                      .buttonBgColor()
-                                  : Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.4),
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 5,
+                              ),
+                              color:
+                                  (_hostController.text.isNotEmpty && _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty && !isLoading)
+                                      ? ref.watch(themeProvider).themeColor.buttonBgColor()
+                                      : Theme.of(context).primaryColor.withOpacity(0.4),
                               child: isLoading
                                   ? const CupertinoActivityIndicator()
                                   : const Text(
@@ -199,12 +214,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                       ),
                                     ),
                               onPressed: () {
+                                if (rememberPassword) {
+                                  getIt<UserInfoViewModel>().updateUserName(_userNameController.text, _passwordController.text);
+                                }
+
                                 Http.pushedLoginPage = false;
                                 Utils.hideKeyBoard(context);
-                                getIt<UserInfoViewModel>()
-                                    .updateHost(_hostController.text);
-                                login(_userNameController.text,
-                                    _passwordController.text);
+                                getIt<UserInfoViewModel>().updateHost(_hostController.text);
+                                login(_userNameController.text, _passwordController.text);
                               }),
                         ),
                       ),

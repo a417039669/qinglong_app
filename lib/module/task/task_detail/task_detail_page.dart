@@ -219,7 +219,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
             Container(
               margin: const EdgeInsets.symmetric(
                 horizontal: 15,
-                vertical: 10,
+                vertical: 15,
               ),
               padding: const EdgeInsets.only(
                 top: 10,
@@ -290,9 +290,6 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
             SizedBox(
               width: MediaQuery.of(context).size.width - 80,
               child: CupertinoButton(
@@ -311,7 +308,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
                   }),
             ),
             const SizedBox(
-              height: 30,
+              height: 15,
             ),
           ],
         ),

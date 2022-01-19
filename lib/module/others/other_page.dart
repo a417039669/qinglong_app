@@ -26,7 +26,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
           Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 15,
-              vertical: 15,
+              vertical: 30,
             ),
             decoration: BoxDecoration(
               color: ref.watch(themeProvider).themeColor.settingBgColor(),
@@ -176,7 +176,6 @@ class _OtherPageState extends ConsumerState<OtherPage> {
           Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 15,
-              vertical: 15,
             ),
             decoration: BoxDecoration(
               color: ref.watch(themeProvider).themeColor.settingBgColor(),
@@ -217,6 +216,9 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                 ),
               ],
             ),
+          ),
+          const SizedBox(
+            height: 30,
           ),
           Center(
             child: SizedBox(

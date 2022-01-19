@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:qinglong_app/module/config/config_edit_page.dart';
 import 'package:qinglong_app/module/env/add_env_page.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
+import 'package:qinglong_app/module/env/env_detail_page.dart';
 import 'package:qinglong_app/module/home/home_page.dart';
 import 'package:qinglong_app/module/login/login_page.dart';
 import 'package:qinglong_app/module/others/dependencies/add_dependency_page.dart';
@@ -21,6 +22,7 @@ class Routes {
   static const String routeLogin = "/login";
   static const String routeAddTask = "/task/add";
   static const String routeTaskDetail = "/task/detail";
+  static const String routeEnvDetail = "/env/detail";
   static const String routeAddDependency = "/task/dependency";
   static const String routeAddEnv = "/env/add";
   static const String routeConfigEdit = "/config/edit";
@@ -97,6 +99,11 @@ class Routes {
         return CupertinoPageRoute(
           builder: (context) => TaskDetailPage(
             settings.arguments as TaskBean,
+          ),
+        );  case routeEnvDetail:
+        return CupertinoPageRoute(
+          builder: (context) => EnvDetailPage(
+            settings.arguments as EnvBean,
           ),
         );
     }

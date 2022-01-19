@@ -29,13 +29,15 @@ class _EnvPageState extends State<EnvPage> {
       builder: (ref, model, child) {
         List<EnvItemCell> list = [];
 
-        for (var value in model.list) {
+        for (int i = 0; i < model.list.length; i++) {
+          EnvBean value = model.list[i];
           if (_searchController.text.isEmpty ||
               (value.name?.contains(_searchController.text) ?? false) ||
               (value.value?.contains(_searchController.text) ?? false) ||
               (value.remarks?.contains(_searchController.text) ?? false)) {
             list.add(EnvItemCell(
               value,
+              i + 1,
               ref,
               key: ValueKey(value.sId),
             ));
@@ -124,120 +126,164 @@ class _EnvPageState extends State<EnvPage> {
 
 class EnvItemCell extends StatelessWidget {
   final EnvBean bean;
+  final int index;
   final WidgetRef ref;
 
-  const EnvItemCell(this.bean, this.ref, {Key? key}) : super(key: key);
+  const EnvItemCell(this.bean, this.index, this.ref, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: ref.watch(themeProvider).themeColor.settingBgColor(),
-      child: Slidable(
-        key: ValueKey(bean.sId),
-        endActionPane: ActionPane(
-          motion: const ScrollMotion(),
-          extentRatio: 0.45,
-          children: [
-            SlidableAction(
-              backgroundColor: Colors.grey,
-              flex: 1,
-              onPressed: (_) {
-                Navigator.of(context).pushNamed(Routes.routeAddEnv, arguments: bean);
-              },
-              foregroundColor: Colors.white,
-              icon: CupertinoIcons.pencil,
-            ),
-            SlidableAction(
-              backgroundColor: Colors.orange,
-              flex: 1,
-              onPressed: (_) {
-                enableEnv();
-              },
-              foregroundColor: Colors.white,
-              icon: bean.status == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
-            ),
-            SlidableAction(
-              backgroundColor: Colors.red,
-              flex: 1,
-              onPressed: (_) {
-                delEnv(context, ref);
-              },
-              foregroundColor: Colors.white,
-              icon: CupertinoIcons.delete,
-            ),
-          ],
-        ),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(Routes.routeEnvDetail, arguments: bean);
+      },
+      child: ColoredBox(
+        color: ref.watch(themeProvider).themeColor.settingBgColor(),
+        child: Slidable(
+          key: ValueKey(bean.sId),
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            extentRatio: 0.45,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                  vertical: 8,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Material(
+              SlidableAction(
+                backgroundColor: Colors.grey,
+                flex: 1,
+                onPressed: (_) {
+                  Navigator.of(context).pushNamed(Routes.routeAddEnv, arguments: bean);
+                },
+                foregroundColor: Colors.white,
+                icon: CupertinoIcons.pencil,
+              ),
+              SlidableAction(
+                backgroundColor: Colors.orange,
+                flex: 1,
+                onPressed: (_) {
+                  enableEnv();
+                },
+                foregroundColor: Colors.white,
+                icon: bean.status == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
+              ),
+              SlidableAction(
+                backgroundColor: Colors.red,
+                flex: 1,
+                onPressed: (_) {
+                  delEnv(context, ref);
+                },
+                foregroundColor: Colors.white,
+                icon: CupertinoIcons.delete,
+              ),
+            ],
+          ),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 8,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Material(
+                                  color: Colors.transparent,
+                                  child: Text(
+                                    bean.name ?? "",
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      color: ref.watch(themeProvider).themeColor.titleColor(),
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                bean.status == 1
+                                    ? const Icon(
+                                        Icons.dnd_forwardslash,
+                                        size: 16,
+                                        color: Colors.red,
+                                      )
+                                    : const SizedBox.shrink(),
+                                const Spacer(),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              Utils.formatGMTTime(bean.timestamp ?? ""),
+                              maxLines: 1,
+                              style: TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                color: ref.watch(themeProvider).themeColor.descColor(),
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(color: primaryColor, width: 1),
+                              ),
+                              child: Text(
+                                "$index",
+                                style: TextStyle(color: primaryColor, fontSize: 12),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              child: Material(
                                 color: Colors.transparent,
                                 child: Text(
-                                  bean.name ?? "",
+                                  bean.remarks ?? "-",
                                   maxLines: 1,
                                   style: TextStyle(
+                                    height: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    color: ref.watch(themeProvider).themeColor.titleColor(),
-                                    fontSize: 18,
+                                    color: ref.watch(themeProvider).themeColor.descColor(),
+                                    fontSize: 12,
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              bean.status == 1
-                                  ? const Icon(
-                                      Icons.dnd_forwardslash,
-                                      size: 16,
-                                      color: Colors.red,
-                                    )
-                                  : const SizedBox.shrink(),
-                              const Spacer(),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: Text(
-                            Utils.formatGMTTime(bean.timestamp ?? ""),
-                            maxLines: 1,
-                            style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              color: ref.watch(themeProvider).themeColor.descColor(),
-                              fontSize: 12,
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Material(
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Material(
                         color: Colors.transparent,
                         child: Text(
-                          bean.remarks ?? "-",
+                          bean.value ?? "",
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
@@ -246,30 +292,15 @@ class EnvItemCell extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Material(
-                      color: Colors.transparent,
-                      child: Text(
-                        bean.value ?? "",
-                        maxLines: 1,
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          color: ref.watch(themeProvider).themeColor.descColor(),
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              const Divider(
-                height: 1,
-                indent: 15,
-              ),
-            ],
+                const Divider(
+                  height: 1,
+                  indent: 15,
+                ),
+              ],
+            ),
           ),
         ),
       ),

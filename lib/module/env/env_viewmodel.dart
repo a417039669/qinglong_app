@@ -48,7 +48,7 @@ class EnvViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void enableEnv(String sId, int status) async {
+  Future<void> enableEnv(String sId, int status) async {
     if (status == 1) {
       HttpResponse<NullResponse> response = await Api.enableEnv(sId);
 

@@ -13,13 +13,14 @@ get primaryColor => _primaryColor;
 
 class ThemeViewModel extends ChangeNotifier {
   ThemeData currentTheme = lightTheme;
+  bool _isInDarkMode = false;
 
   ThemeColors themeColor = LightThemeColors();
 
   ThemeViewModel() {
     var brightness = SchedulerBinding.instance!.window.platformBrightness;
-    bool isDarkMode = brightness == Brightness.dark;
-    changeThemeReal(isDarkMode, false);
+    _isInDarkMode = brightness == Brightness.dark;
+    changeThemeReal(_isInDarkMode, false);
   }
 
   bool isInDartMode() {
@@ -27,6 +28,7 @@ class ThemeViewModel extends ChangeNotifier {
   }
 
   void changeThemeReal(bool dark, [bool notify = true]) {
+    _isInDarkMode = dark;
     SpUtil.putBool(spTheme, dark);
     if (!dark) {
       currentTheme = lightTheme;
@@ -39,6 +41,8 @@ class ThemeViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  get darkMode => _isInDarkMode;
 
   void changeTheme() {
     changeThemeReal(!SpUtil.getBool(spTheme, defValue: false), true);
@@ -243,7 +247,7 @@ class DartThemeColors extends ThemeColors {
 
   @override
   Color settingBgColor() {
-    return Colors.black12;
+    return Colors.black;
   }
 
   @override

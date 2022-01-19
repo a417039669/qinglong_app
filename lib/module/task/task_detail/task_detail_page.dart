@@ -12,8 +12,9 @@ import '../task_viewmodel.dart';
 
 class TaskDetailPage extends ConsumerStatefulWidget {
   final TaskBean taskBean;
+  final bool hideAppbar;
 
-  const TaskDetailPage(this.taskBean, {Key? key}) : super(key: key);
+  const TaskDetailPage(this.taskBean, {Key? key, this.hideAppbar = false}) : super(key: key);
 
   @override
   _TaskDetailPageState createState() => _TaskDetailPageState();
@@ -29,6 +30,123 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    Widget body = Material(
+      color: Colors.transparent,
+      child: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 15,
+                ),
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  bottom: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: ref.watch(themeProvider).themeColor.settingBgColor(),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TaskDetailCell(
+                      title: "名称",
+                      desc: widget.taskBean.name ?? "",
+                    ),
+                    TaskDetailCell(
+                      title: "ID",
+                      desc: widget.taskBean.sId ?? "",
+                    ),
+                    TaskDetailCell(
+                      title: "任务",
+                      desc: widget.taskBean.command ?? "",
+                    ),
+                    TaskDetailCell(
+                      title: "创建时间",
+                      desc: Utils.formatMessageTime(widget.taskBean.created ?? 0),
+                    ),
+                    TaskDetailCell(
+                      title: "更新时间",
+                      desc: Utils.formatGMTTime(widget.taskBean.timestamp ?? ""),
+                    ),
+                    TaskDetailCell(
+                      title: "任务定时",
+                      desc: widget.taskBean.schedule ?? "",
+                    ),
+                    TaskDetailCell(
+                      title: "最后运行时间",
+                      desc: Utils.formatMessageTime(widget.taskBean.lastExecutionTime ?? 0),
+                    ),
+                    TaskDetailCell(
+                      title: "最后运行时长",
+                      desc: widget.taskBean.lastRunningTime == null ? "-" : "${widget.taskBean.lastRunningTime ?? "-"}秒",
+                    ),
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        showLog();
+                      },
+                      child: TaskDetailCell(
+                        title: "日志路径",
+                        desc: widget.taskBean.logPath ?? "-",
+                        taped: () {
+                          showLog();
+                        },
+                      ),
+                    ),
+                    TaskDetailCell(
+                      title: "运行状态",
+                      desc: widget.taskBean.status == 0 ? "正在运行" : "空闲",
+                    ),
+                    TaskDetailCell(
+                      title: "脚本状态",
+                      desc: widget.taskBean.isDisabled == 1 ? "已禁用" : "已启用",
+                    ),
+                    TaskDetailCell(
+                      title: "是否置顶",
+                      desc: widget.taskBean.isPinned == 1 ? "已置顶" : "未置顶",
+                      hideDivide: true,
+                    ),
+                  ],
+                ),
+              ),
+              widget.hideAppbar
+                  ? const SizedBox.shrink()
+                  : SizedBox(
+                      width: MediaQuery.of(context).size.width - 80,
+                      child: CupertinoButton(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 5,
+                          ),
+                          color: Colors.red,
+                          child: const Text(
+                            "删 除",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          onPressed: () {
+                            delTask(context, ref);
+                          }),
+                    ),
+              const SizedBox(
+                height: 15,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    if (widget.hideAppbar) {
+      return body;
+    }
+
     actions.clear();
     actions.addAll(
       [
@@ -146,6 +264,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
         ),
       ],
     );
+
     return Scaffold(
       appBar: QlAppBar(
         canBack: true,
@@ -213,106 +332,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 15,
-                vertical: 15,
-              ),
-              padding: const EdgeInsets.only(
-                top: 10,
-                bottom: 10,
-              ),
-              decoration: BoxDecoration(
-                color: ref.watch(themeProvider).themeColor.settingBgColor(),
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TaskDetailCell(
-                    title: "ID",
-                    desc: widget.taskBean.sId ?? "",
-                  ),
-                  TaskDetailCell(
-                    title: "任务",
-                    desc: widget.taskBean.command ?? "",
-                  ),
-                  TaskDetailCell(
-                    title: "创建时间",
-                    desc: Utils.formatMessageTime(widget.taskBean.created ?? 0),
-                  ),
-                  TaskDetailCell(
-                    title: "更新时间",
-                    desc: Utils.formatGMTTime(widget.taskBean.timestamp ?? ""),
-                  ),
-                  TaskDetailCell(
-                    title: "任务定时",
-                    desc: widget.taskBean.schedule ?? "",
-                  ),
-                  TaskDetailCell(
-                    title: "最后运行时间",
-                    desc: Utils.formatMessageTime(widget.taskBean.lastExecutionTime ?? 0),
-                  ),
-                  TaskDetailCell(
-                    title: "最后运行时长",
-                    desc: widget.taskBean.lastRunningTime == null ? "-" : "${widget.taskBean.lastRunningTime ?? "-"}秒",
-                  ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: () {
-                      showLog();
-                    },
-                    child: TaskDetailCell(
-                      title: "日志路径",
-                      desc: widget.taskBean.logPath ?? "-",
-                      taped: () {
-                        showLog();
-                      },
-                    ),
-                  ),
-                  TaskDetailCell(
-                    title: "运行状态",
-                    desc: widget.taskBean.status == 0 ? "正在运行" : "空闲",
-                  ),
-                  TaskDetailCell(
-                    title: "脚本状态",
-                    desc: widget.taskBean.isDisabled == 1 ? "已禁用" : "已启用",
-                  ),
-                  TaskDetailCell(
-                    title: "是否置顶",
-                    desc: widget.taskBean.isPinned == 1 ? "已置顶" : "未置顶",
-                    hideDivide: true,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width - 80,
-              child: CupertinoButton(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 5,
-                  ),
-                  color: Colors.red,
-                  child: const Text(
-                    "删 除",
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                  onPressed: () {
-                    delTask(context, ref);
-                  }),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-          ],
-        ),
-      ),
+      body: body,
     );
   }
 

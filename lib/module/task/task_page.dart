@@ -12,6 +12,7 @@ import 'package:qinglong_app/base/ui/menu.dart';
 import 'package:qinglong_app/base/ui/ql_context_menu.dart';
 import 'package:qinglong_app/module/task/intime_log/intime_log_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
+import 'package:qinglong_app/module/task/task_detail/task_detail_page.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
 import 'package:qinglong_app/utils/utils.dart';
 
@@ -224,33 +225,24 @@ class TaskItemCell extends StatelessWidget {
           ),
         ],
         previewBuilder: (context, anima, child) {
-          return IntrinsicWidth(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    bean.name ?? "",
-                    maxLines: 1,
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      color: ref.watch(themeProvider).themeColor.titleColor(),
-                      fontSize: 18,
-                    ),
-                  ),
+          bool isDark = ref.watch(themeProvider).darkMode;
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(15),
+            child: Container(
+              color: isDark ? const Color(0xff333333) : Theme.of(context).scaffoldBackgroundColor,
+              padding: EdgeInsets.only(
+                left: 5,
+                right: 5,
+                top: 5,
+                bottom: isDark ? 5 : 20,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: TaskDetailPage(
+                  bean,
+                  hideAppbar: true,
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
-                bean.isDisabled == 1
-                    ? const Icon(
-                        Icons.dnd_forwardslash,
-                        size: 16,
-                        color: Colors.red,
-                      )
-                    : const SizedBox.shrink(),
-              ],
+              ),
             ),
           );
         },

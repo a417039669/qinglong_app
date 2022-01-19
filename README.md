@@ -10,7 +10,6 @@ Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下
 
 iOS端暂无上架打算，用户自行下载main分支源码编译安装
 
-目前只支持用户名密码登录,不用担心,你的用户名密码不会泄露
 
 <p float="left">
   <img src="./art/1.jpg" width="200" />

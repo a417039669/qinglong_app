@@ -5,13 +5,9 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:qinglong_app/base/http/http.dart';
-import 'package:qinglong_app/base/userinfo_viewmodel.dart';
+void main() {
+  String time = "Wed Jan 12 2022 20:33:39 GMT+0800 (中国标准时间)";
 
-import 'package:qinglong_app/main.dart';
-import 'package:qinglong_app/module/login/login_bean.dart';
-import 'package:qinglong_app/module/login/login_viewmodel.dart';
-
-void main() {}
+  var result = DateTime.tryParse(time);
+  print(result);
+}

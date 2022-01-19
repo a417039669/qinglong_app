@@ -11,6 +11,7 @@ import 'package:qinglong_app/base/ui/empty_widget.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/env/env_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
+import 'package:qinglong_app/utils/utils.dart';
 
 class EnvPage extends StatefulWidget {
   const EnvPage({Key? key}) : super(key: key);
@@ -200,10 +201,13 @@ class EnvItemCell extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              const SizedBox(
+                                width: 5,
+                              ),
                               bean.status == 1
                                   ? const Icon(
                                       Icons.dnd_forwardslash,
-                                      size: 12,
+                                      size: 16,
                                       color: Colors.red,
                                     )
                                   : const SizedBox.shrink(),
@@ -217,7 +221,7 @@ class EnvItemCell extends StatelessWidget {
                         Material(
                           color: Colors.transparent,
                           child: Text(
-                            bean.remarks ?? "-",
+                            Utils.formatGMTTime(bean.timestamp ?? ""),
                             maxLines: 1,
                             style: TextStyle(
                               overflow: TextOverflow.ellipsis,
@@ -227,6 +231,21 @@ class EnvItemCell extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          bean.remarks ?? "-",
+                          maxLines: 1,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 8,

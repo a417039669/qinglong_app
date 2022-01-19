@@ -6,6 +6,70 @@ class Utils {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
+  static String formatGMTTime(String gmtTime) {
+    // "Wed Jan 12 2022 20:33:39 GMT+0800 (中国标准时间)"
+    try {
+      if (gmtTime.isEmpty) return "-";
+      List<String> splitedStr = gmtTime.split(" ");
+
+      int year = int.parse(splitedStr[3]);
+      String time = splitedStr[4];
+      List<String> splitedTime = time.split(":");
+      int hour = int.parse(splitedTime[0]);
+      int min = int.parse(splitedTime[1]);
+      int second = int.parse(splitedTime[2]);
+
+      int day = int.parse(splitedStr[2]);
+
+      String month = "01";
+
+      switch (splitedStr[1]) {
+        case "Jan":
+          month = "01";
+          break;
+        case "Feb":
+          month = "02";
+          break;
+        case "Mar":
+          month = "03";
+          break;
+        case "Apr":
+          month = "04";
+          break;
+        case "May":
+          month = "05";
+          break;
+        case "Jun":
+          month = "06";
+          break;
+        case "Jul":
+          month = "07";
+          break;
+        case "Aug":
+          month = "08";
+          break;
+        case "Sep":
+          month = "09";
+          break;
+        case "Oct":
+          month = "10";
+          break;
+        case "Nov":
+          month = "11";
+          break;
+        case "Dec":
+          month = "12";
+          break;
+      }
+
+      var date = DateTime(year, int.parse(month), day, hour, min, second);
+
+      return formatMessageTime(date.millisecondsSinceEpoch);
+    } catch (e) {
+      return "-";
+    }
+  }
+
   static String formatMessageTime(int time) {
     DateTime current = DateTime.now();
     DateTime chatTime;

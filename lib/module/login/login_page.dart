@@ -244,6 +244,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     setState(() {});
     HttpResponse<LoginBean> response = await Api.login(userName, password);
     if (response.success) {
+      getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
+
       HttpResponse<UserBean> userResponse = await Api.user();
       if (userResponse.success) {
         if (userResponse.bean != null && userResponse.bean!.twoFactorActivated != null && userResponse.bean!.twoFactorActivated!) {
@@ -251,7 +253,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           isLoading = false;
           setState(() {});
         } else {
-          getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
           Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
         }
       } else {

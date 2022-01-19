@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/routes.dart';
@@ -7,6 +8,7 @@ import 'package:qinglong_app/module/config/config_page.dart';
 import 'package:qinglong_app/module/env/env_page.dart';
 import 'package:qinglong_app/module/others/other_page.dart';
 import 'package:qinglong_app/module/task/task_page.dart';
+import 'package:move_to_background/move_to_background.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -100,48 +102,54 @@ class _HomePageState extends ConsumerState<HomePage> {
       ));
     }
 
-    return Scaffold(
-      appBar: QlAppBar(
-        canBack: false,
-        title: _title,
-        actions: actions,
-      ),
-      body: IndexedStack(
-        index: _index,
-        children: [
-          const Positioned.fill(
-            child: TaskPage(),
-          ),
-          const Positioned.fill(
-            child: EnvPage(),
-          ),
-          Positioned.fill(
-            child: ConfigPage(
-              key: configKey,
+    return WillPopScope(
+      onWillPop: () async {
+        await MoveToBackground.moveTaskToBack();
+        return false;
+      },
+      child: Scaffold(
+        appBar: QlAppBar(
+          canBack: false,
+          title: _title,
+          actions: actions,
+        ),
+        body: IndexedStack(
+          index: _index,
+          children: [
+            const Positioned.fill(
+              child: TaskPage(),
             ),
-          ),
-          const Positioned.fill(
-            child: OtherPage(),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: titles
-            .map(
-              (e) => BottomNavigationBarItem(
-                icon: Icon(e.icon),
-                activeIcon: Icon(e.checkedIcon),
-                label: e.title,
+            const Positioned.fill(
+              child: EnvPage(),
+            ),
+            Positioned.fill(
+              child: ConfigPage(
+                key: configKey,
               ),
-            )
-            .toList(),
-        currentIndex: _index,
-        onTap: (index) {
-          _index = index;
-          _title = titles[index].title;
-          setState(() {});
-        },
-        type: BottomNavigationBarType.fixed,
+            ),
+            const Positioned.fill(
+              child: OtherPage(),
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: titles
+              .map(
+                (e) => BottomNavigationBarItem(
+                  icon: Icon(e.icon),
+                  activeIcon: Icon(e.checkedIcon),
+                  label: e.title,
+                ),
+              )
+              .toList(),
+          currentIndex: _index,
+          onTap: (index) {
+            _index = index;
+            _title = titles[index].title;
+            setState(() {});
+          },
+          type: BottomNavigationBarType.fixed,
+        ),
       ),
     );
   }

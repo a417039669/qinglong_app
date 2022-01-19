@@ -23,7 +23,6 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  String? _searchKey;
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -102,9 +101,9 @@ class _TaskPageState extends State<TaskPage> {
                 TaskBean item = list[index];
 
                 if (_searchController.text.isEmpty ||
-                    (item.name?.contains(_searchController.text) ?? false) ||
-                    (item.command?.contains(_searchController.text) ?? false) ||
-                    (item.schedule?.contains(_searchController.text) ?? false)) {
+                    (item.name?.toLowerCase().contains(_searchController.text.toLowerCase()) ?? false) ||
+                    (item.command?.toLowerCase().contains(_searchController.text.toLowerCase()) ?? false) ||
+                    (item.schedule?.contains(_searchController.text.toLowerCase()) ?? false)) {
                   return TaskItemCell(item, ref);
                 } else {
                   return const SizedBox.shrink();
@@ -162,7 +161,7 @@ class TaskItemCell extends StatelessWidget {
   final TaskBean bean;
   final WidgetRef ref;
 
-  TaskItemCell(this.bean, this.ref, {Key? key}) : super(key: key);
+  const TaskItemCell(this.bean, this.ref, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@
 
 仅供学习交流, 禁止用于任何商业用途
 
-基于[qinglong](https://github.com/whyour/qinglong)API实现的三方客户端,采用Flutter编写
+基于[qinglong](https://github.com/whyour/qinglong)API实现的三方客户端,采用Flutter编写 (API基于v2.10.13)
 
 
 Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下载

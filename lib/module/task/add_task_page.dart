@@ -5,7 +5,6 @@ import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
-import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
 
@@ -202,7 +201,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     taskBean.name = _nameController.text;
     taskBean.command = _commandController.text;
     taskBean.schedule = _cronController.text;
-    HttpResponse<TaskDetailBean> response = await Api.addTask(
+    HttpResponse<NullResponse> response = await Api.addTask(
         _nameController.text, _commandController.text, _cronController.text,
         id: taskBean.sId);
 

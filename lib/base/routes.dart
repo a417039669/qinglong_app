@@ -14,11 +14,13 @@ import 'package:qinglong_app/module/others/task_log/task_log_detail_page.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_page.dart';
 import 'package:qinglong_app/module/task/add_task_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
+import 'package:qinglong_app/module/task/task_detail/task_detail_page.dart';
 
 class Routes {
   static const String routeHomePage = "/home/homepage";
   static const String routeLogin = "/login";
   static const String routeAddTask = "/task/add";
+  static const String routeTaskDetail = "/task/detail";
   static const String routeAddDependency = "/task/dependency";
   static const String routeAddEnv = "/env/add";
   static const String routeConfigEdit = "/config/edit";
@@ -45,7 +47,7 @@ class Routes {
           return CupertinoPageRoute(builder: (context) => const AddTaskPage());
         }
       case routeAddDependency:
-          return CupertinoPageRoute(builder: (context) => const AddDependenyPage());
+        return CupertinoPageRoute(builder: (context) => const AddDependenyPage());
       case routeAddEnv:
         if (settings.arguments != null) {
           return CupertinoPageRoute(
@@ -89,6 +91,12 @@ class Routes {
           builder: (context) => ScriptDetailPage(
             title: (settings.arguments as Map)["title"],
             path: (settings.arguments as Map)["path"],
+          ),
+        );
+      case routeTaskDetail:
+        return CupertinoPageRoute(
+          builder: (context) => TaskDetailPage(
+            settings.arguments as TaskBean,
           ),
         );
     }

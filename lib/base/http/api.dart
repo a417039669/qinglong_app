@@ -8,7 +8,6 @@ import 'package:qinglong_app/module/others/login_log/login_log_bean.dart';
 import 'package:qinglong_app/module/others/scripts/script_bean.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_bean.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
-import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 
 import 'url.dart';
 
@@ -58,24 +57,17 @@ class Api {
     );
   }
 
-  static Future<HttpResponse<TaskDetailBean>> taskDetail(String cron) async {
-    return await Http.get<TaskDetailBean>(
-      Url.taskDetail + cron,
-      null,
-    );
-  }
-
-  static Future<HttpResponse<TaskDetailBean>> addTask(String name, String command, String cron, {String? id}) async {
+  static Future<HttpResponse<NullResponse>> addTask(String name, String command, String cron, {String? id}) async {
     var data = {"name": name, "command": command, "schedule": cron};
 
     if (id != null) {
       data["_id"] = id;
-      return await Http.put<TaskDetailBean>(
+      return await Http.put<NullResponse>(
         Url.addTask,
         data,
       );
     }
-    return await Http.post<TaskDetailBean>(
+    return await Http.post<NullResponse>(
       Url.addTask,
       data,
     );

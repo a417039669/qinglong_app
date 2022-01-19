@@ -9,6 +9,7 @@ import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/ui/abs_underline_tabindicator.dart';
 import 'package:qinglong_app/base/ui/empty_widget.dart';
 import 'package:qinglong_app/base/ui/menu.dart';
+import 'package:qinglong_app/base/ui/ql_context_menu.dart';
 import 'package:qinglong_app/module/task/intime_log/intime_log_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
@@ -103,8 +104,7 @@ class _TaskPageState extends State<TaskPage> {
                 if (_searchController.text.isEmpty ||
                     (item.name?.contains(_searchController.text) ?? false) ||
                     (item.command?.contains(_searchController.text) ?? false) ||
-                    (item.schedule?.contains(_searchController.text) ??
-                        false)) {
+                    (item.schedule?.contains(_searchController.text) ?? false)) {
                   return TaskItemCell(item, ref);
                 } else {
                   return const SizedBox.shrink();
@@ -162,21 +162,20 @@ class TaskItemCell extends StatelessWidget {
   final TaskBean bean;
   final WidgetRef ref;
 
-  const TaskItemCell(this.bean, this.ref, {Key? key}) : super(key: key);
+  TaskItemCell(this.bean, this.ref, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
       color: ref.watch(themeProvider).themeColor.settingBgColor(),
-      child: CupertinoContextMenu(
+      child: QlCupertinoContextMenu(
+        bean: bean,
         actions: [
           QLCupertinoContextMenuAction(
             child: Text(
               bean.status! == 1 ? "运行" : "停止运行",
             ),
-            trailingIcon: bean.status! == 1
-                ? CupertinoIcons.memories
-                : CupertinoIcons.stop_circle,
+            trailingIcon: bean.status! == 1 ? CupertinoIcons.memories : CupertinoIcons.stop_circle,
             onPressed: () {
               Navigator.of(context).pop();
               startCron(context, ref);
@@ -194,8 +193,7 @@ class TaskItemCell extends StatelessWidget {
             child: const Text("编辑"),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context)
-                  .pushNamed(Routes.routeAddTask, arguments: bean);
+              Navigator.of(context).pushNamed(Routes.routeAddTask, arguments: bean);
             },
             trailingIcon: CupertinoIcons.pencil_outline,
           ),
@@ -205,9 +203,7 @@ class TaskItemCell extends StatelessWidget {
               Navigator.of(context).pop();
               pinTask();
             },
-            trailingIcon: bean.isPinned! == 0
-                ? CupertinoIcons.pin
-                : CupertinoIcons.pin_slash,
+            trailingIcon: bean.isPinned! == 0 ? CupertinoIcons.pin : CupertinoIcons.pin_slash,
           ),
           QLCupertinoContextMenuAction(
             child: Text(bean.isDisabled! == 0 ? "禁用" : "启用"),
@@ -216,9 +212,7 @@ class TaskItemCell extends StatelessWidget {
               enableTask();
             },
             isDestructiveAction: true,
-            trailingIcon: bean.isDisabled! == 0
-                ? Icons.dnd_forwardslash
-                : Icons.check_circle_outline_sharp,
+            trailingIcon: bean.isDisabled! == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
           ),
           QLCupertinoContextMenuAction(
             child: const Text("删除"),
@@ -242,8 +236,7 @@ class TaskItemCell extends StatelessWidget {
                     maxLines: 1,
                     style: TextStyle(
                       overflow: TextOverflow.ellipsis,
-                      color:
-                          ref.watch(themeProvider).themeColor.titleColor(),
+                      color: ref.watch(themeProvider).themeColor.titleColor(),
                       fontSize: 18,
                     ),
                   ),
@@ -267,9 +260,7 @@ class TaskItemCell extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              color: bean.isPinned == 1
-                  ? ref.watch(themeProvider).themeColor.pinColor()
-                  : Colors.transparent,
+              color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 8,
@@ -289,10 +280,7 @@ class TaskItemCell extends StatelessWidget {
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 18,
                           ),
                         ),
@@ -313,16 +301,11 @@ class TaskItemCell extends StatelessWidget {
                       Material(
                         color: Colors.transparent,
                         child: Text(
-                          (bean.lastExecutionTime == null ||
-                                  bean.lastExecutionTime == 0)
-                              ? "-"
-                              : Utils.formatMessageTime(
-                                  bean.lastExecutionTime!),
+                          (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color:
-                                ref.watch(themeProvider).themeColor.descColor(),
+                            color: ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 12,
                           ),
                         ),
@@ -341,8 +324,7 @@ class TaskItemCell extends StatelessWidget {
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color:
-                                ref.watch(themeProvider).themeColor.descColor(),
+                            color: ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 12,
                           ),
                         ),
@@ -373,53 +355,11 @@ class TaskItemCell extends StatelessWidget {
   }
 
   startCron(BuildContext context, WidgetRef ref) {
-    showCupertinoDialog(
-      context: context,
-      builder: (context) => CupertinoAlertDialog(
-        title: const Text("确认运行"),
-        content: Text("确认运行定时任务 ${bean.name ?? ""} 吗"),
-        actions: [
-          CupertinoDialogAction(
-            child: const Text("取消"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          CupertinoDialogAction(
-            child: const Text("确定"),
-            onPressed: () {
-              Navigator.of(context).pop();
-              ref.read(taskProvider).runCrons(bean.sId!);
-            },
-          ),
-        ],
-      ),
-    );
+    ref.read(taskProvider).runCrons(bean.sId!);
   }
 
   stopCron(BuildContext context, WidgetRef ref) {
-    showCupertinoDialog(
-      context: context,
-      builder: (context) => CupertinoAlertDialog(
-        title: const Text("确认停止"),
-        content: Text("确认停止定时任务 ${bean.name ?? ""} 吗"),
-        actions: [
-          CupertinoDialogAction(
-            child: const Text("取消"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          CupertinoDialogAction(
-            child: const Text("确定"),
-            onPressed: () {
-              Navigator.of(context).pop();
-              ref.read(taskProvider).stopCrons(bean.sId!);
-            },
-          ),
-        ],
-      ),
-    );
+    ref.read(taskProvider).stopCrons(bean.sId!);
   }
 
   logCron(BuildContext context, WidgetRef ref) {

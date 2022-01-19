@@ -9,7 +9,6 @@ import 'package:qinglong_app/module/others/login_log/login_log_bean.dart';
 import 'package:qinglong_app/module/others/scripts/script_bean.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_bean.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
-import 'package:qinglong_app/module/task/task_detail/task_detail_bean.dart';
 
 
 class JsonConversion$Json {
@@ -61,11 +60,7 @@ class JsonConversion$Json {
     if(type == (TaskBean).toString()){
       return TaskBean.jsonConversion(json)  as M;
     }
-    
-    if(type == (TaskDetailBean).toString()){
-      return TaskDetailBean.jsonConversion(json)  as M;
-    }
-    
+
     throw Exception("not found");
   }
 
@@ -105,11 +100,7 @@ class JsonConversion$Json {
     if(<TaskBean>[] is M){
       return data.map<TaskBean>((e) => TaskBean.jsonConversion(e)).toList() as M;
     }
-    
-    if(<TaskDetailBean>[] is M){
-      return data.map<TaskDetailBean>((e) => TaskDetailBean.jsonConversion(e)).toList() as M;
-    }
-    
+
     throw Exception("not found");
   }
 }

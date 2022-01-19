@@ -71,6 +71,9 @@ class Utils {
   }
 
   static String formatMessageTime(int time) {
+    if(time == 0){
+      return "-";
+    }
     DateTime current = DateTime.now();
     DateTime chatTime;
     if (time.toString().length == 10) {

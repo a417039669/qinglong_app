@@ -1,36 +1,64 @@
+import '../../main.dart';
+import '../userinfo_viewmodel.dart';
+
 class Url {
-  static const login = "/api/user/login";
+  static get login => "/api/user/login";
+  static const loginByClientId = "/open/auth/token";
   static const user = "/api/user";
-  static const tasks = "/api/crons";
-  static const runTasks = "/api/crons/run";
-  static const stopTasks = "/api/crons/stop";
-  static const taskDetail = "/api/crons/";
-  static const addTask = "/api/crons";
-  static const pinTask = "/api/crons/pin";
-  static const unpinTask = "/api/crons/unpin";
-  static const enableTask = "/api/crons/enable";
-  static const disableTask = "/api/crons/disable";
-  static const files = "/api/configs/files";
-  static const configContent = "/api/configs/";
-  static const saveFile = "/api/configs/save";
-  static const envs = "/api/envs";
-  static const addEnv = "/api/envs";
-  static const delEnv = "/api/envs";
-  static const disableEnvs = "/api/envs/disable";
-  static const enableEnvs = "/api/envs/enable";
-  static const loginLog = "/api/user/login-log";
-  static const taskLog = "/api/logs";
-  static const taskLogDetail = "/api/logs/";
-  static const scripts = "/api/scripts/files";
-  static const scriptDetail = "/api/scripts/";
-  static const dependencies = "/api/dependencies";
-  static const dependencyReinstall = "/api/dependencies/reinstall";
+
+  static get tasks => getIt<UserInfoViewModel>().useSecretLogined ? "/open/user/login" : "/api/crons";
+
+  static get runTasks => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/run" : "/api/crons/run";
+
+  static get stopTasks => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/stop" : "/api/crons/stop";
+
+  static get taskDetail => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/" : "/api/crons/";
+
+  static get addTask => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons" : "/api/crons";
+
+  static get pinTask => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/pin" : "/api/crons/pin";
+
+  static get unpinTask => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/unpin" : "/api/crons/unpin";
+
+  static get enableTask => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/enable" : "/api/crons/enable";
+
+  static get disableTask => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/disable" : "/api/crons/disable";
+
+  static get files => getIt<UserInfoViewModel>().useSecretLogined ? "/open/configs/files" : "/api/configs/files";
+
+  static get configContent => getIt<UserInfoViewModel>().useSecretLogined ? "/open/configs/" : "/api/configs/";
+
+  static get saveFile => getIt<UserInfoViewModel>().useSecretLogined ? "/open/configs/save" : "/api/configs/save";
+
+  static get envs => getIt<UserInfoViewModel>().useSecretLogined ? "/open/envs" : "/api/envs";
+
+  static get addEnv => getIt<UserInfoViewModel>().useSecretLogined ? "/open/envs" : "/api/envs";
+
+  static get delEnv => getIt<UserInfoViewModel>().useSecretLogined ? "/open/envs" : "/api/envs";
+
+  static get disableEnvs => getIt<UserInfoViewModel>().useSecretLogined ? "/open/envs/disable" : "/api/envs/disable";
+
+  static get enableEnvs => getIt<UserInfoViewModel>().useSecretLogined ? "/open/envs/enable" : "/api/envs/enable";
+
+  static get loginLog => getIt<UserInfoViewModel>().useSecretLogined ? "/open/user/login-log" : "/api/user/login-log";
+
+  static get taskLog => getIt<UserInfoViewModel>().useSecretLogined ? "/open/logs" : "/api/logs";
+
+  static get taskLogDetail => getIt<UserInfoViewModel>().useSecretLogined ? "/open/logs/" : "/api/logs/";
+
+  static get scripts => getIt<UserInfoViewModel>().useSecretLogined ? "/open/scripts/files" : "/api/scripts/files";
+
+  static get scriptDetail => getIt<UserInfoViewModel>().useSecretLogined ? "/open/scripts/" : "/api/scripts/";
+
+  static get dependencies => getIt<UserInfoViewModel>().useSecretLogined ? "/open/dependencies" : "/api/dependencies";
+
+  static get dependencyReinstall => getIt<UserInfoViewModel>().useSecretLogined ? "/open/dependencies/reinstall" : "/api/dependencies/reinstall";
 
   static intimeLog(String cronId) {
-    return "/api/crons/$cronId/log";
+    return getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/$cronId/log" : "/api/crons/$cronId/log";
   }
 
   static envMove(String envId) {
-    return "/api/envs/$envId/move";
+    return getIt<UserInfoViewModel>().useSecretLogined ? "/open/envs/$envId/move" : "/api/envs/$envId/move";
   }
 }

@@ -7,11 +7,13 @@ class UserInfoViewModel {
   String? _host = "";
   String? _userName;
   String? _passWord;
+  bool _useSecertLogined = false;
 
   UserInfoViewModel() {
     String userInfoJson = SpUtil.getString(spUserInfo);
     _userName = SpUtil.getString(spUserName);
     _passWord = SpUtil.getString(spPassWord);
+    _useSecertLogined = SpUtil.getBool(spSecretLogined, defValue: false);
     _host = SpUtil.getString(spHost, defValue: 'http://49.234.59.95:5700');
     if (userInfoJson.isNotEmpty) {
       _token = userInfoJson;
@@ -30,6 +32,11 @@ class UserInfoViewModel {
     SpUtil.putString(spPassWord, password);
   }
 
+  void useSecretLogin(bool use) {
+    _useSecertLogined = use;
+    SpUtil.putBool(spSecretLogined, _useSecertLogined);
+  }
+
   void updateHost(String host) {
     _host = host;
     SpUtil.putString(spHost, host);
@@ -42,6 +49,8 @@ class UserInfoViewModel {
   String? get userName => _userName;
 
   String? get passWord => _passWord;
+
+  bool get useSecretLogined => _useSecertLogined;
 
   bool isLogined() {
     return token != null && token!.isNotEmpty;

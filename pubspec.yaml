@@ -27,6 +27,7 @@ dependencies:
   drag_and_drop_lists: ^0.3.2+2
   fluttertoast: ^8.0.8
   move_to_background: ^1.0.2
+  flip_card: ^0.6.0
 
 dev_dependencies:
   flutter_native_splash: ^1.3.3

@@ -12,12 +12,28 @@ import 'package:qinglong_app/module/task/task_bean.dart';
 import 'url.dart';
 
 class Api {
-  static Future<HttpResponse<LoginBean>> login(String userName, String passWord) async {
+  static Future<HttpResponse<LoginBean>> login(
+    String userName,
+    String passWord,
+  ) async {
     return await Http.post<LoginBean>(
       Url.login,
       {
         "username": userName,
         "password": passWord,
+      },
+    );
+  }
+
+  static Future<HttpResponse<LoginBean>> loginByClientId(
+    String id,
+    String secret,
+  ) async {
+    return await Http.post<LoginBean>(
+      Url.loginByClientId,
+      {
+        "client_id": id,
+        "client_secret": secret,
       },
     );
   }

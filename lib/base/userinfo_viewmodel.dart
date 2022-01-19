@@ -15,7 +15,7 @@ class UserInfoViewModel {
     _passWord = SpUtil.getString(spPassWord);
 
     _useSecertLogined = SpUtil.getBool(spSecretLogined, defValue: false);
-    _host = SpUtil.getString(spHost, defValue: 'http://1.1.1.1:5700');
+    _host = SpUtil.getString(spHost, defValue: '');
 
     if (userInfoJson.isNotEmpty) {
       _token = userInfoJson;

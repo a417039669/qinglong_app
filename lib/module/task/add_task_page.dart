@@ -170,7 +170,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                   height: 5,
                 ),
                 const Text(
-                  "定时的cron不校验,自己确保写的是正确的cron",
+                  "定时的cron不校验是否正确",
                   style: TextStyle(
                     fontSize: 12,
                   ),

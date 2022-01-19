@@ -5,7 +5,7 @@ import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
-
+import 'package:qinglong_app/utils/extension.dart';
 class OtherPage extends ConsumerStatefulWidget {
   const OtherPage({Key? key}) : super(key: key);
 
@@ -57,7 +57,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "脚本管理",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -90,7 +93,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "依赖管理",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -123,7 +129,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "任务日志",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -142,9 +151,13 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
-                    Navigator.of(context).pushNamed(
-                      Routes.routeLoginLog,
-                    );
+                    if (getIt<UserInfoViewModel>().useSecretLogined) {
+                      "使用client_id方式登录无法获取登录日志".toast();
+                    } else {
+                      Navigator.of(context).pushNamed(
+                        Routes.routeLoginLog,
+                      );
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -157,7 +170,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "登录日志",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -201,7 +217,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "夜间模式",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.titleColor(),
+                          color:
+                              ref.watch(themeProvider).themeColor.titleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -250,7 +267,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                             child: const Text("确定"),
                             onPressed: () {
                               getIt<UserInfoViewModel>().updateToken("");
-                              Navigator.of(context).pushReplacementNamed(Routes.routeLogin);
+                              Navigator.of(context)
+                                  .pushReplacementNamed(Routes.routeLogin);
                             },
                           ),
                         ],

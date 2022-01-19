@@ -47,9 +47,6 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        ndk {
-            abiFilters 'armeabi-v7a'
-        }
     }
 
     buildTypes {

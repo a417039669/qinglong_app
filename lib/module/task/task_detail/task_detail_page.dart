@@ -2,10 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
+import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/module/task/intime_log/intime_log_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/utils/utils.dart';
+
+import '../task_viewmodel.dart';
 
 class TaskDetailPage extends ConsumerStatefulWidget {
   final TaskBean taskBean;
@@ -17,8 +20,132 @@ class TaskDetailPage extends ConsumerStatefulWidget {
 }
 
 class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
+  List<Widget> actions = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    actions.clear();
+    actions.addAll(
+      [
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            Navigator.of(context).pop();
+            startCron(context, ref);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            alignment: Alignment.center,
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                widget.taskBean.status! == 1 ? "运行" : "停止运行",
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            Navigator.of(context).pop();
+            showLog();
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            alignment: Alignment.center,
+            child: const Material(
+              color: Colors.transparent,
+              child: Text(
+                "查看日志",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed(Routes.routeAddTask, arguments: widget.taskBean);
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            alignment: Alignment.center,
+            child: const Material(
+              color: Colors.transparent,
+              child: Text(
+                "编辑",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            Navigator.of(context).pop();
+            pinTask();
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            color: Colors.transparent,
+            alignment: Alignment.center,
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                widget.taskBean.isPinned! == 0 ? "置顶" : "取消置顶",
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            Navigator.of(context).pop();
+            enableTask();
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 15,
+            ),
+            alignment: Alignment.center,
+            child: Material(
+              color: Colors.transparent,
+              child: Text(
+                widget.taskBean.isDisabled! == 0 ? "禁用" : "启用",
+                style: const TextStyle(
+                  color: Colors.red,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
     return Scaffold(
       appBar: QlAppBar(
         canBack: true,
@@ -26,74 +153,217 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
           Navigator.of(context).pop();
         },
         title: widget.taskBean.name ?? "",
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 10,
-          ),
-          padding: const EdgeInsets.only(
-            top: 10,
-            bottom: 10,
-          ),
-          decoration: BoxDecoration(
-            color: ref.watch(themeProvider).themeColor.settingBgColor(),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TaskDetailCell(
-                title: "ID",
-                desc: widget.taskBean.sId ?? "",
+        actions: [
+          InkWell(
+            onTap: () {
+              showCupertinoModalPopup(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoActionSheet(
+                      title: Container(
+                        alignment: Alignment.center,
+                        child: const Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            "更多操作",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                      actions: actions,
+                      cancelButton: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 10,
+                          ),
+                          child: const Material(
+                            color: Colors.transparent,
+                            child: Text(
+                              "取消",
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  });
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 15,
               ),
-              TaskDetailCell(
-                title: "任务",
-                desc: widget.taskBean.command ?? "",
-              ),
-              TaskDetailCell(
-                title: "创建时间",
-                desc: Utils.formatMessageTime(widget.taskBean.created ?? 0),
-              ),
-              TaskDetailCell(
-                title: "任务定时",
-                desc: widget.taskBean.schedule ?? "",
-              ),
-              TaskDetailCell(
-                title: "最后运行时间",
-                desc: Utils.formatMessageTime(widget.taskBean.lastExecutionTime ?? 0),
-              ),
-              TaskDetailCell(
-                title: "最后运行时长",
-                desc: widget.taskBean.lastRunningTime == null ? "-" : "${widget.taskBean.lastRunningTime ?? "-"}秒",
-              ),
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  showLog();
-                },
-                child: TaskDetailCell(
-                  title: "日志路径",
-                  desc: widget.taskBean.logPath ?? "-",
-                  taped: () {
-                    showLog();
-                  },
+              child: Center(
+                child: Icon(
+                  Icons.more_horiz,
+                  color: Colors.white,
+                  size: 26,
                 ),
               ),
-              TaskDetailCell(
-                title: "运行状态",
-                desc: widget.taskBean.status == 0 ? "正在运行" : "空闲",
+            ),
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 10,
               ),
-              TaskDetailCell(
-                title: "脚本状态",
-                desc: widget.taskBean.isDisabled == 1 ? "已禁用" : "正常",
-                hideDivide: true,
+              padding: const EdgeInsets.only(
+                top: 10,
+                bottom: 10,
               ),
-            ],
-          ),
+              decoration: BoxDecoration(
+                color: ref.watch(themeProvider).themeColor.settingBgColor(),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TaskDetailCell(
+                    title: "ID",
+                    desc: widget.taskBean.sId ?? "",
+                  ),
+                  TaskDetailCell(
+                    title: "任务",
+                    desc: widget.taskBean.command ?? "",
+                  ),
+                  TaskDetailCell(
+                    title: "创建时间",
+                    desc: Utils.formatMessageTime(widget.taskBean.created ?? 0),
+                  ),
+                  TaskDetailCell(
+                    title: "更新时间",
+                    desc: Utils.formatGMTTime(widget.taskBean.timestamp ?? ""),
+                  ),
+                  TaskDetailCell(
+                    title: "任务定时",
+                    desc: widget.taskBean.schedule ?? "",
+                  ),
+                  TaskDetailCell(
+                    title: "最后运行时间",
+                    desc: Utils.formatMessageTime(widget.taskBean.lastExecutionTime ?? 0),
+                  ),
+                  TaskDetailCell(
+                    title: "最后运行时长",
+                    desc: widget.taskBean.lastRunningTime == null ? "-" : "${widget.taskBean.lastRunningTime ?? "-"}秒",
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      showLog();
+                    },
+                    child: TaskDetailCell(
+                      title: "日志路径",
+                      desc: widget.taskBean.logPath ?? "-",
+                      taped: () {
+                        showLog();
+                      },
+                    ),
+                  ),
+                  TaskDetailCell(
+                    title: "运行状态",
+                    desc: widget.taskBean.status == 0 ? "正在运行" : "空闲",
+                  ),
+                  TaskDetailCell(
+                    title: "脚本状态",
+                    desc: widget.taskBean.isDisabled == 1 ? "已禁用" : "已启用",
+                  ),
+                  TaskDetailCell(
+                    title: "是否置顶",
+                    desc: widget.taskBean.isPinned == 1 ? "已置顶" : "未置顶",
+                    hideDivide: true,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width - 80,
+              child: CupertinoButton(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                  ),
+                  color: Colors.red,
+                  child: const Text(
+                    "删 除",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
+                  onPressed: () {
+                    delTask(context, ref);
+                  }),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  startCron(BuildContext context, WidgetRef ref) async {
+    await ref.read(taskProvider).runCrons(widget.taskBean.sId!);
+    setState(() {});
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      showLog();
+    });
+  }
+
+  stopCron(BuildContext context, WidgetRef ref) async {
+    await ref.read(taskProvider).stopCrons(widget.taskBean.sId!);
+    setState(() {});
+  }
+
+  void enableTask() async {
+    await ref.read(taskProvider).enableTask(widget.taskBean.sId!, widget.taskBean.isDisabled!);
+    setState(() {});
+  }
+
+  void pinTask() async {
+    await ref.read(taskProvider).pinTask(widget.taskBean.sId!, widget.taskBean.isPinned!);
+    setState(() {});
+  }
+
+  void delTask(BuildContext context, WidgetRef ref) {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) => CupertinoAlertDialog(
+        title: const Text("确认删除"),
+        content: Text("确认删除定时任务 ${widget.taskBean.name ?? ""} 吗"),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text("取消"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CupertinoDialogAction(
+            child: const Text("确定"),
+            onPressed: () async {
+              Navigator.of(context).pop();
+              await ref.read(taskProvider).delCron(widget.taskBean.sId!);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       ),
     );
   }
@@ -116,6 +386,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  ref.read(taskProvider).loadData(false);
                 },
               ),
             ],

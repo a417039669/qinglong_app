@@ -3,6 +3,7 @@ import 'package:qinglong_app/base/base_viewmodel.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
+import 'package:qinglong_app/utils/extension.dart';
 
 var taskProvider = ChangeNotifierProvider((ref) => TaskViewModel());
 
@@ -30,7 +31,6 @@ class TaskViewModel extends BaseViewModel {
   }
 
   void sortList() {
-
     for (int i = 0; i < list.length; i++) {
       if (list[i].isPinned == 1) {
         final TaskBean item = list.removeAt(i);
@@ -68,6 +68,7 @@ class TaskViewModel extends BaseViewModel {
     HttpResponse<NullResponse> result = await Api.delTask(id);
     if (result.success) {
       list.removeWhere((element) => element.sId == id);
+      "删除成功".toast();
       notifyListeners();
     } else {
       failToast(result.message, notify: true);
@@ -86,12 +87,11 @@ class TaskViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void pinTask(String sId, int isPinned) async {
+  Future<void> pinTask(String sId, int isPinned) async {
     if (isPinned == 1) {
       HttpResponse<NullResponse> response = await Api.unpinTask(sId);
 
       if (response.success) {
-        list.firstWhere((element) => element.sId == sId).isPinned = 0;
         sortList();
         success();
       } else {
@@ -101,7 +101,6 @@ class TaskViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.pinTask(sId);
 
       if (response.success) {
-        list.firstWhere((element) => element.sId == sId).isPinned = 1;
         sortList();
         success();
       } else {
@@ -110,7 +109,7 @@ class TaskViewModel extends BaseViewModel {
     }
   }
 
-  void enableTask(String sId, int isDisabled) async {
+  Future<void> enableTask(String sId, int isDisabled) async {
     if (isDisabled == 0) {
       HttpResponse<NullResponse> response = await Api.disableTask(sId);
 

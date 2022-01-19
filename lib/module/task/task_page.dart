@@ -354,8 +354,11 @@ class TaskItemCell extends StatelessWidget {
     );
   }
 
-  startCron(BuildContext context, WidgetRef ref) {
-    ref.read(taskProvider).runCrons(bean.sId!);
+  startCron(BuildContext context, WidgetRef ref) async {
+    await ref.read(taskProvider).runCrons(bean.sId!);
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      logCron(context, ref);
+    });
   }
 
   stopCron(BuildContext context, WidgetRef ref) {
@@ -381,6 +384,7 @@ class TaskItemCell extends StatelessWidget {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
+                    ref.read(taskProvider).loadData(false);
                   },
                 ),
               ],

@@ -6,9 +6,10 @@
 
 基于[qinglong](https://github.com/whyour/qinglong)API实现的三方客户端,采用Flutter编写
 
+
 Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下载
 
-本人没有iOS开发者账号,iOS端用户自行下载源码编译安装
+本人没有iOS开发者账号,iOS端用户自行下载main分支源码编译安装
 
 
 <p float="left">

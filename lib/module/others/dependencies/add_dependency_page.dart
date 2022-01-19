@@ -6,16 +6,16 @@ import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/module/others/dependencies/dependency_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
 
-class AddDependenyPage extends ConsumerStatefulWidget {
-  const AddDependenyPage({
+class AddDependencyPage extends ConsumerStatefulWidget {
+  const AddDependencyPage({
     Key? key,
   }) : super(key: key);
 
   @override
-  ConsumerState<AddDependenyPage> createState() => _AddDependencyPageState();
+  ConsumerState<AddDependencyPage> createState() => _AddDependencyPageState();
 }
 
-class _AddDependencyPageState extends ConsumerState<AddDependenyPage> {
+class _AddDependencyPageState extends ConsumerState<AddDependencyPage> {
   final TextEditingController _nameController = TextEditingController();
 
   DepedencyEnum depedencyType = DepedencyEnum.NodeJS;
@@ -83,7 +83,7 @@ class _AddDependencyPageState extends ConsumerState<AddDependenyPage> {
                   height: 10,
                 ),
                 DropdownButtonFormField<DepedencyEnum>(
-                  items:  [
+                  items: [
                     DropdownMenuItem(
                       value: DepedencyEnum.NodeJS,
                       child: Text(DepedencyEnum.NodeJS.name),
@@ -154,7 +154,7 @@ class _AddDependencyPageState extends ConsumerState<AddDependenyPage> {
     );
 
     if (response.success) {
-      "操作成功".toast();
+      "新增成功".toast();
       ref.read(dependencyProvider).loadData(
             depedencyType.name.toLowerCase(),
           );

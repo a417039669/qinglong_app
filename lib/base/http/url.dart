@@ -6,7 +6,7 @@ class Url {
   static const loginByClientId = "/open/auth/token";
   static const user = "/api/user";
 
-  static get tasks => getIt<UserInfoViewModel>().useSecretLogined ? "/open/user/login" : "/api/crons";
+  static get tasks => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons" : "/api/crons";
 
   static get runTasks => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/run" : "/api/crons/run";
 

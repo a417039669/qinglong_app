@@ -18,8 +18,6 @@ class ConfigEditPage extends ConsumerStatefulWidget {
 }
 
 class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
-  String? value;
-
   late TextEditingController _controller;
   FocusNode node = FocusNode();
 
@@ -46,12 +44,10 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
         actions: [
           InkWell(
             onTap: () async {
-              if (value == null) {
-                "请先点击保存".toast();
-                return;
-              }
-              HttpResponse<NullResponse> response = await Api.saveFile(widget.title, _controller.text);
+              HttpResponse<NullResponse> response =
+                  await Api.saveFile(widget.title, _controller.text);
               if (response.success) {
+                "提交成功".toast();
                 ref.read(configProvider).loadContent(widget.title);
                 Navigator.of(context).pop();
               } else {

@@ -8,9 +8,9 @@ import 'package:qinglong_app/module/env/env_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
 
 class AddEnvPage extends ConsumerStatefulWidget {
-  final EnvBean? taskBean;
+  final EnvBean? envBean;
 
-  const AddEnvPage({Key? key, this.taskBean}) : super(key: key);
+  const AddEnvPage({Key? key, this.envBean}) : super(key: key);
 
   @override
   ConsumerState<AddEnvPage> createState() => _AddEnvPageState();
@@ -27,8 +27,8 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.taskBean != null) {
-      envBean = widget.taskBean!;
+    if (widget.envBean != null) {
+      envBean = widget.envBean!;
       _nameController.text = envBean.name ?? "";
       _valueController.text = envBean.value ?? "";
       _remarkController.text = envBean.remarks ?? "";
@@ -88,7 +88,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   const Text(
                     "名称:",
@@ -97,14 +97,10 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   TextField(
                     focusNode: focusNode,
                     controller: _nameController,
                     decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                       hintText: "请输入名称",
                     ),
                     autofocus: false,
@@ -121,7 +117,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   const Text(
                     "值:",
@@ -130,15 +126,11 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   TextField(
                     controller: _valueController,
                     maxLines: 8,
                     minLines: 1,
                     decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                       hintText: "请输入值",
                     ),
                     autofocus: false,
@@ -155,7 +147,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    height: 10,
+                    height: 15,
                   ),
                   const Text(
                     "备注:",
@@ -164,13 +156,9 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   TextField(
                     controller: _remarkController,
                     decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                       hintText: "请输入备注",
                     ),
                     autofocus: false,
@@ -197,10 +185,12 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
     envBean.name = _nameController.text;
     envBean.value = _valueController.text;
     envBean.remarks = _remarkController.text;
-    HttpResponse<NullResponse> response = await Api.addEnv(_nameController.text, _valueController.text, _remarkController.text, id: envBean.sId);
+    HttpResponse<NullResponse> response = await Api.addEnv(
+        _nameController.text, _valueController.text, _remarkController.text,
+        id: envBean.sId);
 
     if (response.success) {
-      "操作成功".toast();
+      (envBean.sId == null) ? "新增成功" : "修改成功".toast();
       ref.read(envProvider).updateEnv(envBean);
       Navigator.of(context).pop();
     } else {

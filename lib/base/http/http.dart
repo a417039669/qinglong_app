@@ -6,13 +6,13 @@ import 'package:dio_log/dio_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:qinglong_app/base/http/token_interceptor.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
+import 'package:qinglong_app/utils/extension.dart';
 
 import '../../json.jc.dart';
 import '../../main.dart';
 import '../routes.dart';
 
 class Http {
-  static const int NOT_LOGIN = 1000;
   static Dio? _dio;
 
   static void initDioConfig(
@@ -140,6 +140,7 @@ class Http {
 
   static void exitLogin() {
     if (!pushedLoginPage) {
+      "身份已过期,请重新登录".toast();
       pushedLoginPage = true;
       navigatorState.currentState?.pushReplacementNamed(Routes.routeLogin);
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
@@ -23,6 +24,9 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _commandController = TextEditingController();
   final TextEditingController _cronController = TextEditingController();
+
+
+  final String scheduleCron = r"[ \t]*(@reboot|@yearly|@annually|@monthly|@weekly|@daily|@midnight|@hourly|((((([1-5]?[0-9])-)?([1-5]?[0-9])|\*)(/([1-5]?[0-9]))?,)*((([1-5]?[0-9])-)?([1-5]?[0-9])|\*)(/([1-5]?[0-9]))?)[ \t]+(((((2[0-3]|1[0-9]|[0-9])-)?(2[0-3]|1[0-9]|[0-9])|\*)(/(2[0-3]|1[0-9]|[0-9]))?,)*(((2[0-3]|1[0-9]|[0-9])-)?(2[0-3]|1[0-9]|[0-9])|\*)(/(2[0-3]|1[0-9]|[0-9]))?)[ \t]+(((((3[01]|[12][0-9]|[1-9])-)?(3[01]|[12][0-9]|[1-9])|\*)(/(3[01]|[12][0-9]|[1-9]))?,)*(((3[01]|[12][0-9]|[1-9])-)?(3[01]|[12][0-9]|[1-9])|\*)(/(3[01]|[12][0-9]|[1-9]))?)[ \t]+((((((1[0-2]|[1-9])|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])-)?((1[0-2]|[1-9])|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])|\*)(/((1[0-2]|[1-9])|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc]))?,)*((((1[0-2]|[1-9])|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])-)?((1[0-2]|[1-9])|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])|\*)(/((1[0-2]|[1-9])|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc]))?)[ \t]+((((([0-7]|[Ss][Uu][Nn]|[Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt])-)?([0-7]|[Ss][Uu][Nn]|[Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt])|\*)(/([0-7]|[Ss][Uu][Nn]|[Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt]))?,)*((([0-7]|[Ss][Uu][Nn]|[Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt])-)?([0-7]|[Ss][Uu][Nn]|[Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt])|\*)(/([0-7]|[Ss][Uu][Nn]|[Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt]))?))[ \t]*$";
 
   @override
   void initState() {
@@ -131,6 +135,9 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     controller: _commandController,
                     maxLines: 4,
                     minLines: 1,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(scheduleCron)),
+                    ],
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                       hintText: "请输入命令",

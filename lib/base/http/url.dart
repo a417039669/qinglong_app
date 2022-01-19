@@ -1,5 +1,6 @@
 class Url {
   static const login = "/api/user/login";
+  static const user = "/api/user";
   static const tasks = "/api/crons";
   static const runTasks = "/api/crons/run";
   static const stopTasks = "/api/crons/stop";

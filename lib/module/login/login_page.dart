@@ -7,6 +7,7 @@ import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
+import 'package:qinglong_app/module/login/user_bean.dart';
 import 'package:qinglong_app/utils/extension.dart';
 import 'package:qinglong_app/utils/utils.dart';
 
@@ -20,8 +21,7 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController _hostController =
-      TextEditingController(text: getIt<UserInfoViewModel>().host);
+  final TextEditingController _hostController = TextEditingController(text: getIt<UserInfoViewModel>().host);
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -31,15 +31,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   void initState() {
     super.initState();
 
-    if (getIt<UserInfoViewModel>().userName != null &&
-        getIt<UserInfoViewModel>().userName!.isNotEmpty) {
+    if (getIt<UserInfoViewModel>().userName != null && getIt<UserInfoViewModel>().userName!.isNotEmpty) {
       _userNameController.text = getIt<UserInfoViewModel>().userName!;
       rememberPassword = true;
     } else {
       rememberPassword = false;
     }
-    if (getIt<UserInfoViewModel>().passWord != null &&
-        getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
+    if (getIt<UserInfoViewModel>().passWord != null && getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
       _passwordController.text = getIt<UserInfoViewModel>().passWord!;
     }
     getIt<UserInfoViewModel>().updateToken("");
@@ -199,25 +197,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 80,
                         child: IgnorePointer(
-                          ignoring: _hostController.text.isEmpty ||
-                              _userNameController.text.isEmpty ||
-                              _passwordController.text.isEmpty ||
-                              isLoading,
+                          ignoring: _hostController.text.isEmpty || _userNameController.text.isEmpty || _passwordController.text.isEmpty || isLoading,
                           child: CupertinoButton(
                               padding: const EdgeInsets.symmetric(
                                 vertical: 5,
                               ),
-                              color: (_hostController.text.isNotEmpty &&
-                                      _userNameController.text.isNotEmpty &&
-                                      _passwordController.text.isNotEmpty &&
-                                      !isLoading)
-                                  ? ref
-                                      .watch(themeProvider)
-                                      .themeColor
-                                      .buttonBgColor()
-                                  : Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.4),
+                              color:
+                                  (_hostController.text.isNotEmpty && _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty && !isLoading)
+                                      ? ref.watch(themeProvider).themeColor.buttonBgColor()
+                                      : Theme.of(context).primaryColor.withOpacity(0.4),
                               child: isLoading
                                   ? const CupertinoActivityIndicator()
                                   : const Text(
@@ -228,17 +216,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     ),
                               onPressed: () {
                                 if (rememberPassword) {
-                                  getIt<UserInfoViewModel>().updateUserName(
-                                      _userNameController.text,
-                                      _passwordController.text);
+                                  getIt<UserInfoViewModel>().updateUserName(_userNameController.text, _passwordController.text);
                                 }
 
                                 Http.pushedLoginPage = false;
                                 Utils.hideKeyBoard(context);
-                                getIt<UserInfoViewModel>()
-                                    .updateHost(_hostController.text);
-                                login(_userNameController.text,
-                                    _passwordController.text);
+                                getIt<UserInfoViewModel>().updateHost(_hostController.text);
+                                login(_userNameController.text, _passwordController.text);
                               }),
                         ),
                       ),
@@ -260,8 +244,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     setState(() {});
     HttpResponse<LoginBean> response = await Api.login(userName, password);
     if (response.success) {
-      getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
-      Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
+      HttpResponse<UserBean> userResponse = await Api.user();
+      if (userResponse.success) {
+        if (userResponse.bean != null && userResponse.bean!.twoFactorActivated != null && userResponse.bean!.twoFactorActivated!) {
+          ("你已开启两步验证,App暂不支持").toast();
+          isLoading = false;
+          setState(() {});
+        } else {
+          getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
+          Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
+        }
+      } else {
+        (response.message ?? "请检查网络情况").toast();
+        isLoading = false;
+        setState(() {});
+      }
     } else {
       (response.message ?? "请检查网络情况").toast();
       isLoading = false;

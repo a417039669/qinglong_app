@@ -22,6 +22,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _valueController = TextEditingController();
   final TextEditingController _remarkController = TextEditingController();
+  FocusNode focusNode = FocusNode();
 
   @override
   void initState() {
@@ -34,6 +35,11 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
     } else {
       envBean = EnvBean();
     }
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (timeStamp) {
+        focusNode.requestFocus();
+      },
+    );
   }
 
   @override
@@ -95,6 +101,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                     height: 10,
                   ),
                   TextField(
+                    focusNode: focusNode,
                     controller: _nameController,
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -190,9 +197,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
     envBean.name = _nameController.text;
     envBean.value = _valueController.text;
     envBean.remarks = _remarkController.text;
-    HttpResponse<NullResponse> response = await Api.addEnv(
-        _nameController.text, _valueController.text, _remarkController.text,
-        id: envBean.sId);
+    HttpResponse<NullResponse> response = await Api.addEnv(_nameController.text, _valueController.text, _remarkController.text, id: envBean.sId);
 
     if (response.success) {
       "操作成功".toast();

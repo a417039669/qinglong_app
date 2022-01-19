@@ -35,45 +35,49 @@ class _HomePageState extends ConsumerState<HomePage> {
     List<Widget> actions = [];
 
     if (_index == 0) {
-      actions.add(InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed(
-            Routes.routeAddTask,
-          );
-        },
-        child: const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 15,
-          ),
-          child: Center(
-            child: Icon(
-              CupertinoIcons.add,
-              size: 20,
-              color: Colors.white,
+      actions.add(
+        InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              Routes.routeAddTask,
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
+            child: Center(
+              child: Icon(
+                CupertinoIcons.add,
+                size: 24,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
-      ));
+      );
     } else if (_index == 1) {
-      actions.add(InkWell(
-        onTap: () {
-          Navigator.of(context).pushNamed(
-            Routes.routeAddEnv,
-          );
-        },
-        child: const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 15,
-          ),
-          child: Center(
-            child: Icon(
-              CupertinoIcons.add,
-              size: 20,
-              color: Colors.white,
+      actions.add(
+        InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed(
+              Routes.routeAddEnv,
+            );
+          },
+          child: const Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
+            child: Center(
+              child: Icon(
+                CupertinoIcons.add,
+                size: 24,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
-      ));
+      );
     } else if (_index == 2) {
       actions.add(InkWell(
         onTap: () {

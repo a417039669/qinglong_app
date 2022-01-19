@@ -21,11 +21,17 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
   String? value;
 
   late TextEditingController _controller;
+  FocusNode node = FocusNode();
 
   @override
   void initState() {
     _controller = TextEditingController(text: widget.content);
     super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (timeStamp) {
+        node.requestFocus();
+      },
+    );
   }
 
   @override
@@ -44,8 +50,7 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
                 "请先点击保存".toast();
                 return;
               }
-              HttpResponse<NullResponse> response =
-                  await Api.saveFile(widget.title, _controller.text);
+              HttpResponse<NullResponse> response = await Api.saveFile(widget.title, _controller.text);
               if (response.success) {
                 ref.read(configProvider).loadContent(widget.title);
                 Navigator.of(context).pop();
@@ -58,7 +63,13 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
                 horizontal: 15,
               ),
               child: Center(
-                child: Text("提交"),
+                child: Text(
+                  "提交",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ),
           )
@@ -71,7 +82,7 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
         ),
         child: SingleChildScrollView(
           child: TextField(
-            focusNode: FocusNode(),
+            focusNode: node,
             style: TextStyle(
               color: ref.read(themeProvider).themeColor.descColor(),
               fontSize: 14,

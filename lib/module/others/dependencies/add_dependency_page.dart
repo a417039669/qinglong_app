@@ -56,90 +56,88 @@ class _AddDependencyPageState extends ConsumerState<AddDependenyPage> {
           )
         ],
       ),
-      body: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    "依赖类型:",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  DropdownButtonFormField<DepedencyEnum>(
-                    items:  [
-                      DropdownMenuItem(
-                        value: DepedencyEnum.NodeJS,
-                        child: Text(DepedencyEnum.NodeJS.name),
-                      ),
-                      DropdownMenuItem(
-                        value: DepedencyEnum.Python3,
-                        child: Text(DepedencyEnum.Python3.name),
-                      ),
-                      DropdownMenuItem(
-                        value: DepedencyEnum.Linux,
-                        child: Text(DepedencyEnum.Linux.name),
-                      ),
-                    ],
-                    value: DepedencyEnum.NodeJS,
-                    onChanged: (value) {
-                      depedencyType = value!;
-                    },
-                  ),
-                ],
-              ),
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 15,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 10,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "依赖类型:",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
-                  const Text(
-                    "名称:",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                DropdownButtonFormField<DepedencyEnum>(
+                  items:  [
+                    DropdownMenuItem(
+                      value: DepedencyEnum.NodeJS,
+                      child: Text(DepedencyEnum.NodeJS.name),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _nameController,
-                    decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                      hintText: "请输入名称",
+                    DropdownMenuItem(
+                      value: DepedencyEnum.Python3,
+                      child: Text(DepedencyEnum.Python3.name),
                     ),
-                    autofocus: false,
-                  ),
-                ],
-              ),
+                    DropdownMenuItem(
+                      value: DepedencyEnum.Linux,
+                      child: Text(DepedencyEnum.Linux.name),
+                    ),
+                  ],
+                  value: DepedencyEnum.NodeJS,
+                  onChanged: (value) {
+                    depedencyType = value!;
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "名称:",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    hintText: "请输入名称",
+                  ),
+                  autofocus: false,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

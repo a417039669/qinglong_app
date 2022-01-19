@@ -63,6 +63,16 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
         color: _primaryColor,
       ),
     ),
+    border: UnderlineInputBorder(
+      borderSide: BorderSide(
+        color: Color(0xff999999),
+      ),
+    ),
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(
+        color: Color(0xff999999),
+      ),
+    ),
   ),
   tabBarTheme: const TabBarTheme(
     labelStyle: TextStyle(
@@ -106,6 +116,16 @@ ThemeData lightTheme = ThemeData.light().copyWith(
     focusedBorder: UnderlineInputBorder(
       borderSide: BorderSide(
         color: _primaryColor,
+      ),
+    ),
+    border: UnderlineInputBorder(
+      borderSide: BorderSide(
+        color: Color(0xff999999),
+      ),
+    ),
+    enabledBorder: UnderlineInputBorder(
+      borderSide: BorderSide(
+        color: Color(0xff999999),
       ),
     ),
   ),

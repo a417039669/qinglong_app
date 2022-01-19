@@ -63,7 +63,7 @@ class _DependcyPageState extends State<DependencyPage> with TickerProviderStateM
               child: Center(
                 child: Icon(
                   CupertinoIcons.add,
-                  size: 20,
+                  size: 24,
                   color: Colors.white,
                 ),
               ),

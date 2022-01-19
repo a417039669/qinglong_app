@@ -20,16 +20,23 @@ class QlAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     Widget back = backWidget ??
-        GestureDetector(
+        InkWell(
           onTap: () {
             if (backCall != null) {
               backCall!();
+            } else {
+              Navigator.of(context).pop();
             }
           },
-          child: const Center(
-            child: Icon(
-              CupertinoIcons.left_chevron,
-              color: Colors.white,
+          child: const Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
+            child: Center(
+              child: Icon(
+                CupertinoIcons.left_chevron,
+                color: Colors.white,
+              ),
             ),
           ),
         );

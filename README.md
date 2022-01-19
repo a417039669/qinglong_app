@@ -18,6 +18,11 @@ Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下
   <img src="./art/9.jpg" width="200" />
 </p>
 <p float="left">
+  <img src="./art/10.jpg" width="200" />
+  <img src="./art/11.jpg" width="200" /> 
+  <img src="./art/12.jpg" width="200" />
+</p>
+<p float="left">
   <img src="./art/2.jpg" width="200" />
   <img src="./art/3.jpg" width="200" /> 
   <img src="./art/4.jpg" width="200" />
@@ -29,6 +34,9 @@ Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下
   <img src="./art/7.jpg" width="200" />
 </p>
 
+<p float="left">
+  <img src="./art/13.jpg" width="200" />
+</p>
 
 ### 尚未完成的功能
 >* 修改用户名密码

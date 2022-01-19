@@ -46,7 +46,7 @@ class _TaskLogPageState extends ConsumerState<TaskLogPage> with LazyLoadState<Ta
                           title: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                              color: ref.watch(themeProvider).themeColor.titleColor(),
                               fontSize: 16,
                             ),
                           ),
@@ -58,7 +58,7 @@ class _TaskLogPageState extends ConsumerState<TaskLogPage> with LazyLoadState<Ta
                                     title: Text(
                                       e,
                                       style: TextStyle(
-                                        color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                                        color: ref.watch(themeProvider).themeColor.titleColor(),
                                         fontSize: 14,
                                       ),
                                     ),
@@ -72,7 +72,7 @@ class _TaskLogPageState extends ConsumerState<TaskLogPage> with LazyLoadState<Ta
                           title: Text(
                             item.name ?? "",
                             style: TextStyle(
-                              color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                              color: ref.watch(themeProvider).themeColor.titleColor(),
                               fontSize: 16,
                             ),
                           ),

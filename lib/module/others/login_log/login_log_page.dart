@@ -50,7 +50,7 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> with LazyLoadState<
                 Utils.formatMessageTime(item.timestamp ?? 0),
                 style: TextStyle(
                   fontSize: 16,
-                  color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                  color: ref.watch(themeProvider).themeColor.titleColor(),
                 ),
               ),
               subtitle: Column(

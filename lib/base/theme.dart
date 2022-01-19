@@ -157,7 +157,7 @@ ThemeData lightTheme = ThemeData.light().copyWith(
 abstract class ThemeColors {
   Color settingBgColor();
 
-  Color taskTitleColor();
+  Color titleColor();
 
   Color descColor();
 
@@ -170,7 +170,7 @@ abstract class ThemeColors {
 
 class LightThemeColors extends ThemeColors {
   @override
-  Color taskTitleColor() {
+  Color titleColor() {
     return const Color(0xff333333);
   }
 
@@ -202,7 +202,7 @@ class LightThemeColors extends ThemeColors {
 
 class DartThemeColors extends ThemeColors {
   @override
-  Color taskTitleColor() {
+  Color titleColor() {
     return Colors.white;
   }
 

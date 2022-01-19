@@ -57,7 +57,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "脚本管理",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -90,7 +90,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "依赖管理",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -123,7 +123,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "任务日志",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -157,7 +157,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "登录日志",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -202,7 +202,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "夜间模式",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          color: ref.watch(themeProvider).themeColor.titleColor(),
                           fontSize: 16,
                         ),
                       ),

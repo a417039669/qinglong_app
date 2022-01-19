@@ -243,7 +243,7 @@ class TaskItemCell extends StatelessWidget {
                     style: TextStyle(
                       overflow: TextOverflow.ellipsis,
                       color:
-                          ref.watch(themeProvider).themeColor.taskTitleColor(),
+                          ref.watch(themeProvider).themeColor.titleColor(),
                       fontSize: 18,
                     ),
                   ),
@@ -292,7 +292,7 @@ class TaskItemCell extends StatelessWidget {
                             color: ref
                                 .watch(themeProvider)
                                 .themeColor
-                                .taskTitleColor(),
+                                .titleColor(),
                             fontSize: 18,
                           ),
                         ),

@@ -49,8 +49,7 @@ class _EnvPageState extends State<EnvPage> {
                   return model.loadData(false);
                 },
                 child: ReorderableListView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                   header: searchCell(ref),
                   onReorder: (int oldIndex, int newIndex) {
                     if (list.length != model.list.length) {
@@ -142,8 +141,7 @@ class EnvItemCell extends StatelessWidget {
               backgroundColor: Colors.grey,
               flex: 1,
               onPressed: (_) {
-                Navigator.of(context)
-                    .pushNamed(Routes.routeAddEnv, arguments: bean);
+                Navigator.of(context).pushNamed(Routes.routeAddEnv, arguments: bean);
               },
               foregroundColor: Colors.white,
               icon: CupertinoIcons.pencil,
@@ -155,9 +153,7 @@ class EnvItemCell extends StatelessWidget {
                 enableEnv();
               },
               foregroundColor: Colors.white,
-              icon: bean.status == 0
-                  ? Icons.dnd_forwardslash
-                  : Icons.check_circle_outline_sharp,
+              icon: bean.status == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
             ),
             SlidableAction(
               backgroundColor: Colors.red,
@@ -190,22 +186,29 @@ class EnvItemCell extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: Text(
-                              bean.name ?? "",
-                              maxLines: 1,
-                              style: TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                color: bean.status == 1
-                                    ? const Color(0xffF85152)
-                                    : ref
-                                        .watch(themeProvider)
-                                        .themeColor
-                                        .taskTitleColor(),
-                                fontSize: 18,
+                          child: Row(
+                            children: [
+                              Material(
+                                color: Colors.transparent,
+                                child: Text(
+                                  bean.name ?? "",
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    color: ref.watch(themeProvider).themeColor.titleColor(),
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
-                            ),
+                              bean.status == 1
+                                  ? const Icon(
+                                      Icons.dnd_forwardslash,
+                                      size: 12,
+                                      color: Colors.red,
+                                    )
+                                  : const SizedBox.shrink(),
+                              const Spacer(),
+                            ],
                           ),
                         ),
                         const SizedBox(
@@ -218,10 +221,7 @@ class EnvItemCell extends StatelessWidget {
                             maxLines: 1,
                             style: TextStyle(
                               overflow: TextOverflow.ellipsis,
-                              color: ref
-                                  .watch(themeProvider)
-                                  .themeColor
-                                  .descColor(),
+                              color: ref.watch(themeProvider).themeColor.descColor(),
                               fontSize: 12,
                             ),
                           ),
@@ -238,8 +238,7 @@ class EnvItemCell extends StatelessWidget {
                         maxLines: 1,
                         style: TextStyle(
                           overflow: TextOverflow.ellipsis,
-                          color:
-                              ref.watch(themeProvider).themeColor.descColor(),
+                          color: ref.watch(themeProvider).themeColor.descColor(),
                           fontSize: 12,
                         ),
                       ),

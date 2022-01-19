@@ -187,7 +187,7 @@ class DependencyCell extends ConsumerWidget {
                 maxLines: 1,
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
-                  color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                  color: ref.watch(themeProvider).themeColor.titleColor(),
                   fontSize: 18,
                 ),
               ),
@@ -220,7 +220,7 @@ class DependencyCell extends ConsumerWidget {
                             maxLines: 1,
                             style: TextStyle(
                               overflow: TextOverflow.ellipsis,
-                              color: ref.watch(themeProvider).themeColor.taskTitleColor(),
+                              color: ref.watch(themeProvider).themeColor.titleColor(),
                               fontSize: 18,
                             ),
                           ),

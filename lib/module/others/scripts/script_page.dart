@@ -53,7 +53,7 @@ class _ScriptPageState extends ConsumerState<ScriptPage> {
                             style: TextStyle(
                               color: (item.disabled ?? false)
                                   ? ref.watch(themeProvider).themeColor.descColor()
-                                  : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                                  : ref.watch(themeProvider).themeColor.titleColor(),
                               fontSize: 16,
                             ),
                           ),
@@ -73,7 +73,7 @@ class _ScriptPageState extends ConsumerState<ScriptPage> {
                                       style: TextStyle(
                                         color: (item.disabled ?? false)
                                             ? ref.watch(themeProvider).themeColor.descColor()
-                                            : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                                            : ref.watch(themeProvider).themeColor.titleColor(),
                                         fontSize: 14,
                                       ),
                                     ),
@@ -95,7 +95,7 @@ class _ScriptPageState extends ConsumerState<ScriptPage> {
                             style: TextStyle(
                               color: (item.disabled ?? false)
                                   ? ref.watch(themeProvider).themeColor.descColor()
-                                  : ref.watch(themeProvider).themeColor.taskTitleColor(),
+                                  : ref.watch(themeProvider).themeColor.titleColor(),
                               fontSize: 16,
                             ),
                           ),

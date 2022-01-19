@@ -6,7 +6,6 @@ import 'package:dio_log/dio_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:qinglong_app/base/http/token_interceptor.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
-import 'package:qinglong_app/utils/QlNavigatorObserver.dart';
 
 import '../../json.jc.dart';
 import '../../main.dart';

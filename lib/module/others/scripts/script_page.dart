@@ -6,6 +6,7 @@ import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
+import 'package:qinglong_app/base/ui/lazy_load_state.dart';
 import 'package:qinglong_app/module/others/scripts/script_bean.dart';
 import 'package:qinglong_app/utils/extension.dart';
 
@@ -17,14 +18,8 @@ class ScriptPage extends ConsumerStatefulWidget {
   _ScriptPageState createState() => _ScriptPageState();
 }
 
-class _ScriptPageState extends ConsumerState<ScriptPage> {
+class _ScriptPageState extends ConsumerState<ScriptPage> with LazyLoadState<ScriptPage> {
   List<ScriptBean> list = [];
-
-  @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +46,8 @@ class _ScriptPageState extends ConsumerState<ScriptPage> {
                           title: Text(
                             item.title ?? "",
                             style: TextStyle(
-                              color: (item.disabled ?? false)
-                                  ? ref.watch(themeProvider).themeColor.descColor()
-                                  : ref.watch(themeProvider).themeColor.titleColor(),
+                              color:
+                                  (item.disabled ?? false) ? ref.watch(themeProvider).themeColor.descColor() : ref.watch(themeProvider).themeColor.titleColor(),
                               fontSize: 16,
                             ),
                           ),
@@ -93,9 +87,8 @@ class _ScriptPageState extends ConsumerState<ScriptPage> {
                           title: Text(
                             item.title ?? "",
                             style: TextStyle(
-                              color: (item.disabled ?? false)
-                                  ? ref.watch(themeProvider).themeColor.descColor()
-                                  : ref.watch(themeProvider).themeColor.titleColor(),
+                              color:
+                                  (item.disabled ?? false) ? ref.watch(themeProvider).themeColor.descColor() : ref.watch(themeProvider).themeColor.titleColor(),
                               fontSize: 16,
                             ),
                           ),
@@ -117,5 +110,10 @@ class _ScriptPageState extends ConsumerState<ScriptPage> {
     } else {
       response.message?.toast();
     }
+  }
+
+  @override
+  void onLazyLoad() {
+    loadData();
   }
 }

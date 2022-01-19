@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qinglong_app/base/ui/lazy_load_state.dart';
 import 'package:qinglong_app/utils/extension.dart';
 import 'base_viewmodel.dart';
 
@@ -8,6 +9,7 @@ class BaseStateWidget<T extends BaseViewModel> extends ConsumerStatefulWidget {
   final ProviderBase<T> model;
   final Widget? child;
   final Function(T)? onReady;
+  final bool lazyLoad;
 
   const BaseStateWidget({
     Key? key,
@@ -15,26 +17,14 @@ class BaseStateWidget<T extends BaseViewModel> extends ConsumerStatefulWidget {
     required this.model,
     this.child,
     this.onReady,
+    this.lazyLoad = false,
   }) : super(key: key);
 
   @override
   _BaseStateWidgetState<T> createState() => _BaseStateWidgetState<T>();
 }
 
-class _BaseStateWidgetState<T extends BaseViewModel>
-    extends ConsumerState<BaseStateWidget<T>> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(
-      (timeStamp) {
-        if (widget.onReady != null) {
-          widget.onReady!(ref.read<T>(widget.model));
-        }
-      },
-    );
-  }
-
+class _BaseStateWidgetState<T extends BaseViewModel> extends ConsumerState<BaseStateWidget<T>> with LazyLoadState<BaseStateWidget<T>> {
   @override
   Widget build(BuildContext context) {
     var viewModel = ref.watch<T>(widget.model);
@@ -65,32 +55,27 @@ class _BaseStateWidgetState<T extends BaseViewModel>
     if (viewModel.currentState == PageState.EMPTY) {
       return Container(
         alignment: Alignment.center,
-        child: Text("暂无数据"),
+        child: const Text("暂无数据"),
       );
     }
 
     return Container();
   }
-}
 
-abstract class BaseState<T extends StatefulWidget> extends State {
-  late T parent;
+  @override
+  void onLazyLoad() {
+    if (widget.onReady != null && widget.lazyLoad) {
+      widget.onReady!(ref.read<T>(widget.model));
+    }
+  }
 
   @override
   void initState() {
-    parent = widget as T;
     super.initState();
-    WidgetsBinding.instance?.endOfFrame.then((_) {
-      firstFrameCalled();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      if (widget.onReady != null && !widget.lazyLoad) {
+        widget.onReady!(ref.read<T>(widget.model));
+      }
     });
   }
-
-  void firstFrameCalled() {}
-
-  @override
-  Widget build(BuildContext context) {
-    return buildWidgets(context);
-  }
-
-  Widget buildWidgets(BuildContext context);
 }

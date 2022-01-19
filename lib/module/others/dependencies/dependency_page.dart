@@ -71,68 +71,68 @@ class _DependcyPageState extends State<DependencyPage> with TickerProviderStateM
           ),
         ],
       ),
-      body: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            TabBar(
-              controller: _tabController,
-              tabs: types
-                  .map((e) => Tab(
-                        text: e.name,
-                      ))
-                  .toList(),
-              isScrollable: true,
-              indicator: AbsUnderlineTabIndicator(
-                wantWidth: 20,
-                borderSide: BorderSide(
-                  color: Theme.of(context).primaryColor,
-                  width: 2,
-                ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          TabBar(
+            controller: _tabController,
+            tabs: types
+                .map(
+                  (e) => Tab(
+                    text: e.name,
+                  ),
+                )
+                .toList(),
+            isScrollable: true,
+            indicator: AbsUnderlineTabIndicator(
+              wantWidth: 20,
+              borderSide: BorderSide(
+                color: Theme.of(context).primaryColor,
+                width: 2,
               ),
             ),
-            Expanded(
-              child: BaseStateWidget<DependencyViewModel>(
-                onReady: (model) {
-                  model.loadData(types[0].name.toLowerCase());
-                  model.loadData(types[1].name.toLowerCase());
-                  model.loadData(types[2].name.toLowerCase());
-                },
-                model: dependencyProvider,
-                builder: (context, model, child) {
-                  return TabBarView(
-                    controller: _tabController,
-                    children: types.map(
-                      (e) {
-                        List<DependencyBean> list;
-                        if (e.index == 0) {
-                          list = model.nodeJsList;
-                        } else if (e.index == 1) {
-                          list = model.python3List;
-                        } else {
-                          list = model.linuxList;
-                        }
+          ),
+          Expanded(
+            child: BaseStateWidget<DependencyViewModel>(
+              onReady: (model) {
+                model.loadData(types[0].name.toLowerCase());
+                model.loadData(types[1].name.toLowerCase());
+                model.loadData(types[2].name.toLowerCase());
+              },
+              model: dependencyProvider,
+              builder: (context, model, child) {
+                return TabBarView(
+                  controller: _tabController,
+                  children: types.map(
+                    (e) {
+                      List<DependencyBean> list;
+                      if (e.index == 0) {
+                        list = model.nodeJsList;
+                      } else if (e.index == 1) {
+                        list = model.python3List;
+                      } else {
+                        list = model.linuxList;
+                      }
 
-                        return RefreshIndicator(
-                          child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              return DependencyCell(e, list[index]);
-                            },
-                            itemCount: list.length,
-                          ),
-                          onRefresh: () {
-                            return model.loadData(types[_tabController!.index].name.toLowerCase(), false);
+                      return RefreshIndicator(
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return DependencyCell(e, list[index]);
                           },
-                        );
-                      },
-                    ).toList(),
-                  );
-                },
-              ),
+                          itemCount: list.length,
+                        ),
+                        onRefresh: () {
+                          return model.loadData(types[_tabController!.index].name.toLowerCase(), false);
+                        },
+                      );
+                    },
+                  ).toList(),
+                );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

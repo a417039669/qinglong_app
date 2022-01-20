@@ -314,7 +314,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    Padding(
+                    Container(
+                      alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(horizontal: 40,),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width - 80,
@@ -324,7 +325,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 5,
                             ),
-                            color: canClickLoginBtn() ? ref.watch(themeProvider).themeColor.buttonBgColor() : Theme.of(context).primaryColor.withOpacity(0.4),
+                            color: canClickLoginBtn() ? primaryColor : primaryColor.withOpacity(0.4),
                             child: isLoading
                                 ? const CupertinoActivityIndicator()
                                 : const Text(

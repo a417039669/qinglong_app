@@ -152,9 +152,12 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
       [
         GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () {
+          onTap: () async{
             Navigator.of(context).pop();
-            startCron(context, ref);
+            await startCron(context, ref);
+            setState(() {
+
+            });
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -177,6 +180,7 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
           onTap: () {
             Navigator.of(context).pop();
             showLog();
+
           },
           child: Container(
             padding: const EdgeInsets.symmetric(

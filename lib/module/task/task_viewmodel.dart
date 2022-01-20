@@ -92,6 +92,8 @@ class TaskViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.unpinTask(sId);
 
       if (response.success) {
+        "取消置顶成功".toast();
+        list.firstWhere((element) => element.sId == sId).isPinned = 0;
         sortList();
         success();
       } else {
@@ -101,6 +103,8 @@ class TaskViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.pinTask(sId);
 
       if (response.success) {
+        "置顶成功".toast();
+        list.firstWhere((element) => element.sId == sId).isPinned = 1;
         sortList();
         success();
       } else {
@@ -114,6 +118,7 @@ class TaskViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.disableTask(sId);
 
       if (response.success) {
+        "禁用成功".toast();
         list.firstWhere((element) => element.sId == sId).isDisabled = 1;
         sortList();
         success();
@@ -124,6 +129,7 @@ class TaskViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.enableTask(sId);
 
       if (response.success) {
+        "启用成功".toast();
         list.firstWhere((element) => element.sId == sId).isDisabled = 0;
         sortList();
         success();

@@ -3,6 +3,7 @@ import 'package:qinglong_app/base/base_viewmodel.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
+import 'package:qinglong_app/utils/extension.dart';
 
 var envProvider = ChangeNotifierProvider((ref) => EnvViewModel());
 
@@ -29,6 +30,7 @@ class EnvViewModel extends BaseViewModel {
   Future<void> delEnv(String id) async {
     HttpResponse<NullResponse> result = await Api.delEnv(id);
     if (result.success) {
+      "删除成功".toast();
       list.removeWhere((element) => element.sId == id);
       notifyListeners();
     } else {
@@ -53,6 +55,7 @@ class EnvViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.enableEnv(sId);
 
       if (response.success) {
+        "启用成功".toast();
         list.firstWhere((element) => element.sId == sId).status = 0;
         success();
       } else {
@@ -62,6 +65,7 @@ class EnvViewModel extends BaseViewModel {
       HttpResponse<NullResponse> response = await Api.disableEnv(sId);
 
       if (response.success) {
+        "禁用成功".toast();
         list.firstWhere((element) => element.sId == sId).status = 1;
         success();
       } else {

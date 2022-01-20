@@ -10,18 +10,11 @@ class EnvBean {
   String? name;
   String? remarks;
 
-  EnvBean(
-      {this.value,
-      this.sId,
-      this.created,
-      this.status,
-      this.timestamp,
-      this.name,
-      this.remarks});
+  EnvBean({this.value, this.sId, this.created, this.status, this.timestamp, this.name, this.remarks});
 
   EnvBean.fromJson(Map<String, dynamic> json) {
     value = json['value'];
-    sId = json['_id'];
+    sId = json.containsKey('_id') ? json['_id'].toString() : (json.containsKey('id') ? json['id'].toString() : "");
     created = json['created'];
     status = json['status'];
     timestamp = json['timestamp'];

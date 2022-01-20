@@ -43,7 +43,7 @@ class TaskBean {
       command = json['command'].toString();
       schedule = json['schedule'].toString();
       saved = json['saved'];
-      sId = json['_id'].toString();
+      sId = json.containsKey('_id') ? json['_id'].toString() : (json.containsKey('id') ? json['id'].toString() : "");
       created = json['created'];
       status = json['status'];
       timestamp = json['timestamp'].toString();

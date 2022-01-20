@@ -29,7 +29,7 @@ class Api {
     String id,
     String secret,
   ) async {
-    return await Http.post<LoginBean>(
+    return await Http.get<LoginBean>(
       Url.loginByClientId,
       {
         "client_id": id,

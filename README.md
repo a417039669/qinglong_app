@@ -8,7 +8,7 @@
 
 Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下载
 
-本人没有iOS开发者账号,iOS端用户自行下载main分支源码编译安装
+iOS端暂无上架打算，用户自行下载main分支源码编译安装
 
 目前只支持用户名密码登录,不用担心,你的用户名密码不会泄露
 
@@ -43,5 +43,4 @@ Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下
 >* 两步验证
 >* 应用设置
 >* 通知设置
->* 脚本管理中的增删改和调试 
->* 暂不支持通过Client ID/Client Secret登录
+>* 脚本管理中的增删改和调试

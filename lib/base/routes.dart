@@ -49,12 +49,12 @@ class Routes {
           return CupertinoPageRoute(builder: (context) => const AddTaskPage());
         }
       case routeAddDependency:
-        return CupertinoPageRoute(builder: (context) => const AddDependenyPage());
+        return CupertinoPageRoute(builder: (context) => const AddDependencyPage());
       case routeAddEnv:
         if (settings.arguments != null) {
           return CupertinoPageRoute(
               builder: (context) => AddEnvPage(
-                    taskBean: settings.arguments as EnvBean,
+                    envBean: settings.arguments as EnvBean,
                   ));
         } else {
           return CupertinoPageRoute(builder: (context) => const AddEnvPage());

@@ -22,7 +22,8 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController _hostController = TextEditingController(text: getIt<UserInfoViewModel>().host);
+  final TextEditingController _hostController =
+      TextEditingController(text: getIt<UserInfoViewModel>().host);
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _cIdController = TextEditingController();
@@ -31,11 +32,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   bool rememberPassword = false;
 
+  bool useSecretLogin = false;
+
   @override
   void initState() {
     super.initState();
+    useSecretLogin = getIt<UserInfoViewModel>().useSecretLogined;
 
-    if (getIt<UserInfoViewModel>().userName != null && getIt<UserInfoViewModel>().userName!.isNotEmpty) {
+    if (getIt<UserInfoViewModel>().userName != null &&
+        getIt<UserInfoViewModel>().userName!.isNotEmpty) {
       if (getIt<UserInfoViewModel>().useSecretLogined) {
         _cIdController.text = getIt<UserInfoViewModel>().userName!;
       } else {
@@ -45,7 +50,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     } else {
       rememberPassword = false;
     }
-    if (getIt<UserInfoViewModel>().passWord != null && getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
+    if (getIt<UserInfoViewModel>().passWord != null &&
+        getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
       if (getIt<UserInfoViewModel>().useSecretLogined) {
         _cSecretController.text = getIt<UserInfoViewModel>().passWord!;
       } else {
@@ -54,12 +60,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
     getIt<UserInfoViewModel>().updateToken("");
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-      if (getIt<UserInfoViewModel>().useSecretLogined) {
+      if (useSecretLogin) {
         cardKey.currentState?.toggleCard();
-        getIt<UserInfoViewModel>().useSecretLogin(!(cardKey.currentState?.isFront ?? true));
-        WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-          setState(() {});
-        });
       }
     });
   }
@@ -151,114 +153,126 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                       FlipCard(
                         key: cardKey,
-                        fill: Fill.fillBack,
-                        // Fill the back side of the card to make in the same size as the front.
+                        onFlipDone: (back) {
+                          useSecretLogin = back;
+                          setState(() {});
+                        },
                         direction: FlipDirection.HORIZONTAL,
-                        front: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Text(
-                              "用户名:",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                        front: SizedBox(
+                          height: 200,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 15,
                               ),
-                            ),
-                            TextField(
-                              onChanged: (_) {
-                                setState(() {});
-                              },
-                              controller: _userNameController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                hintText: "请输入用户名",
+                              const Text(
+                                "用户名:",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              autofocus: false,
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Text(
-                              "密码:",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                              TextField(
+                                onChanged: (_) {
+                                  setState(() {});
+                                },
+                                controller: _userNameController,
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  hintText: "请输入用户名",
+                                ),
+                                autofocus: false,
                               ),
-                            ),
-                            TextField(
-                              onChanged: (_) {
-                                setState(() {});
-                              },
-                              controller: _passwordController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                hintText: "请输入密码",
+                              const SizedBox(
+                                height: 15,
                               ),
-                              autofocus: false,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
+                              const Text(
+                                "密码:",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextField(
+                                onChanged: (_) {
+                                  setState(() {});
+                                },
+                                controller: _passwordController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  hintText: "请输入密码",
+                                ),
+                                autofocus: false,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
                         ),
-                        back: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Text(
-                              "client_id:",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                        back: SizedBox(
+                          height: 200,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 15,
                               ),
-                            ),
-                            TextField(
-                              onChanged: (_) {
-                                setState(() {});
-                              },
-                              controller: _cIdController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                hintText: "请输入client_id",
+                              const Text(
+                                "client_id:",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              autofocus: false,
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            const Text(
-                              "client_secret:",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                              TextField(
+                                onChanged: (_) {
+                                  setState(() {});
+                                },
+                                controller: _cIdController,
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  hintText: "请输入client_id",
+                                ),
+                                autofocus: false,
                               ),
-                            ),
-                            TextField(
-                              onChanged: (_) {
-                                setState(() {});
-                              },
-                              controller: _cSecretController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                hintText: "请输入client_secret",
+                              const SizedBox(
+                                height: 15,
                               ),
-                              autofocus: false,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
+                              const Text(
+                                "client_secret:",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextField(
+                                onChanged: (_) {
+                                  setState(() {});
+                                },
+                                controller: _cSecretController,
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  hintText: "请输入client_secret",
+                                ),
+                                autofocus: false,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       Row(
@@ -280,12 +294,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           GestureDetector(
                             onTap: () {
                               cardKey.currentState?.toggleCard();
-                              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                              WidgetsBinding.instance
+                                  ?.addPostFrameCallback((timeStamp) {
                                 setState(() {});
                               });
                             },
                             child: Text(
-                              (cardKey.currentState?.isFront ?? true) ? "client_id登录" : "用户名密码登录",
+                              loginByUserName() ? "client_id登录" : "用户名密码登录",
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
@@ -299,12 +314,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 80,
                         child: IgnorePointer(
-                          ignoring: _hostController.text.isEmpty || _userNameController.text.isEmpty || _passwordController.text.isEmpty || isLoading,
+                          ignoring: !canClickLoginBtn(),
                           child: CupertinoButton(
                             padding: const EdgeInsets.symmetric(
                               vertical: 5,
                             ),
-                            color: canClickLoginBtn() ? ref.watch(themeProvider).themeColor.buttonBgColor() : Theme.of(context).primaryColor.withOpacity(0.4),
+                            color: canClickLoginBtn()
+                                ? ref
+                                    .watch(themeProvider)
+                                    .themeColor
+                                    .buttonBgColor()
+                                : Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.4),
                             child: isLoading
                                 ? const CupertinoActivityIndicator()
                                 : const Text(
@@ -316,11 +338,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             onPressed: () {
                               Http.pushedLoginPage = false;
                               Utils.hideKeyBoard(context);
-                              getIt<UserInfoViewModel>().updateHost(_hostController.text);
-                              if (cardKey.currentState?.isFront ?? true) {
-                                login(_userNameController.text, _passwordController.text);
+                              getIt<UserInfoViewModel>()
+                                  .updateHost(_hostController.text);
+                              if (loginByUserName()) {
+                                login(_userNameController.text,
+                                    _passwordController.text);
                               } else {
-                                login(_cIdController.text, _cSecretController.text);
+                                login(_cIdController.text,
+                                    _cSecretController.text);
                               }
                             },
                           ),
@@ -340,7 +365,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   bool isLoading = false;
 
   bool loginByUserName() {
-    return !getIt<UserInfoViewModel>().useSecretLogined;
+    return !useSecretLogin;
   }
 
   Future<void> login(String userName, String password) async {
@@ -365,7 +390,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       } else {
         HttpResponse<UserBean> userResponse = await Api.user();
         if (userResponse.success) {
-          if (userResponse.bean != null && userResponse.bean!.twoFactorActivated != null && userResponse.bean!.twoFactorActivated!) {
+          if (userResponse.bean != null &&
+              userResponse.bean!.twoFactorActivated != null &&
+              userResponse.bean!.twoFactorActivated!) {
             ("你已开启两步验证,App暂不支持").toast();
             isLoading = false;
             setState(() {});
@@ -390,9 +417,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     if (_hostController.text.isEmpty) return false;
     if (!loginByUserName()) {
-      return _cIdController.text.isNotEmpty && _cSecretController.text.isNotEmpty;
+      return _cIdController.text.isNotEmpty &&
+          _cSecretController.text.isNotEmpty;
     } else {
-      return _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      return _userNameController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
     }
   }
 }

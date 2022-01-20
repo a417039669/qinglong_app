@@ -88,7 +88,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 const Text(
                   "名称:",
@@ -96,9 +96,6 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
                 ),
                 TextField(
                   focusNode: focusNode,
@@ -121,7 +118,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 const Text(
                   "命令:",
@@ -129,9 +126,6 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
                 ),
                 TextField(
                   controller: _commandController,
@@ -155,7 +149,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 const Text(
                   "定时:",
@@ -163,9 +157,6 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
                 ),
                 TextField(
                   controller: _cronController,
@@ -179,7 +170,7 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                   height: 5,
                 ),
                 const Text(
-                  "定时的cron不校验,自己确保写的是正确的cron",
+                  "定时的cron不校验是否正确",
                   style: TextStyle(
                     fontSize: 12,
                   ),
@@ -213,10 +204,12 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
     taskBean.name = _nameController.text;
     taskBean.command = _commandController.text;
     taskBean.schedule = _cronController.text;
-    HttpResponse<NullResponse> response = await Api.addTask(_nameController.text, _commandController.text, _cronController.text, id: taskBean.sId);
+    HttpResponse<NullResponse> response = await Api.addTask(
+        _nameController.text, _commandController.text, _cronController.text,
+        id: taskBean.sId);
 
     if (response.success) {
-      "操作成功".toast();
+      (widget.taskBean?.sId == null) ? "新增成功" : "修改成功".toast();
       ref.read(taskProvider).updateBean(taskBean);
       Navigator.of(context).pop();
     } else {

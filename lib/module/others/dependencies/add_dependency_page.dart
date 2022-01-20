@@ -1,3 +1,4 @@
+import 'package:dio_log/dio_log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
@@ -36,6 +37,10 @@ class _AddDependencyPageState extends ConsumerState<AddDependencyPage> {
         title: "新增依赖",
         actions: [
           InkWell(
+            onLongPress: () {
+              showDebugBtn(context, btnColor: Colors.blue);
+              WidgetsBinding.instance?.endOfFrame;
+            },
             onTap: () {
               submit();
             },

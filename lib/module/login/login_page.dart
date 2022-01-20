@@ -81,194 +81,203 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             Scaffold(
               backgroundColor: Colors.transparent,
               body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 10,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
                       ),
-                      SizedBox(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width,
-                        child: Stack(
-                          children: [
-                            Positioned(
-                              top: 0,
-                              left: 0,
-                              child: Image.asset(
-                                "assets/images/login_tip.png",
-                                height: 45,
-                              ),
-                            ),
-                            const Positioned(
-                              top: 10,
-                              left: 0,
-                              child: Text(
-                                "登录",
-                                style: TextStyle(
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: 5,
-                              right: 0,
-                              child: Image.asset(
-                                "assets/images/ql.png",
-                                height: 45,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 15,
-                      ),
-                      const Text(
-                        "域名:",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      TextField(
-                        onChanged: (_) {
-                          setState(() {});
-                        },
-                        controller: _hostController,
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                          hintText: "http://1.1.1.1:5700",
-                        ),
-                        autofocus: false,
-                      ),
-                      FlipCard(
-                        key: cardKey,
-                        onFlipDone: (back) {
-                          useSecretLogin = back;
-                          setState(() {});
-                        },
-                        direction: FlipDirection.HORIZONTAL,
-                        front: SizedBox(
-                          height: 200,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              const Text(
-                                "用户名:",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              TextField(
-                                onChanged: (_) {
-                                  setState(() {});
-                                },
-                                controller: _userNameController,
-                                decoration: const InputDecoration(
-                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  hintText: "请输入用户名",
-                                ),
-                                autofocus: false,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              const Text(
-                                "密码:",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              TextField(
-                                onChanged: (_) {
-                                  setState(() {});
-                                },
-                                controller: _passwordController,
-                                obscureText: true,
-                                decoration: const InputDecoration(
-                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  hintText: "请输入密码",
-                                ),
-                                autofocus: false,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 10,
                           ),
-                        ),
-                        back: SizedBox(
-                          height: 200,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              const Text(
-                                "client_id:",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                          SizedBox(
+                            height: 50,
+                            width: MediaQuery.of(context).size.width,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  child: Image.asset(
+                                    "assets/images/login_tip.png",
+                                    height: 45,
+                                  ),
                                 ),
-                              ),
-                              TextField(
-                                onChanged: (_) {
-                                  setState(() {});
-                                },
-                                controller: _cIdController,
-                                decoration: const InputDecoration(
-                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  hintText: "请输入client_id",
+                                const Positioned(
+                                  top: 10,
+                                  left: 0,
+                                  child: Text(
+                                    "登录",
+                                    style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                                autofocus: false,
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              const Text(
-                                "client_secret:",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                Positioned(
+                                  top: 5,
+                                  right: 0,
+                                  child: Image.asset(
+                                    "assets/images/ql.png",
+                                    height: 45,
+                                  ),
                                 ),
-                              ),
-                              TextField(
-                                onChanged: (_) {
-                                  setState(() {});
-                                },
-                                controller: _cSecretController,
-                                obscureText: true,
-                                decoration: const InputDecoration(
-                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  hintText: "请输入client_secret",
-                                ),
-                                autofocus: false,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 15,
+                          ),
+                          const Text(
+                            "域名:",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          TextField(
+                            onChanged: (_) {
+                              setState(() {});
+                            },
+                            controller: _hostController,
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                              hintText: "http://1.1.1.1:5700",
+                            ),
+                            autofocus: false,
+                          ),
+                          FlipCard(
+                            key: cardKey,
+                            onFlipDone: (back) {
+                              useSecretLogin = back;
+                              setState(() {});
+                            },
+                            direction: FlipDirection.HORIZONTAL,
+                            front: SizedBox(
+                              height: 200,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  const Text(
+                                    "用户名:",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextField(
+                                    onChanged: (_) {
+                                      setState(() {});
+                                    },
+                                    controller: _userNameController,
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      hintText: "请输入用户名",
+                                    ),
+                                    autofocus: false,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  const Text(
+                                    "密码:",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextField(
+                                    onChanged: (_) {
+                                      setState(() {});
+                                    },
+                                    controller: _passwordController,
+                                    obscureText: true,
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      hintText: "请输入密码",
+                                    ),
+                                    autofocus: false,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            back: SizedBox(
+                              height: 200,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  const Text(
+                                    "client_id:",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextField(
+                                    onChanged: (_) {
+                                      setState(() {});
+                                    },
+                                    controller: _cIdController,
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      hintText: "请输入client_id",
+                                    ),
+                                    autofocus: false,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  const Text(
+                                    "client_secret:",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  TextField(
+                                    onChanged: (_) {
+                                      setState(() {});
+                                    },
+                                    controller: _cSecretController,
+                                    obscureText: true,
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      hintText: "请输入client_secret",
+                                    ),
+                                    autofocus: false,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Row(
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25,),
+                      child: Row(
                         children: [
                           Checkbox(
                             value: rememberPassword,
@@ -298,12 +307,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ),
                           ),
+                          SizedBox(width: 10,),
                         ],
                       ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      SizedBox(
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40,),
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width - 80,
                         child: IgnorePointer(
                           ignoring: !canClickLoginBtn(),
@@ -334,8 +347,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

@@ -252,6 +252,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   padding: const EdgeInsets.only(
                     left: 15,
                     right: 15,
+                    top: 5,
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -266,11 +267,49 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       ),
                       const Spacer(),
                       CupertinoSwitch(
-                          value: ref.watch(themeProvider).isInDartMode(),
-                          onChanged: (open) {
-                            ref.watch(themeProvider).changeThemeReal(open);
-                          }),
+                        value: ref.watch(themeProvider).isInDartMode(),
+                        onChanged: (open) {
+                          ref.watch(themeProvider).changeThemeReal(open);
+                        },
+                      ),
                     ],
+                  ),
+                ),
+                const Divider(
+                  indent: 15,
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      Routes.routeAbout,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                      right: 15,
+                      top: 5,
+                      bottom: 15,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "关于",
+                          style: TextStyle(
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          CupertinoIcons.right_chevron,
+                          size: 16,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

@@ -54,22 +54,25 @@ class QlAppState extends ConsumerState<QlApp> {
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
-      child: MaterialApp(
-        locale: const Locale('zh', 'cn'),
-        navigatorKey: navigatorState,
-        theme: ref.watch<ThemeViewModel>(themeProvider).currentTheme,
-        onGenerateRoute: (setting) {
-          return Routes.generateRoute(setting);
-        },
-        home: Builder(
-          builder: (context) {
-            if (!kReleaseMode) {
-              showDebugBtn(context, btnColor: Colors.blue);
-            }
-            return getIt<UserInfoViewModel>().isLogined() ? const HomePage() : const LoginPage();
+      child: MediaQuery(
+        data: MediaQueryData.fromWindow(WidgetsBinding.instance!.window).copyWith(textScaleFactor: 1,),
+        child: MaterialApp(
+          locale: const Locale('zh', 'cn'),
+          navigatorKey: navigatorState,
+          theme: ref.watch<ThemeViewModel>(themeProvider).currentTheme,
+          onGenerateRoute: (setting) {
+            return Routes.generateRoute(setting);
           },
+          home: Builder(
+            builder: (context) {
+              if (!kReleaseMode) {
+                showDebugBtn(context, btnColor: Colors.blue);
+              }
+              return getIt<UserInfoViewModel>().isLogined() ? const HomePage() : const LoginPage();
+            },
+          ),
+          // home: LoginPage(),
         ),
-        // home: LoginPage(),
       ),
     );
   }

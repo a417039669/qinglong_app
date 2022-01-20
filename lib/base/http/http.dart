@@ -126,7 +126,7 @@ class Http {
   }
 
   static HttpResponse<T> exceptionHandler<T>(DioError e) {
-    if (e.response?.statusCode == 401) {
+    if (e.response?.data!= null && e.response?.data['code'] == 401) {
       if (!getIt<UserInfoViewModel>().useSecretLogined) {
         exitLogin();
       }

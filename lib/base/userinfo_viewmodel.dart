@@ -8,11 +8,16 @@ class UserInfoViewModel {
   String? _userName;
   String? _passWord;
   bool _useSecertLogined = false;
+  bool _forbidReadClipBoard = false;
 
   UserInfoViewModel() {
     String userInfoJson = SpUtil.getString(spUserInfo);
     _userName = SpUtil.getString(spUserName);
     _passWord = SpUtil.getString(spPassWord);
+    _forbidReadClipBoard = SpUtil.getBool(
+      spForbidClipBoard,
+      defValue: false,
+    );
 
     _useSecertLogined = SpUtil.getBool(spSecretLogined, defValue: false);
     _host = SpUtil.getString(spHost, defValue: '');
@@ -34,6 +39,11 @@ class UserInfoViewModel {
     SpUtil.putString(spPassWord, password);
   }
 
+  void forbidReadClipBoard(bool forbid) {
+    _forbidReadClipBoard = forbid;
+    SpUtil.putBool(spForbidClipBoard, forbid);
+  }
+
   void useSecretLogin(bool use) {
     _useSecertLogined = use;
     SpUtil.putBool(spSecretLogined, _useSecertLogined);
@@ -53,6 +63,8 @@ class UserInfoViewModel {
   String? get passWord => _passWord;
 
   bool get useSecretLogined => _useSecertLogined;
+
+  bool get forbidReadClipBoarded => _forbidReadClipBoard;
 
   bool isLogined() {
     return token != null && token!.isNotEmpty;

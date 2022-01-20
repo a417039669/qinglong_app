@@ -3,9 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
+import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
 import 'package:qinglong_app/module/env/env_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
+
+import '../../main.dart';
 
 class AddEnvPage extends ConsumerStatefulWidget {
   final EnvBean? envBean;
@@ -98,6 +101,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                     ),
                   ),
                   TextField(
+                    enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                     focusNode: focusNode,
                     controller: _nameController,
                     decoration: const InputDecoration(
@@ -127,6 +131,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                     ),
                   ),
                   TextField(
+                    enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                     controller: _valueController,
                     maxLines: 8,
                     minLines: 1,
@@ -157,6 +162,7 @@ class _AddEnvPageState extends ConsumerState<AddEnvPage> {
                     ),
                   ),
                   TextField(
+                    enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                     controller: _remarkController,
                     decoration: const InputDecoration(
                       hintText: "请输入备注",

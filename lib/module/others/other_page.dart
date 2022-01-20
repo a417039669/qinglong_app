@@ -278,6 +278,53 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                 const Divider(
                   indent: 15,
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 15,
+                    right: 15,
+                    top: 5,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "禁止读取剪切板",
+                              style: TextStyle(
+                                color: ref.watch(themeProvider).themeColor.titleColor(),
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              "开启后输入框无法使用系统自带的复制粘贴功能,输入法的复制粘贴功能不受影响",
+                              style: TextStyle(
+                                color: ref.watch(themeProvider).themeColor.descColor(),
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      CupertinoSwitch(
+                        value: getIt<UserInfoViewModel>().forbidReadClipBoarded,
+                        onChanged: (forbid) {
+                          getIt<UserInfoViewModel>().forbidReadClipBoard(forbid);
+                          setState(() {
+
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(
+                  indent: 15,
+                ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {

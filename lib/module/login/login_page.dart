@@ -142,6 +142,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                           ),
                           TextField(
+                            enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                             onChanged: (_) {
                               setState(() {});
                             },
@@ -177,6 +178,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     ),
                                   ),
                                   TextField(
+                                    enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                                     onChanged: (_) {
                                       setState(() {});
                                     },
@@ -198,6 +200,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     ),
                                   ),
                                   TextField(
+                                    enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                                     onChanged: (_) {
                                       setState(() {});
                                     },
@@ -233,6 +236,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     ),
                                   ),
                                   TextField(
+                                    enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                                     onChanged: (_) {
                                       setState(() {});
                                     },
@@ -254,6 +258,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     ),
                                   ),
                                   TextField(
+                                    enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                                     onChanged: (_) {
                                       setState(() {});
                                     },
@@ -276,7 +281,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25,),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 25,
+                      ),
                       child: Row(
                         children: [
                           Checkbox(
@@ -307,7 +314,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          SizedBox(
+                            width: 10,
+                          ),
                         ],
                       ),
                     ),
@@ -316,7 +325,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(horizontal: 40,),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                      ),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width - 80,
                         child: IgnorePointer(
@@ -396,6 +407,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           onChanged: (value) {
                             twoFact = value;
                           },
+                          enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                           maxLines: 1,
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(

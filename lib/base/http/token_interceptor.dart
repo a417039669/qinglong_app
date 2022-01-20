@@ -13,10 +13,21 @@ class TokenInterceptor extends Interceptor {
           "Bearer " + getIt<UserInfoViewModel>().token!;
     }
 
-    options.headers["User-Agent"] = "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1";
+    options.headers["User-Agent"] =
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1";
 
     options.headers["Content-Type"] = "application/json;charset=UTF-8";
-    if (options.path != Url.loginByClientId && options.path!= Url.loginTwo) {
+
+    // '/api/user/login',
+    // '/open/auth/token',
+    // '/api/user/two-factor/login',
+    // '/api/system',
+    // '/api/user/init',
+    // '/api/user/notification/init'
+
+    if (options.path != Url.loginByClientId &&
+        options.path != Url.loginTwo &&
+        options.path != Url.login) {
       options.queryParameters["t"] =
           (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
     }

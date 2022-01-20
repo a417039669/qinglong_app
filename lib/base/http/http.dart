@@ -14,6 +14,7 @@ import '../routes.dart';
 
 class Http {
   static Dio? _dio;
+  static bool pushedLoginPage = false;
 
   static void initDioConfig(
     String host,
@@ -49,13 +50,7 @@ class Http {
 
       return decodeResponse<T>(response, serializationName, compute);
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        exitLogin();
-      }
-      return HttpResponse(
-          success: false,
-          message: e.response?.statusMessage ?? e.message,
-          code: 0);
+      return exceptionHandler<T>(e);
     }
   }
 
@@ -75,13 +70,7 @@ class Http {
         compute,
       );
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        exitLogin();
-      }
-      return HttpResponse(
-          success: false,
-          message: e.response?.statusMessage ?? e.message,
-          code: 0);
+      return exceptionHandler<T>(e);
     }
   }
 
@@ -101,13 +90,7 @@ class Http {
         compute,
       );
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        exitLogin();
-      }
-      return HttpResponse(
-          success: false,
-          message: e.response?.statusMessage ?? e.message,
-          code: 0);
+      return exceptionHandler<T>(e);
     }
   }
 
@@ -126,17 +109,9 @@ class Http {
         compute,
       );
     } on DioError catch (e) {
-      if (e.response?.statusCode == 401) {
-        exitLogin();
-      }
-      return HttpResponse(
-          success: false,
-          message: e.response?.statusMessage ?? e.message,
-          code: 0);
+      return exceptionHandler<T>(e);
     }
   }
-
-  static bool pushedLoginPage = false;
 
   static void exitLogin() {
     if (!pushedLoginPage) {
@@ -144,6 +119,13 @@ class Http {
       pushedLoginPage = true;
       navigatorState.currentState?.pushReplacementNamed(Routes.routeLogin);
     }
+  }
+
+  static HttpResponse<T> exceptionHandler<T>(DioError e) {
+    if (e.response?.statusCode == 401 && !getIt<UserInfoViewModel>().useSecretLogined) {
+      exitLogin();
+    }
+    return HttpResponse(success: false, message: "没有该模块的访问权限", code: 0);
   }
 
   static HttpResponse<T> decodeResponse<T>(
@@ -227,8 +209,7 @@ class HttpResponse<T> {
   late int code;
   T? bean;
 
-  HttpResponse(
-      {required this.success, this.message, required this.code, this.bean});
+  HttpResponse({required this.success, this.message, required this.code, this.bean});
 }
 
 class DeserializeAction<T> {

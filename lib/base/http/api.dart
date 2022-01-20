@@ -66,6 +66,16 @@ class Api {
     );
   }
 
+  static Future<HttpResponse<NullResponse>> updatePassword(String name, String password) async {
+    return await Http.put<NullResponse>(
+      Url.updatePassword,
+      {
+        "username": name,
+        "password": password,
+      },
+    );
+  }
+
   static Future<HttpResponse<String>> inTimeLog(String cron) async {
     return await Http.get<String>(
       Url.intimeLog(cron),
@@ -222,6 +232,27 @@ class Api {
     return await Http.get<List<ScriptBean>>(
       Url.scripts,
       null,
+    );
+  }
+
+  static Future<HttpResponse<NullResponse>> updateScript(String name, String path, String content) async {
+    return await Http.put<NullResponse>(
+      Url.scriptDetail,
+      {
+        "filename": name,
+        "path": path,
+        "content": content,
+      },
+    );
+  }
+
+  static Future<HttpResponse<NullResponse>> delScript(String name, String path) async {
+    return await Http.delete<NullResponse>(
+      Url.scriptDetail,
+      {
+        "filename": name,
+        "path": path,
+      },
     );
   }
 

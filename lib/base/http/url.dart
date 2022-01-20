@@ -6,6 +6,8 @@ class Url {
   static const loginByClientId = "/open/auth/token";
   static const user = "/api/user";
 
+  static const updatePassword = "/api/user";
+
   static get tasks => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons" : "/api/crons";
 
   static get runTasks => getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/run" : "/api/crons/run";
@@ -47,12 +49,16 @@ class Url {
   static get taskLogDetail => getIt<UserInfoViewModel>().useSecretLogined ? "/open/logs/" : "/api/logs/";
 
   static get scripts => getIt<UserInfoViewModel>().useSecretLogined ? "/open/scripts/files" : "/api/scripts/files";
+  static get scriptUpdate => getIt<UserInfoViewModel>().useSecretLogined ? "/open/scripts" : "/api/scripts";
 
   static get scriptDetail => getIt<UserInfoViewModel>().useSecretLogined ? "/open/scripts/" : "/api/scripts/";
 
   static get dependencies => getIt<UserInfoViewModel>().useSecretLogined ? "/open/dependencies" : "/api/dependencies";
 
   static get dependencyReinstall => getIt<UserInfoViewModel>().useSecretLogined ? "/open/dependencies/reinstall" : "/api/dependencies/reinstall";
+
+
+
 
   static intimeLog(String cronId) {
     return getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/$cronId/log" : "/api/crons/$cronId/log";

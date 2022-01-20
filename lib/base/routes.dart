@@ -10,9 +10,11 @@ import 'package:qinglong_app/module/others/dependencies/add_dependency_page.dart
 import 'package:qinglong_app/module/others/dependencies/dependency_page.dart';
 import 'package:qinglong_app/module/others/login_log/login_log_page.dart';
 import 'package:qinglong_app/module/others/scripts/script_detail_page.dart';
+import 'package:qinglong_app/module/others/scripts/script_edit_page.dart';
 import 'package:qinglong_app/module/others/scripts/script_page.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_detail_page.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_page.dart';
+import 'package:qinglong_app/module/others/update_password_page.dart';
 import 'package:qinglong_app/module/task/add_task_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_detail/task_detail_page.dart';
@@ -31,7 +33,10 @@ class Routes {
   static const String routeTaskLogDetail = "/log/taskDetail";
   static const String routeScript = "/script";
   static const String routeScriptDetail = "/script/detail";
+  static const String routeScriptUpdate = "/script/update";
+  static const String routeScriptAdd = "/script/add";
   static const String routeDependency = "/Dependency";
+  static const String routeUpdatePassword = "/updatePassword";
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -100,10 +105,23 @@ class Routes {
           builder: (context) => TaskDetailPage(
             settings.arguments as TaskBean,
           ),
-        );  case routeEnvDetail:
+        );
+      case routeEnvDetail:
         return CupertinoPageRoute(
           builder: (context) => EnvDetailPage(
             settings.arguments as EnvBean,
+          ),
+        );
+      case routeUpdatePassword:
+        return CupertinoPageRoute(
+          builder: (context) => const UpdatePasswordPage(),
+        );
+      case routeScriptUpdate:
+        return CupertinoPageRoute(
+          builder: (context) => ScriptEditPage(
+            (settings.arguments as Map)["title"],
+            (settings.arguments as Map)["path"],
+            (settings.arguments as Map)["content"],
           ),
         );
     }

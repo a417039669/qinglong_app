@@ -60,7 +60,11 @@ class _ScriptPageState extends ConsumerState<ScriptPage> with LazyLoadState<Scri
                                           "title": e.title,
                                           "path": e.parent,
                                         },
-                                      );
+                                      ).then((value) {
+                                        if (value != null && value == true) {
+                                          loadData();
+                                        }
+                                      });
                                     },
                                     title: Text(
                                       e.title ?? "",
@@ -81,6 +85,12 @@ class _ScriptPageState extends ConsumerState<ScriptPage> with LazyLoadState<Scri
                               arguments: {
                                 "title": item.title,
                                 "path": "",
+                              },
+                            ).then(
+                              (value) {
+                                if (value != null && value == true) {
+                                  loadData();
+                                }
                               },
                             );
                           },

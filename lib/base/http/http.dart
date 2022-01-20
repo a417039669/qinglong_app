@@ -117,7 +117,7 @@ class Http {
     if (!pushedLoginPage) {
       "身份已过期,请重新登录".toast();
       pushedLoginPage = true;
-      navigatorState.currentState?.pushReplacementNamed(Routes.routeLogin);
+      navigatorState.currentState?.pushNamedAndRemoveUntil(Routes.routeLogin, (route) => false);
     }
   }
 

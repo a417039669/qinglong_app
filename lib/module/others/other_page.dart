@@ -6,6 +6,7 @@ import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
 import 'package:qinglong_app/utils/extension.dart';
+
 class OtherPage extends ConsumerStatefulWidget {
   const OtherPage({Key? key}) : super(key: key);
 
@@ -57,10 +58,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "脚本管理",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -93,10 +91,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "依赖管理",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -129,10 +124,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "任务日志",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -170,10 +162,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "登录日志",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -192,6 +181,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
           Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 15,
+              vertical: 15,
             ),
             decoration: BoxDecoration(
               color: ref.watch(themeProvider).themeColor.settingBgColor(),
@@ -203,10 +193,47 @@ class _OtherPageState extends ConsumerState<OtherPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                GestureDetector(
+                  onTap: () {
+                    if (getIt<UserInfoViewModel>().useSecretLogined) {
+                      "使用client_id方式登录无法修改密码".toast();
+                    } else {
+                      Navigator.of(context).pushNamed(
+                        Routes.routeUpdatePassword,
+                      );
+                    }
+                  },
+                  behavior: HitTestBehavior.opaque,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 15,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "修改密码",
+                          style: TextStyle(
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          CupertinoIcons.right_chevron,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  indent: 15,
+                ),
                 Padding(
                   padding: const EdgeInsets.only(
-                    top: 5,
-                    bottom: 5,
                     left: 15,
                     right: 15,
                   ),
@@ -217,8 +244,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "夜间模式",
                         style: TextStyle(
-                          color:
-                              ref.watch(themeProvider).themeColor.titleColor(),
+                          color: ref.watch(themeProvider).themeColor.titleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -267,8 +293,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                             child: const Text("确定"),
                             onPressed: () {
                               getIt<UserInfoViewModel>().updateToken("");
-                              Navigator.of(context)
-                                  .pushReplacementNamed(Routes.routeLogin);
+                              Navigator.of(context).pushReplacementNamed(Routes.routeLogin);
                             },
                           ),
                         ],

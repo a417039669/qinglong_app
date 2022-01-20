@@ -126,9 +126,11 @@ class Http {
   }
 
   static HttpResponse<T> exceptionHandler<T>(DioError e) {
-    if (e.response?.statusCode == 401 && !getIt<UserInfoViewModel>().useSecretLogined) {
-      exitLogin();
-    return HttpResponse(success: false, message: "没有该模块的访问权限", code: 0);
+    if (e.response?.statusCode == 401) {
+      if (!getIt<UserInfoViewModel>().useSecretLogined) {
+        exitLogin();
+      }
+      return HttpResponse(success: false, message: "没有该模块的访问权限", code: 0);
     }
     return HttpResponse(success: false, message: e.message, code: 0);
   }

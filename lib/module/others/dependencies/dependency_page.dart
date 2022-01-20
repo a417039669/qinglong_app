@@ -334,13 +334,23 @@ class DependencyCell extends ConsumerWidget {
         content: Text("确认删除依赖 ${bean.name ?? ""} 吗"),
         actions: [
           CupertinoDialogAction(
-            child: const Text("取消"),
+            child: const Text(
+              "取消",
+              style: TextStyle(
+                color: Color(0xff999999),
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           CupertinoDialogAction(
-            child: const Text("确定"),
+            child: Text(
+              "确定",
+              style: TextStyle(
+                color: primaryColor,
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
               ref.read(dependencyProvider).del(type.name.toLowerCase(), sId ?? "");

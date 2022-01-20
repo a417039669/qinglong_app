@@ -208,17 +208,6 @@ class EnvItemCell extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                bean.status == 1
-                                    ? const Icon(
-                                        Icons.dnd_forwardslash,
-                                        size: 16,
-                                        color: Colors.red,
-                                      )
-                                    : const SizedBox.shrink(),
-                                const Spacer(),
                               ],
                             ),
                           ),
@@ -259,21 +248,30 @@ class EnvItemCell extends StatelessWidget {
                             const SizedBox(
                               width: 5,
                             ),
-                            Expanded(
-                              child: Material(
-                                color: Colors.transparent,
-                                child: Text(
-                                  bean.remarks ?? "-",
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    height: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    color: ref.watch(themeProvider).themeColor.descColor(),
-                                    fontSize: 12,
-                                  ),
+                            Material(
+                              color: Colors.transparent,
+                              child: Text(
+                                bean.remarks ?? "-",
+                                maxLines: 1,
+                                style: TextStyle(
+                                  height: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: ref.watch(themeProvider).themeColor.descColor(),
+                                  fontSize: 12,
                                 ),
                               ),
                             ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            bean.status == 1
+                                ? const Icon(
+                                    Icons.dnd_forwardslash,
+                                    size: 12,
+                                    color: Colors.red,
+                                  )
+                                : const SizedBox.shrink(),
+                            const Spacer(),
                           ],
                         ),
                       ),
@@ -319,13 +317,23 @@ class EnvItemCell extends StatelessWidget {
         content: Text("确认删除环境变量 ${bean.name ?? ""} 吗"),
         actions: [
           CupertinoDialogAction(
-            child: const Text("取消"),
+            child: const Text(
+              "取消",
+              style: TextStyle(
+                color: Color(0xff999999),
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           CupertinoDialogAction(
-            child: const Text("确定"),
+            child: Text(
+              "确定",
+              style: TextStyle(
+                color: primaryColor,
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
               ref.read(envProvider).delEnv(bean.sId!);

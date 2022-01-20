@@ -106,6 +106,11 @@ ThemeData darkTheme = ThemeData.dark().copyWith(
       },
     ),
   ),
+  cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
+    brightness: Brightness.dark,
+    primaryColor: Color(0xffffffff),
+    scaffoldBackgroundColor: Colors.black,
+  ),
 );
 ThemeData lightTheme = ThemeData.light().copyWith(
   brightness: Brightness.light,
@@ -175,6 +180,11 @@ ThemeData lightTheme = ThemeData.light().copyWith(
         return Colors.black;
       },
     ),
+  ),
+  cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
+    brightness: Brightness.light,
+    primaryColor: _primaryColor,
+    scaffoldBackgroundColor: Color(0xfff5f5f5),
   ),
 );
 

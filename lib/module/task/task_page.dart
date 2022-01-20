@@ -251,6 +251,7 @@ class TaskItemCell extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              width: MediaQuery.of(context).size.width,
               color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
@@ -307,6 +308,7 @@ class TaskItemCell extends StatelessWidget {
                     height: 8,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Material(
                         color: Colors.transparent,
@@ -331,6 +333,22 @@ class TaskItemCell extends StatelessWidget {
                             )
                           : const SizedBox.shrink(),
                     ],
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      bean.command ?? "",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        color: ref.watch(themeProvider).themeColor.descColor(),
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -401,13 +419,23 @@ class TaskItemCell extends StatelessWidget {
         content: Text("确认删除定时任务 ${bean.name ?? ""} 吗"),
         actions: [
           CupertinoDialogAction(
-            child: const Text("取消"),
+            child: const Text(
+              "取消",
+              style: TextStyle(
+                color: Color(0xff999999),
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           CupertinoDialogAction(
-            child: const Text("确定"),
+            child: Text(
+              "确定",
+              style: TextStyle(
+                color: primaryColor,
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
               ref.read(taskProvider).delCron(bean.sId!);

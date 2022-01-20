@@ -362,35 +362,93 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       response = await Api.loginByClientId(userName, password);
     }
     if (response.success) {
-      getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
-      getIt<UserInfoViewModel>().useSecretLogin(!loginByUserName());
-      if (rememberPassword) {
-        getIt<UserInfoViewModel>().updateUserName(userName, password);
-      }
-
-      if (!loginByUserName()) {
-        Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
-      } else {
-        HttpResponse<UserBean> userResponse = await Api.user();
-        if (userResponse.success) {
-          if (userResponse.bean != null && userResponse.bean!.twoFactorActivated != null && userResponse.bean!.twoFactorActivated!) {
-            ("你已开启两步验证,App暂不支持").toast();
+      loginSuccess(response, userName, password);
+    } else {
+      print(response.code);
+      (response.message ?? "请检查网络情况").toast();
+      //420代表需要2步验证
+      if (response.code == 420) {
+        String twoFact = "";
+        showCupertinoDialog(
+            context: context,
+            builder: (_) => CupertinoAlertDialog(
+                  title: const Text("两步验证"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Material(
+                        color: Colors.transparent,
+                        child: TextField(
+                          onChanged: (value) {
+                            twoFact = value;
+                          },
+                          maxLines: 1,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                            hintText: "请输入code",
+                          ),
+                          autofocus: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    CupertinoDialogAction(
+                      child: const Text(
+                        "取消",
+                        style: TextStyle(
+                          color: Color(0xff999999),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    CupertinoDialogAction(
+                      child: Text(
+                        "确定",
+                        style: TextStyle(
+                          color: primaryColor,
+                        ),
+                      ),
+                      onPressed: () async {
+                        Navigator.of(context).pop(true);
+                        HttpResponse<LoginBean> response = await Api.loginTwo(userName, password, twoFact);
+                        if (response.success) {
+                          loginSuccess(response, userName, password);
+                        } else {
+                          loginFailed(response);
+                        }
+                      },
+                    ),
+                  ],
+                )).then((value) {
+          if (value == null) {
             isLoading = false;
             setState(() {});
-          } else {
-            Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
           }
-        } else {
-          (response.message ?? "请检查网络情况").toast();
-          isLoading = false;
-          setState(() {});
-        }
+        });
+      } else {
+        isLoading = false;
+        setState(() {});
       }
-    } else {
-      (response.message ?? "请检查网络情况").toast();
-      isLoading = false;
-      setState(() {});
     }
+  }
+
+  void loginFailed(HttpResponse<LoginBean> response) {
+    (response.message ?? "请检查网络情况").toast();
+    isLoading = false;
+    setState(() {});
+  }
+
+  void loginSuccess(HttpResponse<LoginBean> response, String userName, String password) {
+    getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
+    getIt<UserInfoViewModel>().useSecretLogin(!loginByUserName());
+    if (rememberPassword) {
+      getIt<UserInfoViewModel>().updateUserName(userName, password);
+    }
+    Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
   }
 
   bool canClickLoginBtn() {

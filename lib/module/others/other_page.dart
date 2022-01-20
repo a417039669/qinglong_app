@@ -297,16 +297,26 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     showCupertinoDialog(
                       context: context,
                       builder: (context) => CupertinoAlertDialog(
-                        title: const Text("确定退出登录吗?"),
+                        title: const Text("确认退出登录吗?"),
                         actions: [
                           CupertinoDialogAction(
-                            child: const Text("取消"),
+                            child: const Text(
+                              "取消",
+                              style: TextStyle(
+                                color: Color(0xff999999),
+                              ),
+                            ),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
                           ),
                           CupertinoDialogAction(
-                            child: const Text("确定"),
+                            child: Text(
+                              "确定",
+                              style: TextStyle(
+                                color: primaryColor,
+                              ),
+                            ),
                             onPressed: () {
                               getIt<UserInfoViewModel>().updateToken("");
                               Navigator.of(context).pushReplacementNamed(Routes.routeLogin);

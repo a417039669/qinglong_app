@@ -3,6 +3,7 @@ import '../userinfo_viewmodel.dart';
 
 class Url {
   static get login => "/api/user/login";
+  static get loginTwo => "/api/user/two-factor/login";
   static const loginByClientId = "/open/auth/token";
   static const user = "/api/user";
 

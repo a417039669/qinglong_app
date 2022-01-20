@@ -84,13 +84,23 @@ class _ScriptDetailPageState extends ConsumerState<ScriptDetailPage> with LazyLo
                 content: const Text("确认删除该脚本吗"),
                 actions: [
                   CupertinoDialogAction(
-                    child: const Text("取消"),
+                    child: const Text(
+                      "取消",
+                      style: TextStyle(
+                        color: Color(0xff999999),
+                      ),
+                    ),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
                   ),
                   CupertinoDialogAction(
-                    child: const Text("确定"),
+                    child: Text(
+                      "确定",
+                      style: TextStyle(
+                        color: primaryColor,
+                      ),
+                    ),
                     onPressed: () async {
                       Navigator.of(context).pop();
                       HttpResponse<NullResponse> result = await Api.delScript(widget.title, widget.path ?? "");

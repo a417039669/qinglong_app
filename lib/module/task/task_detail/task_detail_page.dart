@@ -367,13 +367,23 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
         content: Text("确认删除定时任务 ${widget.taskBean.name ?? ""} 吗"),
         actions: [
           CupertinoDialogAction(
-            child: const Text("取消"),
+            child: const Text(
+              "取消",
+              style: TextStyle(
+                color: Color(0xff999999),
+              ),
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           CupertinoDialogAction(
-            child: const Text("确定"),
+            child: Text(
+              "确定",
+              style: TextStyle(
+                color: primaryColor,
+              ),
+            ),
             onPressed: () async {
               Navigator.of(context).pop();
               await ref.read(taskProvider).delCron(widget.taskBean.sId!);

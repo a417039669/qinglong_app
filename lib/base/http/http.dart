@@ -130,9 +130,14 @@ class Http {
       if (!getIt<UserInfoViewModel>().useSecretLogined) {
         exitLogin();
       }
-      return HttpResponse(success: false, message: "没有该模块的访问权限", code: 0);
+      return HttpResponse(success: false, message: "没有该模块的访问权限", code: 401);
     }
-    return HttpResponse(success: false, message: e.message, code: 0);
+
+    if (e.response != null && e.response!.data != null) {
+      return HttpResponse(success: false, message: e.response?.data["message"] ?? e.message, code: e.response?.data["code"] ?? 0);
+    } else {
+      return HttpResponse(success: false, message: e.message, code: e.response?.statusCode ?? 0);
+    }
   }
 
   static HttpResponse<T> decodeResponse<T>(
@@ -187,7 +192,7 @@ class Http {
         } else {
           return HttpResponse<T>(
             success: false,
-            code: -1000,
+            code: response.data["code"],
             message: response.data["message"],
           );
         }

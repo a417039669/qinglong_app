@@ -22,8 +22,7 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController _hostController =
-      TextEditingController(text: getIt<UserInfoViewModel>().host);
+  final TextEditingController _hostController = TextEditingController(text: getIt<UserInfoViewModel>().host);
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _cIdController = TextEditingController();
@@ -39,8 +38,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.initState();
     useSecretLogin = getIt<UserInfoViewModel>().useSecretLogined;
 
-    if (getIt<UserInfoViewModel>().userName != null &&
-        getIt<UserInfoViewModel>().userName!.isNotEmpty) {
+    if (getIt<UserInfoViewModel>().userName != null && getIt<UserInfoViewModel>().userName!.isNotEmpty) {
       if (getIt<UserInfoViewModel>().useSecretLogined) {
         _cIdController.text = getIt<UserInfoViewModel>().userName!;
       } else {
@@ -50,8 +48,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     } else {
       rememberPassword = false;
     }
-    if (getIt<UserInfoViewModel>().passWord != null &&
-        getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
+    if (getIt<UserInfoViewModel>().passWord != null && getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
       if (getIt<UserInfoViewModel>().useSecretLogined) {
         _cSecretController.text = getIt<UserInfoViewModel>().passWord!;
       } else {
@@ -181,8 +178,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 },
                                 controller: _userNameController,
                                 decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                   hintText: "请输入用户名",
                                 ),
                                 autofocus: false,
@@ -204,8 +200,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 controller: _passwordController,
                                 obscureText: true,
                                 decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                   hintText: "请输入密码",
                                 ),
                                 autofocus: false,
@@ -239,8 +234,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 },
                                 controller: _cIdController,
                                 decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                   hintText: "请输入client_id",
                                 ),
                                 autofocus: false,
@@ -262,8 +256,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 controller: _cSecretController,
                                 obscureText: true,
                                 decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                                   hintText: "请输入client_secret",
                                 ),
                                 autofocus: false,
@@ -294,8 +287,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           GestureDetector(
                             onTap: () {
                               cardKey.currentState?.toggleCard();
-                              WidgetsBinding.instance
-                                  ?.addPostFrameCallback((timeStamp) {
+                              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
                                 setState(() {});
                               });
                             },
@@ -319,14 +311,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 5,
                             ),
-                            color: canClickLoginBtn()
-                                ? ref
-                                    .watch(themeProvider)
-                                    .themeColor
-                                    .buttonBgColor()
-                                : Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.4),
+                            color: canClickLoginBtn() ? ref.watch(themeProvider).themeColor.buttonBgColor() : Theme.of(context).primaryColor.withOpacity(0.4),
                             child: isLoading
                                 ? const CupertinoActivityIndicator()
                                 : const Text(
@@ -338,14 +323,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             onPressed: () {
                               Http.pushedLoginPage = false;
                               Utils.hideKeyBoard(context);
-                              getIt<UserInfoViewModel>()
-                                  .updateHost(_hostController.text);
+                              getIt<UserInfoViewModel>().updateHost(_hostController.text);
+                              Http.clear();
                               if (loginByUserName()) {
-                                login(_userNameController.text,
-                                    _passwordController.text);
+                                login(_userNameController.text, _passwordController.text);
                               } else {
-                                login(_cIdController.text,
-                                    _cSecretController.text);
+                                login(_cIdController.text, _cSecretController.text);
                               }
                             },
                           ),
@@ -390,9 +373,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       } else {
         HttpResponse<UserBean> userResponse = await Api.user();
         if (userResponse.success) {
-          if (userResponse.bean != null &&
-              userResponse.bean!.twoFactorActivated != null &&
-              userResponse.bean!.twoFactorActivated!) {
+          if (userResponse.bean != null && userResponse.bean!.twoFactorActivated != null && userResponse.bean!.twoFactorActivated!) {
             ("你已开启两步验证,App暂不支持").toast();
             isLoading = false;
             setState(() {});
@@ -417,11 +398,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     if (_hostController.text.isEmpty) return false;
     if (!loginByUserName()) {
-      return _cIdController.text.isNotEmpty &&
-          _cSecretController.text.isNotEmpty;
+      return _cIdController.text.isNotEmpty && _cSecretController.text.isNotEmpty;
     } else {
-      return _userNameController.text.isNotEmpty &&
-          _passwordController.text.isNotEmpty;
+      return _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty;
     }
   }
 }

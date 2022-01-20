@@ -22,9 +22,9 @@ class Http {
     _dio = Dio(
       BaseOptions(
         baseUrl: host,
-        connectTimeout: 5000,
-        receiveTimeout: 5000,
-        sendTimeout: 5000,
+        connectTimeout: 50000,
+        receiveTimeout: 50000,
+        sendTimeout: 50000,
         contentType: "application/json",
       ),
     );
@@ -36,6 +36,10 @@ class Http {
     if (_dio == null) {
       initDioConfig(getIt<UserInfoViewModel>().host!);
     }
+  }
+
+  static void clear() {
+    _dio = null;
   }
 
   static Future<HttpResponse<T>> get<T>(
@@ -124,8 +128,9 @@ class Http {
   static HttpResponse<T> exceptionHandler<T>(DioError e) {
     if (e.response?.statusCode == 401 && !getIt<UserInfoViewModel>().useSecretLogined) {
       exitLogin();
-    }
     return HttpResponse(success: false, message: "没有该模块的访问权限", code: 0);
+    }
+    return HttpResponse(success: false, message: e.message, code: 0);
   }
 
   static HttpResponse<T> decodeResponse<T>(

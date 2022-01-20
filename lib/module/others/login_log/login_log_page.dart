@@ -32,73 +32,73 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> with LazyLoadState<
         backCall: () {
           Navigator.of(context).pop();
         },
-        title: "任务日志",
+        title: "登录日志",
       ),
       body: list.isEmpty
           ? const Center(
-        child: CupertinoActivityIndicator(),
-      )
+              child: CupertinoActivityIndicator(),
+            )
           : ListView.builder(
-        itemBuilder: (context, index) {
-          LoginLogBean item = list[index];
+              itemBuilder: (context, index) {
+                LoginLogBean item = list[index];
 
-          return ColoredBox(
-            color: ref.watch(themeProvider).themeColor.settingBgColor(),
-            child: ListTile(
-              isThreeLine: true,
-              title: Text(
-                Utils.formatMessageTime(item.timestamp ?? 0),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: ref.watch(themeProvider).themeColor.titleColor(),
-                ),
-              ),
-              subtitle: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  SelectableText(
-                    "${item.address}",
-                    selectionWidthStyle: BoxWidthStyle.max,
-                    selectionHeightStyle: BoxHeightStyle.max,
-                    style: TextStyle(
-                      color: ref.watch(themeProvider).themeColor.descColor(),
-                      fontSize: 14,
+                return ColoredBox(
+                  color: ref.watch(themeProvider).themeColor.settingBgColor(),
+                  child: ListTile(
+                    isThreeLine: true,
+                    title: Text(
+                      Utils.formatMessageTime(item.timestamp ?? 0),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: ref.watch(themeProvider).themeColor.titleColor(),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  SelectableText(
-                    "${item.ip}",
-                    selectionWidthStyle: BoxWidthStyle.max,
-                    selectionHeightStyle: BoxHeightStyle.max,
-                    style: TextStyle(
-                      color: ref.watch(themeProvider).themeColor.descColor(),
-                      fontSize: 14,
+                    subtitle: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SelectableText(
+                          "${item.address}",
+                          selectionWidthStyle: BoxWidthStyle.max,
+                          selectionHeightStyle: BoxHeightStyle.max,
+                          style: TextStyle(
+                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SelectableText(
+                          "${item.ip}",
+                          selectionWidthStyle: BoxWidthStyle.max,
+                          selectionHeightStyle: BoxHeightStyle.max,
+                          style: TextStyle(
+                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
+                    trailing: item.status == 0
+                        ? Icon(
+                            CupertinoIcons.checkmark_circle,
+                            color: primaryColor,
+                            size: 16,
+                          )
+                        : const Icon(
+                            CupertinoIcons.clear_circled,
+                            color: Colors.red,
+                            size: 16,
+                          ),
                   ),
-                ],
-              ),
-              trailing: item.status == 0
-                  ? Icon(
-                      CupertinoIcons.checkmark_circle,
-                      color: primaryColor,
-                      size: 16,
-                    )
-                  : const Icon(
-                      CupertinoIcons.clear_circled,
-                      color: Colors.red,
-                      size: 16,
-                    ),
+                );
+              },
+              itemCount: list.length,
             ),
-          );
-        },
-        itemCount: list.length,
-      ),
     );
   }
 

@@ -138,9 +138,24 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ),
                   ),
                 ),
-                const Divider(
-                  indent: 15,
-                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 15,
+            ),
+            decoration: BoxDecoration(
+              color: ref.watch(themeProvider).themeColor.settingBgColor(),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(15),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
@@ -176,24 +191,9 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 15,
-            ),
-            decoration: BoxDecoration(
-              color: ref.watch(themeProvider).themeColor.settingBgColor(),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(15),
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                const Divider(
+                  indent: 15,
+                ),
                 GestureDetector(
                   onTap: () {
                     if (getIt<UserInfoViewModel>().useSecretLogined) {
@@ -230,9 +230,24 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ),
                   ),
                 ),
-                const Divider(
-                  indent: 15,
-                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 15,
+            ),
+            decoration: BoxDecoration(
+              color: ref.watch(themeProvider).themeColor.settingBgColor(),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(15),
+              ),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 15,

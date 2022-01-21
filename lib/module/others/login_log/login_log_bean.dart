@@ -13,7 +13,7 @@ class LoginLogBean {
       {this.timestamp, this.address, this.ip, this.platform, this.status});
 
   LoginLogBean.fromJson(Map<String, dynamic> json) {
-    timestamp = json['timestamp'];
+    timestamp = int.tryParse(json['timestamp'].toString());
     address = json['address'];
     ip = json['ip'];
     platform = json['platform'];

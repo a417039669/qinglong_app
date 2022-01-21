@@ -116,9 +116,11 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 15,
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      bottom: 15,
+                      left: 15,
+                      right: 15,
                     ),
                     child: Row(
                       children: [
@@ -206,9 +208,11 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   },
                   behavior: HitTestBehavior.opaque,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 15,
+                    padding: const EdgeInsets.only(
+                      top: 8,
+                      bottom: 15,
+                      left: 15,
+                      right: 15,
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

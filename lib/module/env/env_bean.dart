@@ -15,7 +15,7 @@ class EnvBean {
   EnvBean.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     sId = json.containsKey('_id') ? json['_id'].toString() : (json.containsKey('id') ? json['id'].toString() : "");
-    created = json['created'];
+    created = int.tryParse(json['created'].toString());
     status = json['status'];
     timestamp = json['timestamp'];
     name = json['name'];

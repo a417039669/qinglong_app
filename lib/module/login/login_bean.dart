@@ -21,7 +21,7 @@ class LoginBean {
     token = json['token'];
     lastip = json['lastip'];
     lastaddr = json['lastaddr'];
-    lastlogon = json['lastlogon'];
+    lastlogon = int.tryParse(json['lastlogon'].toString());
     retries = json['retries'];
     platform = json['platform'];
   }

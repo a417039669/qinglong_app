@@ -178,7 +178,11 @@ class TaskItemCell extends StatelessWidget {
             trailingIcon: bean.status! == 1 ? CupertinoIcons.memories : CupertinoIcons.stop_circle,
             onPressed: () {
               Navigator.of(context).pop();
-              startCron(context, ref);
+              if (bean.status! == 1) {
+                startCron(context, ref);
+              } else {
+                stopCron(context, ref);
+              }
             },
           ),
           QLCupertinoContextMenuAction(
@@ -236,8 +240,8 @@ class TaskItemCell extends StatelessWidget {
                 top: 5,
                 bottom: isDark ? 5 : 20,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
+              child: SizedBox(
+                height: 200,
                 child: TaskDetailPage(
                   bean,
                   hideAppbar: true,
@@ -266,33 +270,40 @@ class TaskItemCell extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Expanded(
-                        child: Material(
-                          color: Colors.transparent,
-                          child: Text(
-                            bean.name ?? "",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              color: ref.watch(themeProvider).themeColor.titleColor(),
-                              fontSize: 18,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            bean.status == 1
+                                ? const SizedBox.shrink()
+                                : const SizedBox(
+                                    width: 15,
+                                    height: 15,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  ),
+                            const SizedBox(
+                              width: 5,
                             ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      bean.status == 1
-                          ? const SizedBox.shrink()
-                          : const SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
+                            Expanded(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: Text(
+                                  bean.name ?? "",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    color: ref.watch(themeProvider).themeColor.titleColor(),
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
                             ),
-                      const Spacer(),
+                          ],
+                        ),
+                      ),
                       Material(
                         color: Colors.transparent,
                         child: Text(

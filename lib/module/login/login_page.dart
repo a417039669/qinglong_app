@@ -149,6 +149,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                           FlipCard(
                             key: cardKey,
+                            flipOnTouch: false,
                             onFlipDone: (back) {
                               useSecretLogin = back;
                               setState(() {});
@@ -298,13 +299,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               });
                             },
                             child: Text(
-                              loginByUserName() ? "client_id登录" : "用户名密码登录",
+                              loginByUserName() ? "client_id登录" : "账号登录",
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                         ],

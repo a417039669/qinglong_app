@@ -49,7 +49,7 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
               if (response.success) {
                 "提交成功".toast();
                 ref.read(configProvider).loadContent(widget.title);
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(widget.title);
               } else {
                 (response.message ?? "").toast();
               }

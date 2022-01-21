@@ -12,7 +12,7 @@ iOS端暂无上架打算，用户自行下载main分支源码编译安装
 
 
 <p float="left">
-  <img src="./art/14.jpg" width="200" />
+  <img src="./art/14.png" width="200" />
   <img src="./art/1.jpg" width="200" />
   <img src="./art/9.jpg" width="200" />
 </p>

@@ -115,7 +115,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   if (debugBtnIsShow()) {
                                     dismissDebugBtn();
                                   } else {
-                                    showDebugBtn(context, btnColor: Colors.blue);
+                                    showDebugBtn(context, btnColor: primaryColor);
                                   }
                                   WidgetsBinding.instance?.endOfFrame;
                                 },

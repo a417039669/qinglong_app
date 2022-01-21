@@ -270,6 +270,7 @@ class TaskItemCell extends StatelessWidget {
                         child: Text(
                           bean.name ?? "",
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
                             color: ref.watch(themeProvider).themeColor.titleColor(),

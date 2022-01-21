@@ -76,4 +76,6 @@ class Url {
     }
     return false;
   }
+
+  static String checkUpdateUrl = "https://raw.githubusercontent.com/qinglong-app/qinglong_app/main/version";
 }

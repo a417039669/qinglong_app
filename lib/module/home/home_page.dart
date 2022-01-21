@@ -9,6 +9,7 @@ import 'package:qinglong_app/module/env/env_page.dart';
 import 'package:qinglong_app/module/others/other_page.dart';
 import 'package:qinglong_app/module/task/task_page.dart';
 import 'package:move_to_background/move_to_background.dart';
+import 'package:qinglong_app/utils/update_utils.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,6 +31,9 @@ class _HomePageState extends ConsumerState<HomePage> {
     initTitles();
     _title = titles[0].title;
     super.initState();
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      update();
+    });
   }
 
   @override
@@ -184,6 +188,16 @@ class _HomePageState extends ConsumerState<HomePage> {
         "其他",
       ),
     );
+  }
+
+  void update() async {
+    String? result = await UpdateUtils().checkUpdate();
+    if (result != null && result.isNotEmpty) {
+      UpdateDialog updateDialog = UpdateDialog(context, title: "发现新版本", updateContent: "版本号:v$result", onUpdate: () {
+        UpdateUtils.launchURL(result);
+      });
+      updateDialog.show();
+    }
   }
 }
 

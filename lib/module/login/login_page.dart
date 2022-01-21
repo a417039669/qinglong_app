@@ -403,6 +403,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     getIt<UserInfoViewModel>().useSecretLogin(!loginByUserName());
     if (rememberPassword) {
       getIt<UserInfoViewModel>().updateUserName(userName, password);
+    } else {
+      getIt<UserInfoViewModel>().updateUserName("", "");
     }
     Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
   }

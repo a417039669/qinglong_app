@@ -94,42 +94,24 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height / 10,
+                            height: MediaQuery.of(context).size.height / 8,
                           ),
-                          SizedBox(
-                            height: 50,
-                            width: MediaQuery.of(context).size.width,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  top: 0,
-                                  left: 0,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
                                   child: Image.asset(
                                     "assets/images/login_tip.png",
                                     height: 45,
                                   ),
                                 ),
-                                const Positioned(
-                                  top: 10,
-                                  left: 0,
-                                  child: Text(
-                                    "登录",
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 5,
-                                  right: 0,
-                                  child: Image.asset(
-                                    "assets/images/ql.png",
-                                    height: 45,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                              Image.asset(
+                                "assets/images/ql.png",
+                                height: 45,
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: MediaQuery.of(context).size.height / 15,
@@ -276,7 +258,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25,),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 25,
+                      ),
                       child: Row(
                         children: [
                           Checkbox(
@@ -307,7 +291,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10,),
+                          SizedBox(
+                            width: 10,
+                          ),
                         ],
                       ),
                     ),
@@ -316,7 +302,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ),
                     Container(
                       alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(horizontal: 40,),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                      ),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width - 80,
                         child: IgnorePointer(
@@ -377,72 +365,26 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
     if (response.success) {
       loginSuccess(response, userName, password);
+    } else if (loginByUserName() && response.code == 401) {
+      //可能用户使用的是老版本qinglong
+      HttpResponse<LoginBean> oldResponse = await Api.loginOld(userName, password);
+      if (oldResponse.success) {
+        loginSuccess(oldResponse, userName, password);
+      } else {
+        (oldResponse.message ?? "请检查网络情况").toast();
+        if (oldResponse.code == 420) {
+          twoFact(userName, password);
+        } else {
+          isLoading = false;
+          setState(() {});
+        }
+      }
     } else {
       print(response.code);
       (response.message ?? "请检查网络情况").toast();
       //420代表需要2步验证
       if (response.code == 420) {
-        String twoFact = "";
-        showCupertinoDialog(
-            context: context,
-            builder: (_) => CupertinoAlertDialog(
-                  title: const Text("两步验证"),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Material(
-                        color: Colors.transparent,
-                        child: TextField(
-                          onChanged: (value) {
-                            twoFact = value;
-                          },
-                          maxLines: 1,
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                            hintText: "请输入code",
-                          ),
-                          autofocus: true,
-                        ),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    CupertinoDialogAction(
-                      child: const Text(
-                        "取消",
-                        style: TextStyle(
-                          color: Color(0xff999999),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    CupertinoDialogAction(
-                      child: Text(
-                        "确定",
-                        style: TextStyle(
-                          color: primaryColor,
-                        ),
-                      ),
-                      onPressed: () async {
-                        Navigator.of(context).pop(true);
-                        HttpResponse<LoginBean> response = await Api.loginTwo(userName, password, twoFact);
-                        if (response.success) {
-                          loginSuccess(response, userName, password);
-                        } else {
-                          loginFailed(response);
-                        }
-                      },
-                    ),
-                  ],
-                )).then((value) {
-          if (value == null) {
-            isLoading = false;
-            setState(() {});
-          }
-        });
+        twoFact(userName, password);
       } else {
         isLoading = false;
         setState(() {});
@@ -474,5 +416,69 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     } else {
       return _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty;
     }
+  }
+
+  void twoFact(String userName, String password) {
+    String twoFact = "";
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => CupertinoAlertDialog(
+              title: const Text("两步验证"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Material(
+                    color: Colors.transparent,
+                    child: TextField(
+                      onChanged: (value) {
+                        twoFact = value;
+                      },
+                      maxLines: 1,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                        hintText: "请输入code",
+                      ),
+                      autofocus: true,
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                CupertinoDialogAction(
+                  child: const Text(
+                    "取消",
+                    style: TextStyle(
+                      color: Color(0xff999999),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text(
+                    "确定",
+                    style: TextStyle(
+                      color: primaryColor,
+                    ),
+                  ),
+                  onPressed: () async {
+                    Navigator.of(context).pop(true);
+                    HttpResponse<LoginBean> response = await Api.loginTwo(userName, password, twoFact);
+                    if (response.success) {
+                      loginSuccess(response, userName, password);
+                    } else {
+                      loginFailed(response);
+                    }
+                  },
+                ),
+              ],
+            )).then((value) {
+      if (value == null) {
+        isLoading = false;
+        setState(() {});
+      }
+    });
   }
 }

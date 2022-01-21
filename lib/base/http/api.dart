@@ -24,7 +24,18 @@ class Api {
       },
     );
   }
-
+  static Future<HttpResponse<LoginBean>> loginOld(
+      String userName,
+      String passWord,
+      ) async {
+    return await Http.post<LoginBean>(
+      Url.loginOld,
+      {
+        "username": userName,
+        "password": passWord,
+      },
+    );
+  }
   static Future<HttpResponse<LoginBean>> loginTwo(
     String userName,
     String passWord,
@@ -103,6 +114,7 @@ class Api {
 
     if (id != null) {
       data["_id"] = id;
+      data["id"] = id;
       return await Http.put<NullResponse>(
         Url.addTask,
         data,
@@ -207,6 +219,7 @@ class Api {
 
     if (id != null) {
       data["_id"] = id;
+      data["id"] = id;
       return await Http.put<NullResponse>(
         Url.addEnv,
         data,

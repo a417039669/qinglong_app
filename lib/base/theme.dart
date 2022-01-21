@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/sp_const.dart';
+import 'package:qinglong_app/base/userinfo_viewmodel.dart';
+import 'package:qinglong_app/main.dart';
 import 'package:qinglong_app/utils/codeeditor_theme.dart';
 import 'package:qinglong_app/utils/sp_utils.dart';
 
@@ -10,8 +12,6 @@ var themeProvider = ChangeNotifierProvider((ref) => ThemeViewModel());
 Color _primaryColor = const Color(0xFF299343);
 
 class ThemeViewModel extends ChangeNotifier {
-  late ThemeData darkTheme;
-  late ThemeData lightTheme;
   late ThemeData currentTheme;
 
   bool _isInDarkMode = false;
@@ -20,8 +20,8 @@ class ThemeViewModel extends ChangeNotifier {
   ThemeColors themeColor = LightThemeColors();
 
   ThemeViewModel() {
-    darkTheme = getDartTheme();
-    lightTheme = getLightTheme();
+    _primaryColor = Color(getIt<UserInfoViewModel>().primaryColor);
+    primaryColor = Color(getIt<UserInfoViewModel>().primaryColor);
     var brightness = SchedulerBinding.instance!.window.platformBrightness;
     _isInDarkMode = brightness == Brightness.dark;
     changeThemeReal(_isInDarkMode, false);
@@ -35,10 +35,10 @@ class ThemeViewModel extends ChangeNotifier {
     _isInDarkMode = dark;
     SpUtil.putBool(spTheme, dark);
     if (!dark) {
-      currentTheme = lightTheme;
+      currentTheme = getLightTheme();
       themeColor = LightThemeColors();
     } else {
-      currentTheme = darkTheme;
+      currentTheme = getDartTheme();
       themeColor = DartThemeColors();
     }
     if (notify) {
@@ -47,6 +47,13 @@ class ThemeViewModel extends ChangeNotifier {
   }
 
   get darkMode => _isInDarkMode;
+
+  void changePrimaryColor(Color color) {
+    _primaryColor = color;
+    primaryColor = color;
+    getIt<UserInfoViewModel>().updateCustomColor(color.value);
+    changeThemeReal(SpUtil.getBool(spTheme, defValue: false), true);
+  }
 
   void changeTheme() {
     changeThemeReal(!SpUtil.getBool(spTheme, defValue: false), true);

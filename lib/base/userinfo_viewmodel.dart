@@ -8,11 +8,13 @@ class UserInfoViewModel {
   String? _userName;
   String? _passWord;
   bool _useSecertLogined = false;
+  int _primaryColor = 0xFF299343;
 
   UserInfoViewModel() {
     String userInfoJson = SpUtil.getString(spUserInfo);
     _userName = SpUtil.getString(spUserName);
     _passWord = SpUtil.getString(spPassWord);
+    _primaryColor = SpUtil.getInt(spCustomColor, defValue: 0xFF299343);
 
     _useSecertLogined = SpUtil.getBool(spSecretLogined, defValue: false);
     _host = SpUtil.getString(spHost, defValue: '');
@@ -39,6 +41,11 @@ class UserInfoViewModel {
     SpUtil.putBool(spSecretLogined, _useSecertLogined);
   }
 
+  void updateCustomColor(int color) {
+    _primaryColor = color;
+    SpUtil.putInt(spCustomColor, color);
+  }
+
   void updateHost(String host) {
     _host = host;
     SpUtil.putString(spHost, host);
@@ -53,6 +60,8 @@ class UserInfoViewModel {
   String? get passWord => _passWord;
 
   bool get useSecretLogined => _useSecertLogined;
+
+  int get primaryColor => _primaryColor;
 
   bool isLogined() {
     return token != null && token!.isNotEmpty;

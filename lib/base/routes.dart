@@ -15,6 +15,7 @@ import 'package:qinglong_app/module/others/scripts/script_edit_page.dart';
 import 'package:qinglong_app/module/others/scripts/script_page.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_detail_page.dart';
 import 'package:qinglong_app/module/others/task_log/task_log_page.dart';
+import 'package:qinglong_app/module/others/theme_page.dart';
 import 'package:qinglong_app/module/others/update_password_page.dart';
 import 'package:qinglong_app/module/task/add_task_page.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
@@ -39,6 +40,7 @@ class Routes {
   static const String routeDependency = "/Dependency";
   static const String routeUpdatePassword = "/updatePassword";
   static const String routeAbout = "/about";
+  static const String routeTheme = "/theme";
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -56,7 +58,8 @@ class Routes {
           return CupertinoPageRoute(builder: (context) => const AddTaskPage());
         }
       case routeAddDependency:
-        return CupertinoPageRoute(builder: (context) => const AddDependencyPage());
+        return CupertinoPageRoute(
+            builder: (context) => const AddDependencyPage());
       case routeAddEnv:
         if (settings.arguments != null) {
           return CupertinoPageRoute(
@@ -121,6 +124,10 @@ class Routes {
       case routeAbout:
         return CupertinoPageRoute(
           builder: (context) => const AboutPage(),
+        );
+      case routeTheme:
+        return CupertinoPageRoute(
+          builder: (context) => const ThemePage(),
         );
       case routeScriptUpdate:
         return CupertinoPageRoute(

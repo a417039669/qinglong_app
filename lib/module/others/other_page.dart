@@ -59,7 +59,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "脚本管理",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -92,7 +95,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "依赖管理",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -127,7 +133,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "任务日志",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -180,7 +189,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "登录日志",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -221,7 +233,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "修改密码",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -265,7 +280,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "夜间模式",
                         style: TextStyle(
-                          color: ref.watch(themeProvider).themeColor.titleColor(),
+                          color:
+                              ref.watch(themeProvider).themeColor.titleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -277,6 +293,44 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         },
                       ),
                     ],
+                  ),
+                ),
+                const Divider(
+                  indent: 15,
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      Routes.routeTheme,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 15,
+                      vertical: 5,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "主题设置",
+                          style: TextStyle(
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          CupertinoIcons.right_chevron,
+                          size: 16,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(
@@ -303,7 +357,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "关于",
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            color: ref
+                                .watch(themeProvider)
+                                .themeColor
+                                .titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -362,7 +419,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                             ),
                             onPressed: () {
                               getIt<UserInfoViewModel>().updateToken("");
-                              Navigator.of(context).pushReplacementNamed(Routes.routeLogin);
+                              Navigator.of(context)
+                                  .pushReplacementNamed(Routes.routeLogin);
                             },
                           ),
                         ],

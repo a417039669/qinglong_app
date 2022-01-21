@@ -24,7 +24,18 @@ class Api {
       },
     );
   }
-
+  static Future<HttpResponse<LoginBean>> loginOld(
+      String userName,
+      String passWord,
+      ) async {
+    return await Http.post<LoginBean>(
+      Url.loginOld,
+      {
+        "username": userName,
+        "password": passWord,
+      },
+    );
+  }
   static Future<HttpResponse<LoginBean>> loginTwo(
     String userName,
     String passWord,

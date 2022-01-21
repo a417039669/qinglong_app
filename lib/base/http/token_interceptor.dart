@@ -7,10 +7,8 @@ import '../userinfo_viewmodel.dart';
 class TokenInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    if (getIt<UserInfoViewModel>().token != null &&
-        getIt<UserInfoViewModel>().token!.isNotEmpty) {
-      options.headers["Authorization"] =
-          "Bearer " + getIt<UserInfoViewModel>().token!;
+    if (getIt<UserInfoViewModel>().token != null && getIt<UserInfoViewModel>().token!.isNotEmpty) {
+      options.headers["Authorization"] = "Bearer " + getIt<UserInfoViewModel>().token!;
     }
 
     options.headers["User-Agent"] =
@@ -18,18 +16,9 @@ class TokenInterceptor extends Interceptor {
 
     options.headers["Content-Type"] = "application/json;charset=UTF-8";
 
-    // '/api/user/login',
-    // '/open/auth/token',
-    // '/api/user/two-factor/login',
-    // '/api/system',
-    // '/api/user/init',
-    // '/api/user/notification/init'
 
-    if (options.path != Url.loginByClientId &&
-        options.path != Url.loginTwo &&
-        options.path != Url.login) {
-      options.queryParameters["t"] =
-          (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+    if (!Url.inWhiteList(options.path)) {
+      options.queryParameters["t"] = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
     }
     return handler.next(options);
   }

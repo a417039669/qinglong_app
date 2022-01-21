@@ -3,6 +3,9 @@ import '../userinfo_viewmodel.dart';
 
 class Url {
   static get login => "/api/user/login";
+
+  static get loginOld => "/api/login";
+
   static get loginTwo => "/api/user/two-factor/login";
   static const loginByClientId = "/open/auth/token";
   static const user = "/api/user";
@@ -50,6 +53,7 @@ class Url {
   static get taskLogDetail => getIt<UserInfoViewModel>().useSecretLogined ? "/open/logs/" : "/api/logs/";
 
   static get scripts => getIt<UserInfoViewModel>().useSecretLogined ? "/open/scripts/files" : "/api/scripts/files";
+
   static get scriptUpdate => getIt<UserInfoViewModel>().useSecretLogined ? "/open/scripts" : "/api/scripts";
 
   static get scriptDetail => getIt<UserInfoViewModel>().useSecretLogined ? "/open/scripts/" : "/api/scripts/";
@@ -58,14 +62,18 @@ class Url {
 
   static get dependencyReinstall => getIt<UserInfoViewModel>().useSecretLogined ? "/open/dependencies/reinstall" : "/api/dependencies/reinstall";
 
-
-
-
   static intimeLog(String cronId) {
     return getIt<UserInfoViewModel>().useSecretLogined ? "/open/crons/$cronId/log" : "/api/crons/$cronId/log";
   }
 
   static envMove(String envId) {
     return getIt<UserInfoViewModel>().useSecretLogined ? "/open/envs/$envId/move" : "/api/envs/$envId/move";
+  }
+
+  static bool inWhiteList(String path) {
+    if (path == login || path == loginByClientId || path == loginTwo || path == loginOld) {
+      return true;
+    }
+    return false;
   }
 }

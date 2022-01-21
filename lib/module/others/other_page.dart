@@ -367,6 +367,9 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   }),
             ),
           ),
+          const SizedBox(
+            height: 30,
+          ),
         ],
       ),
     );

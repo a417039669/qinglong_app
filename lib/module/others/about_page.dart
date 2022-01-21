@@ -66,6 +66,21 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                 fontSize: 16,
               ),
             ),
+            const SizedBox(
+              height: 15,
+            ),
+            GestureDetector(
+              onTap: () {
+                _launchURL("https://t.me/qinglongapp");
+              },
+              child: Text(
+                "Telegram频道",
+                style: TextStyle(
+                  color: primaryColor,
+                  fontSize: 16,
+                ),
+              ),
+            ),
             const Spacer(),
             Row(
               children: [

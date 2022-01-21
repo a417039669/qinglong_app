@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_log/dio_log.dart';
 import 'package:flutter/foundation.dart';
 import 'package:qinglong_app/base/http/token_interceptor.dart';
+import 'package:qinglong_app/base/http/url.dart';
 import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
 
@@ -54,7 +55,7 @@ class Http {
 
       return decodeResponse<T>(response, serializationName, compute);
     } on DioError catch (e) {
-      return exceptionHandler<T>(e);
+      return exceptionHandler<T>(e, uri);
     }
   }
 
@@ -74,7 +75,7 @@ class Http {
         compute,
       );
     } on DioError catch (e) {
-      return exceptionHandler<T>(e);
+      return exceptionHandler<T>(e, uri);
     }
   }
 
@@ -94,7 +95,7 @@ class Http {
         compute,
       );
     } on DioError catch (e) {
-      return exceptionHandler<T>(e);
+      return exceptionHandler<T>(e, uri);
     }
   }
 
@@ -113,7 +114,7 @@ class Http {
         compute,
       );
     } on DioError catch (e) {
-      return exceptionHandler<T>(e);
+      return exceptionHandler<T>(e, uri);
     }
   }
 
@@ -125,8 +126,8 @@ class Http {
     }
   }
 
-  static HttpResponse<T> exceptionHandler<T>(DioError e) {
-    if (e.response?.data!= null && e.response?.data['code'] == 401) {
+  static HttpResponse<T> exceptionHandler<T>(DioError e, String path) {
+    if (e.response?.statusCode == 401 && !Url.inWhiteList(path)) {
       if (!getIt<UserInfoViewModel>().useSecretLogined) {
         exitLogin();
       }

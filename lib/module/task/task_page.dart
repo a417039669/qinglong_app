@@ -283,8 +283,8 @@ class TaskItemCell extends StatelessWidget {
                                       strokeWidth: 2,
                                     ),
                                   ),
-                            const SizedBox(
-                              width: 5,
+                            SizedBox(
+                              width: bean.status == 1 ? 0 : 5,
                             ),
                             Expanded(
                               child: Material(

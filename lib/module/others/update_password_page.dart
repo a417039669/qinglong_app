@@ -92,7 +92,6 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
                   ),
                 ),
                 TextField(
-                  enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                   focusNode: focusNode,
                   controller: _nameController,
                   decoration: const InputDecoration(
@@ -123,7 +122,6 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
                   ),
                 ),
                 TextField(
-                  enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                   obscureText: true,
                   controller: _passwordController,
                   maxLines: 1,
@@ -155,7 +153,6 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
                   ),
                 ),
                 TextField(
-                  enableInteractiveSelection: false,
                   obscureText: true,
                   maxLines: 1,
                   controller: _passwordAgainController,

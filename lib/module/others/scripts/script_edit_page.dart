@@ -4,11 +4,8 @@ import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/theme.dart';
-import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/module/config/config_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
-
-import '../../../main.dart';
 
 class ScriptEditPage extends ConsumerStatefulWidget {
   final String content;
@@ -80,7 +77,6 @@ class _ScriptEditPageState extends ConsumerState<ScriptEditPage> {
         ),
         child: SingleChildScrollView(
           child: TextField(
-            enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
             focusNode: node,
             style: TextStyle(
               color: ref.read(themeProvider).themeColor.descColor(),

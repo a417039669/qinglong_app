@@ -3,12 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
-import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/module/task/task_bean.dart';
 import 'package:qinglong_app/module/task/task_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
-
-import '../../main.dart';
 
 class AddTaskPage extends ConsumerStatefulWidget {
   final TaskBean? taskBean;
@@ -101,7 +98,6 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                   ),
                 ),
                 TextField(
-                  enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                   focusNode: focusNode,
                   controller: _nameController,
                   decoration: const InputDecoration(
@@ -132,7 +128,6 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                   ),
                 ),
                 TextField(
-                  enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                   controller: _commandController,
                   maxLines: 4,
                   minLines: 1,
@@ -164,7 +159,6 @@ class _AddTaskPageState extends ConsumerState<AddTaskPage> {
                   ),
                 ),
                 TextField(
-                  enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                   controller: _cronController,
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),

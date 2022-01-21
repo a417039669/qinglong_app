@@ -4,11 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
-import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/module/others/dependencies/dependency_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
-
-import '../../../main.dart';
 
 class AddDependencyPage extends ConsumerStatefulWidget {
   const AddDependencyPage({
@@ -135,7 +132,6 @@ class _AddDependencyPageState extends ConsumerState<AddDependencyPage> {
                   height: 10,
                 ),
                 TextField(
-                  enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
                   controller: _nameController,
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),

@@ -4,11 +4,8 @@ import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/theme.dart';
-import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/module/config/config_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
-
-import '../../main.dart';
 
 class ConfigEditPage extends ConsumerStatefulWidget {
   final String content;
@@ -47,7 +44,8 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
         actions: [
           InkWell(
             onTap: () async {
-              HttpResponse<NullResponse> response = await Api.saveFile(widget.title, _controller.text);
+              HttpResponse<NullResponse> response =
+                  await Api.saveFile(widget.title, _controller.text);
               if (response.success) {
                 "提交成功".toast();
                 ref.read(configProvider).loadContent(widget.title);
@@ -80,7 +78,6 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
         ),
         child: SingleChildScrollView(
           child: TextField(
-            enableInteractiveSelection: !getIt<UserInfoViewModel>().forbidReadClipBoarded,
             focusNode: node,
             style: TextStyle(
               color: ref.read(themeProvider).themeColor.descColor(),

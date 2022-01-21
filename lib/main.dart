@@ -57,10 +57,8 @@ class QlAppState extends ConsumerState<QlApp> {
       child: MediaQuery(
         data: MediaQueryData.fromWindow(WidgetsBinding.instance!.window).copyWith(textScaleFactor: 1,),
         child: MaterialApp(
+          title: "青龙",
           locale: const Locale('zh', 'CN'),
-          supportedLocales: const [
-            Locale('zh', 'CN'),
-          ],
           navigatorKey: navigatorState,
           theme: ref.watch<ThemeViewModel>(themeProvider).currentTheme,
           onGenerateRoute: (setting) {

@@ -248,6 +248,17 @@ class EnvItemCell extends StatelessWidget {
                             const SizedBox(
                               width: 5,
                             ),
+                            bean.status == 1
+                                ? const Icon(
+                              Icons.dnd_forwardslash,
+                              size: 12,
+                              color: Colors.red,
+                            )
+                                : const SizedBox.shrink(),
+
+                            const SizedBox(
+                              width: 5,
+                            ),
                             Material(
                               color: Colors.transparent,
                               child: Text(
@@ -261,16 +272,6 @@ class EnvItemCell extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            bean.status == 1
-                                ? const Icon(
-                                    Icons.dnd_forwardslash,
-                                    size: 12,
-                                    color: Colors.red,
-                                  )
-                                : const SizedBox.shrink(),
                             const Spacer(),
                           ],
                         ),

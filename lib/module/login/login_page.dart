@@ -1,3 +1,4 @@
+import 'package:dio_log/dio_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -109,9 +110,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   ),
                                 ),
                               ),
-                              Image.asset(
-                                "assets/images/ql.png",
-                                height: 45,
+                              GestureDetector(
+                                onDoubleTap: (){
+                                  showDebugBtn(context, btnColor: Colors.blue);
+                                  WidgetsBinding.instance?.endOfFrame;
+                                },
+                                child: Image.asset(
+                                  "assets/images/ql.png",
+                                  height: 45,
+                                ),
                               ),
                             ],
                           ),

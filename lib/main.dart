@@ -65,9 +65,6 @@ class QlAppState extends ConsumerState<QlApp> {
           },
           home: Builder(
             builder: (context) {
-              if (!kReleaseMode) {
-                showDebugBtn(context, btnColor: Colors.blue);
-              }
               return getIt<UserInfoViewModel>().isLogined() ? const HomePage() : const LoginPage();
             },
           ),

@@ -265,16 +265,18 @@ class TaskItemCell extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Material(
-                        color: Colors.transparent,
-                        child: Text(
-                          bean.name ?? "",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                      Expanded(
+                        child: Material(
+                          color: Colors.transparent,
+                          child: Text(
+                            bean.name ?? "",
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
-                            fontSize: 18,
+                            style: TextStyle(
+                              overflow: TextOverflow.ellipsis,
+                              color: ref.watch(themeProvider).themeColor.titleColor(),
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
@@ -311,6 +313,16 @@ class TaskItemCell extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      bean.isDisabled == 1
+                          ? const Icon(
+                              Icons.dnd_forwardslash,
+                              size: 12,
+                              color: Colors.red,
+                            )
+                          : const SizedBox.shrink(),
+                      const SizedBox(
+                        width: 5,
+                      ),
                       Material(
                         color: Colors.transparent,
                         child: Text(
@@ -323,16 +335,6 @@ class TaskItemCell extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      bean.isDisabled == 1
-                          ? const Icon(
-                              Icons.dnd_forwardslash,
-                              size: 12,
-                              color: Colors.red,
-                            )
-                          : const SizedBox.shrink(),
                     ],
                   ),
                   const SizedBox(

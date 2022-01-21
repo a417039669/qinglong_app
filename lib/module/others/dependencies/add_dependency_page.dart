@@ -37,10 +37,6 @@ class _AddDependencyPageState extends ConsumerState<AddDependencyPage> {
         title: "新增依赖",
         actions: [
           InkWell(
-            onLongPress: () {
-              showDebugBtn(context, btnColor: Colors.blue);
-              WidgetsBinding.instance?.endOfFrame;
-            },
             onTap: () {
               submit();
             },

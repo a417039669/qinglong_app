@@ -1,6 +1,7 @@
 import 'package:qinglong_app/utils/sp_utils.dart';
 
 import 'sp_const.dart';
+import 'theme.dart';
 
 class UserInfoViewModel {
   String? _token;
@@ -8,13 +9,13 @@ class UserInfoViewModel {
   String? _userName;
   String? _passWord;
   bool _useSecertLogined = false;
-  int _primaryColor = 0xFF299343;
+  int _primaryColor = commonColor.value;
 
   UserInfoViewModel() {
     String userInfoJson = SpUtil.getString(spUserInfo);
     _userName = SpUtil.getString(spUserName);
     _passWord = SpUtil.getString(spPassWord);
-    _primaryColor = SpUtil.getInt(spCustomColor, defValue: 0xFF299343);
+    _primaryColor = SpUtil.getInt(spCustomColor, defValue: commonColor.value);
 
     _useSecertLogined = SpUtil.getBool(spSecretLogined, defValue: false);
     _host = SpUtil.getString(spHost, defValue: '');

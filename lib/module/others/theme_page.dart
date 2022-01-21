@@ -23,7 +23,7 @@ class _ThemePageState extends ConsumerState<ThemePage> {
   void initState() {
     super.initState();
     _primaryColor = ref.read(themeProvider).primaryColor;
-    colors.add(const Color(0xFF299343));
+    colors.add(commonColor);
     colors.addAll([
       Colors.red,
       Colors.pink,

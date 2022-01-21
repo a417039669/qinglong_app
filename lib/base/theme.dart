@@ -9,13 +9,15 @@ import 'package:qinglong_app/utils/codeeditor_theme.dart';
 import 'package:qinglong_app/utils/sp_utils.dart';
 
 var themeProvider = ChangeNotifierProvider((ref) => ThemeViewModel());
-Color _primaryColor = const Color(0xFF299343);
+
+const commonColor = Color(0xFF299343);
+Color _primaryColor = commonColor;
 
 class ThemeViewModel extends ChangeNotifier {
   late ThemeData currentTheme;
 
   bool _isInDarkMode = false;
-  Color primaryColor = const Color(0xFF299343);
+  Color primaryColor = commonColor;
 
   ThemeColors themeColor = LightThemeColors();
 

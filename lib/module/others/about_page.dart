@@ -91,7 +91,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
               child: Text(
                 "Telegram频道",
                 style: TextStyle(
-                  color: primaryColor,
+                  color: ref.watch(themeProvider).primaryColor,
                   fontSize: 16,
                 ),
               ),
@@ -107,7 +107,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                   child: Text(
                     "版本更新",
                     style: TextStyle(
-                      color: primaryColor,
+                      color: ref.watch(themeProvider).primaryColor,
                       fontSize: 16,
                     ),
                   ),
@@ -122,7 +122,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                   child: Text(
                     "项目地址",
                     style: TextStyle(
-                      color: primaryColor,
+                      color: ref.watch(themeProvider).primaryColor,
                       fontSize: 16,
                     ),
                   ),

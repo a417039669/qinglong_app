@@ -231,7 +231,7 @@ class DependencyCell extends ConsumerWidget {
                         bean.status == 1
                             ? Icon(
                                 CupertinoIcons.checkmark_circle,
-                                color: primaryColor,
+                                color: ref.watch(themeProvider).primaryColor,
                                 size: 16,
                               )
                             : (bean.status == 2
@@ -348,7 +348,7 @@ class DependencyCell extends ConsumerWidget {
             child: Text(
               "确定",
               style: TextStyle(
-                color: primaryColor,
+                color: ref.watch(themeProvider).primaryColor,
               ),
             ),
             onPressed: () {

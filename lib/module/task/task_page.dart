@@ -447,7 +447,7 @@ class TaskItemCell extends StatelessWidget {
             child: Text(
               "确定",
               style: TextStyle(
-                color: primaryColor,
+                color: ref.watch(themeProvider).primaryColor,
               ),
             ),
             onPressed: () {

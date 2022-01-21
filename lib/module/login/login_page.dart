@@ -115,7 +115,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   if (debugBtnIsShow()) {
                                     dismissDebugBtn();
                                   } else {
-                                    showDebugBtn(context, btnColor: primaryColor);
+                                    showDebugBtn(context, btnColor: ref.watch(themeProvider).primaryColor);
                                   }
                                   WidgetsBinding.instance?.endOfFrame;
                                 },
@@ -327,7 +327,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 5,
                             ),
-                            color: canClickLoginBtn() ? primaryColor : primaryColor.withOpacity(0.4),
+                            color: canClickLoginBtn() ? ref.watch(themeProvider).primaryColor : ref.watch(themeProvider).primaryColor.withOpacity(0.4),
                             child: isLoading
                                 ? const CupertinoActivityIndicator()
                                 : const Text(
@@ -476,7 +476,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: Text(
                     "确定",
                     style: TextStyle(
-                      color: primaryColor,
+                      color: ref.watch(themeProvider).primaryColor,
                     ),
                   ),
                   onPressed: () async {

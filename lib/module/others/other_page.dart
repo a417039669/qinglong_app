@@ -357,7 +357,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                             child: Text(
                               "确定",
                               style: TextStyle(
-                                color: primaryColor,
+                                color: ref.watch(themeProvider).primaryColor,
                               ),
                             ),
                             onPressed: () {

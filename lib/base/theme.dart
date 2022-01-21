@@ -7,17 +7,21 @@ import 'package:qinglong_app/utils/codeeditor_theme.dart';
 import 'package:qinglong_app/utils/sp_utils.dart';
 
 var themeProvider = ChangeNotifierProvider((ref) => ThemeViewModel());
-const Color _primaryColor = Color(0xFF299343);
-
-get primaryColor => _primaryColor;
+Color _primaryColor = const Color(0xFF299343);
 
 class ThemeViewModel extends ChangeNotifier {
-  ThemeData currentTheme = lightTheme;
+  late ThemeData darkTheme;
+  late ThemeData lightTheme;
+  late ThemeData currentTheme;
+
   bool _isInDarkMode = false;
+  Color primaryColor = const Color(0xFF299343);
 
   ThemeColors themeColor = LightThemeColors();
 
   ThemeViewModel() {
+    darkTheme = getDartTheme();
+    lightTheme = getLightTheme();
     var brightness = SchedulerBinding.instance!.window.platformBrightness;
     _isInDarkMode = brightness == Brightness.dark;
     changeThemeReal(_isInDarkMode, false);
@@ -47,146 +51,151 @@ class ThemeViewModel extends ChangeNotifier {
   void changeTheme() {
     changeThemeReal(!SpUtil.getBool(spTheme, defValue: false), true);
   }
-}
 
-ThemeData darkTheme = ThemeData.dark().copyWith(
-  brightness: Brightness.dark,
-  primaryColor: const Color(0xffffffff),
-  scaffoldBackgroundColor: Colors.black,
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.black,
-    titleTextStyle: TextStyle(
-      color: Colors.white,
-      fontSize: 18,
-    ),
-  ),
-  inputDecorationTheme: const InputDecorationTheme(
-    labelStyle: TextStyle(color: _primaryColor),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
+  ThemeData getLightTheme() {
+    return ThemeData.light().copyWith(
+      brightness: Brightness.light,
+      primaryColor: _primaryColor,
+      colorScheme: ColorScheme.light(
+        secondary: _primaryColor,
+        primary: _primaryColor,
+      ),
+      scaffoldBackgroundColor: const Color(0xfff5f5f5),
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(color: _primaryColor),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: _primaryColor,
+          ),
+        ),
+        border: const UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xff999999),
+          ),
+        ),
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xff999999),
+          ),
+        ),
+      ),
+      appBarTheme: AppBarTheme(
+        backgroundColor: _primaryColor,
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+        ),
+      ),
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        selectedItemColor: _primaryColor,
+      ),
+      buttonTheme: ButtonThemeData(
+        buttonColor: _primaryColor,
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
         color: _primaryColor,
       ),
-    ),
-    border: UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: Color(0xff999999),
+      tabBarTheme: TabBarTheme(
+        labelStyle: const TextStyle(
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: const TextStyle(
+          fontSize: 14,
+        ),
+        labelColor: _primaryColor,
+        unselectedLabelColor: const Color(0xff999999),
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(color: _primaryColor),
+        ),
       ),
-    ),
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: Color(0xff999999),
+      toggleableActiveColor: _primaryColor,
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.resolveWith(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled)) {
+              return Colors.transparent;
+            }
+            if (states.contains(MaterialState.selected)) {
+              return Colors.white;
+            }
+            return Colors.black;
+          },
+        ),
       ),
-    ),
-  ),
-  tabBarTheme: const TabBarTheme(
-    labelStyle: TextStyle(
-      fontSize: 14,
-    ),
-    unselectedLabelStyle: TextStyle(
-      fontSize: 14,
-    ),
-    labelColor: Color(0xffffffff),
-    unselectedLabelColor: Color(0xff999999),
-  ),
-  colorScheme: const ColorScheme.light(
-    secondary: _primaryColor,
-    primary: _primaryColor,
-  ),
-  toggleableActiveColor: _primaryColor,
-  checkboxTheme: CheckboxThemeData(
-    checkColor: MaterialStateProperty.resolveWith(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return Colors.transparent;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.white;
-        }
-        return Colors.white;
-      },
-    ),
-  ),
-  cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
-    brightness: Brightness.dark,
-    primaryColor: Color(0xffffffff),
-    scaffoldBackgroundColor: Colors.black,
-  ),
-);
-ThemeData lightTheme = ThemeData.light().copyWith(
-  brightness: Brightness.light,
-  primaryColor: _primaryColor,
-  colorScheme: const ColorScheme.light(
-    secondary: _primaryColor,
-    primary: _primaryColor,
-  ),
-  scaffoldBackgroundColor: const Color(0xfff5f5f5),
-  inputDecorationTheme: const InputDecorationTheme(
-    labelStyle: TextStyle(color: _primaryColor),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: _primaryColor,
+      cupertinoOverrideTheme: NoDefaultCupertinoThemeData(
+        brightness: Brightness.light,
+        primaryColor: _primaryColor,
+        scaffoldBackgroundColor: const Color(0xfff5f5f5),
       ),
-    ),
-    border: UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: Color(0xff999999),
+    );
+  }
+
+  ThemeData getDartTheme() {
+    return ThemeData.dark().copyWith(
+      brightness: Brightness.dark,
+      primaryColor: const Color(0xffffffff),
+      scaffoldBackgroundColor: Colors.black,
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.black,
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 18,
+        ),
       ),
-    ),
-    enabledBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: Color(0xff999999),
+      inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(color: _primaryColor),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: _primaryColor,
+          ),
+        ),
+        border: const UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xff999999),
+          ),
+        ),
+        enabledBorder: const UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Color(0xff999999),
+          ),
+        ),
       ),
-    ),
-  ),
-  appBarTheme: const AppBarTheme(
-    backgroundColor: _primaryColor,
-    titleTextStyle: TextStyle(
-      color: Colors.white,
-      fontSize: 18,
-    ),
-  ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    selectedItemColor: _primaryColor,
-  ),
-  buttonTheme: const ButtonThemeData(
-    buttonColor: _primaryColor,
-  ),
-  progressIndicatorTheme: const ProgressIndicatorThemeData(
-    color: _primaryColor,
-  ),
-  tabBarTheme: const TabBarTheme(
-    labelStyle: TextStyle(
-      fontSize: 14,
-    ),
-    unselectedLabelStyle: TextStyle(
-      fontSize: 14,
-    ),
-    labelColor: _primaryColor,
-    unselectedLabelColor: Color(0xff999999),
-    indicator: UnderlineTabIndicator(
-      borderSide: BorderSide(color: _primaryColor),
-    ),
-  ),
-  toggleableActiveColor: _primaryColor,
-  checkboxTheme: CheckboxThemeData(
-    checkColor: MaterialStateProperty.resolveWith(
-      (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return Colors.transparent;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return Colors.white;
-        }
-        return Colors.black;
-      },
-    ),
-  ),
-  cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
-    brightness: Brightness.light,
-    primaryColor: _primaryColor,
-    scaffoldBackgroundColor: Color(0xfff5f5f5),
-  ),
-);
+      tabBarTheme: const TabBarTheme(
+        labelStyle: TextStyle(
+          fontSize: 14,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontSize: 14,
+        ),
+        labelColor: Color(0xffffffff),
+        unselectedLabelColor: Color(0xff999999),
+      ),
+      colorScheme: ColorScheme.light(
+        secondary: _primaryColor,
+        primary: _primaryColor,
+      ),
+      toggleableActiveColor: _primaryColor,
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.resolveWith(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled)) {
+              return Colors.transparent;
+            }
+            if (states.contains(MaterialState.selected)) {
+              return Colors.white;
+            }
+            return Colors.white;
+          },
+        ),
+      ),
+      cupertinoOverrideTheme: const NoDefaultCupertinoThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Color(0xffffffff),
+        scaffoldBackgroundColor: Colors.black,
+      ),
+    );
+  }
+}
 
 abstract class ThemeColors {
   Color settingBgColor();

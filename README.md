@@ -12,8 +12,8 @@ iOS端暂无上架打算，用户自行下载main分支源码编译安装
 
 
 <p float="left">
+  <img src="./art/14.jpg" width="200" />
   <img src="./art/1.jpg" width="200" />
-  <img src="./art/8.jpg" width="200" />
   <img src="./art/9.jpg" width="200" />
 </p>
 <p float="left">
@@ -35,12 +35,9 @@ iOS端暂无上架打算，用户自行下载main分支源码编译安装
 
 <p float="left">
   <img src="./art/13.jpg" width="200" />
-  <img src="./art/14.png" width="200" />
+  <img src="./art/8.jpg" width="200" />
 </p>
 
-### 尚未完成的功能
->* 修改用户名密码
->* 两步验证
+### 不支持的功能
 >* 应用设置
 >* 通知设置
->* 脚本管理中的增删改和调试

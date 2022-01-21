@@ -80,7 +80,7 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
           child: TextField(
             focusNode: node,
             style: TextStyle(
-              color: ref.read(themeProvider).themeColor.descColor(),
+              color: ref.read(themeProvider).themeColor.titleColor(),
               fontSize: 14,
             ),
             controller: _controller,

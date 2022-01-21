@@ -111,8 +111,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 ),
                               ),
                               GestureDetector(
-                                onDoubleTap: (){
-                                  showDebugBtn(context, btnColor: Colors.blue);
+                                onDoubleTap: () {
+                                  if (debugBtnIsShow()) {
+                                    dismissDebugBtn();
+                                  } else {
+                                    showDebugBtn(context, btnColor: Colors.blue);
+                                  }
                                   WidgetsBinding.instance?.endOfFrame;
                                 },
                                 child: Image.asset(

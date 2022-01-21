@@ -57,7 +57,8 @@ class QlAppState extends ConsumerState<QlApp> {
       child: MediaQuery(
         data: MediaQueryData.fromWindow(WidgetsBinding.instance!.window).copyWith(textScaleFactor: 1,),
         child: MaterialApp(
-          locale: const Locale('zh', 'cn'),
+          title: "青龙",
+          locale: const Locale('zh', 'CN'),
           navigatorKey: navigatorState,
           theme: ref.watch<ThemeViewModel>(themeProvider).currentTheme,
           onGenerateRoute: (setting) {
@@ -65,9 +66,6 @@ class QlAppState extends ConsumerState<QlApp> {
           },
           home: Builder(
             builder: (context) {
-              if (!kReleaseMode) {
-                showDebugBtn(context, btnColor: Colors.blue);
-              }
               return getIt<UserInfoViewModel>().isLogined() ? const HomePage() : const LoginPage();
             },
           ),

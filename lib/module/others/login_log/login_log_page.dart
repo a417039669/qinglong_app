@@ -86,7 +86,7 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> with LazyLoadState<
                     trailing: item.status == 0
                         ? Icon(
                             CupertinoIcons.checkmark_circle,
-                            color: primaryColor,
+                            color: ref.watch(themeProvider).primaryColor,
                             size: 16,
                           )
                         : const Icon(

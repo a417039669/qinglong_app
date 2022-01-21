@@ -87,7 +87,7 @@ class Api {
 
   static Future<HttpResponse<NullResponse>> stopTasks(List<String> crons) async {
     return await Http.put<NullResponse>(
-      Url.runTasks,
+      Url.stopTasks,
       crons,
     );
   }

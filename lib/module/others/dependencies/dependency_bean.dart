@@ -24,10 +24,10 @@ class DependencyBean {
 
   DependencyBean.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
-    created = json['created'];
+    created = int.tryParse(json['created'].toString());
     status = json['status'];
     type = json['type'];
-    timestamp = json['timestamp'];
+    timestamp = json['timestamp'].toString();
     name = json['name'];
     log = json['log'].cast<String>();
     remark = json['remark'];

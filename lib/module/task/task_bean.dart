@@ -44,14 +44,14 @@ class TaskBean {
       schedule = json['schedule'].toString();
       saved = json['saved'];
       sId = json.containsKey('_id') ? json['_id'].toString() : (json.containsKey('id') ? json['id'].toString() : "");
-      created = json['created'];
+      created = int.tryParse(json['created'].toString());
       status = json['status'];
       timestamp = json['timestamp'].toString();
       isSystem = json['isSystem'];
       isDisabled = json['isDisabled'];
       logPath = json['log_path'].toString();
       isPinned = json['isPinned'];
-      lastExecutionTime = json['last_execution_time'];
+      lastExecutionTime = int.tryParse(json['last_execution_time'].toString());
       lastRunningTime = json['last_running_time'];
       pid = json['pid'].toString();
     } catch (e) {

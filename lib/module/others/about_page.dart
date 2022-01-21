@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:qinglong_app/base/theme.dart';
+import 'package:qinglong_app/utils/update_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../main.dart';
@@ -23,6 +24,20 @@ class _AboutPageState extends ConsumerState<AboutPage> {
   void initState() {
     super.initState();
     getInfo();
+
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      update();
+    });
+  }
+
+  void update() async {
+    String? result = await UpdateUtils().checkUpdate(true);
+    if (result != null && result.isNotEmpty) {
+      UpdateDialog updateDialog = UpdateDialog(context, title: "发现新版本", updateContent: "版本号:v${result}", onUpdate: () {
+        UpdateUtils.launchURL(result);
+      });
+      updateDialog.show();
+    }
   }
 
   @override
@@ -76,7 +91,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
               child: Text(
                 "Telegram频道",
                 style: TextStyle(
-                  color: primaryColor,
+                  color: ref.watch(themeProvider).primaryColor,
                   fontSize: 16,
                 ),
               ),
@@ -92,7 +107,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                   child: Text(
                     "版本更新",
                     style: TextStyle(
-                      color: primaryColor,
+                      color: ref.watch(themeProvider).primaryColor,
                       fontSize: 16,
                     ),
                   ),
@@ -107,7 +122,7 @@ class _AboutPageState extends ConsumerState<AboutPage> {
                   child: Text(
                     "项目地址",
                     style: TextStyle(
-                      color: primaryColor,
+                      color: ref.watch(themeProvider).primaryColor,
                       fontSize: 16,
                     ),
                   ),

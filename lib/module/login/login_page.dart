@@ -1,3 +1,4 @@
+import 'package:dio_log/dio_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,6 +10,7 @@ import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
 import 'package:qinglong_app/module/login/user_bean.dart';
 import 'package:qinglong_app/utils/extension.dart';
+import 'package:qinglong_app/utils/update_utils.dart';
 import 'package:qinglong_app/utils/utils.dart';
 import 'package:flip_card/flip_card.dart';
 
@@ -22,7 +24,8 @@ class LoginPage extends ConsumerStatefulWidget {
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController _hostController = TextEditingController(text: getIt<UserInfoViewModel>().host);
+  final TextEditingController _hostController =
+      TextEditingController(text: getIt<UserInfoViewModel>().host);
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _cIdController = TextEditingController();
@@ -38,7 +41,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.initState();
     useSecretLogin = getIt<UserInfoViewModel>().useSecretLogined;
 
-    if (getIt<UserInfoViewModel>().userName != null && getIt<UserInfoViewModel>().userName!.isNotEmpty) {
+    if (getIt<UserInfoViewModel>().userName != null &&
+        getIt<UserInfoViewModel>().userName!.isNotEmpty) {
       if (getIt<UserInfoViewModel>().useSecretLogined) {
         _cIdController.text = getIt<UserInfoViewModel>().userName!;
       } else {
@@ -48,7 +52,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     } else {
       rememberPassword = false;
     }
-    if (getIt<UserInfoViewModel>().passWord != null && getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
+    if (getIt<UserInfoViewModel>().passWord != null &&
+        getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
       if (getIt<UserInfoViewModel>().useSecretLogined) {
         _cSecretController.text = getIt<UserInfoViewModel>().passWord!;
       } else {
@@ -57,6 +62,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
     getIt<UserInfoViewModel>().updateToken("");
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      update();
       if (useSecretLogin) {
         cardKey.currentState?.toggleCard();
       }
@@ -107,9 +113,28 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   ),
                                 ),
                               ),
-                              Image.asset(
-                                "assets/images/ql.png",
-                                height: 45,
+                              GestureDetector(
+                                onDoubleTap: () {
+                                  if (debugBtnIsShow()) {
+                                    dismissDebugBtn();
+                                  } else {
+                                    showDebugBtn(context,
+                                        btnColor: ref
+                                            .watch(themeProvider)
+                                            .primaryColor);
+                                  }
+                                  WidgetsBinding.instance?.endOfFrame;
+                                },
+                                child: ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    ref.watch(themeProvider).primaryColor,
+                                    BlendMode.srcIn,
+                                  ),
+                                  child: Image.asset(
+                                    "assets/images/ql.png",
+                                    height: 45,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -136,6 +161,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           ),
                           FlipCard(
                             key: cardKey,
+                            flipOnTouch: false,
                             onFlipDone: (back) {
                               useSecretLogin = back;
                               setState(() {});
@@ -164,7 +190,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     },
                                     controller: _userNameController,
                                     decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(0, 5, 0, 5),
                                       hintText: "请输入用户名",
                                     ),
                                     autofocus: false,
@@ -186,7 +213,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     controller: _passwordController,
                                     obscureText: true,
                                     decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(0, 5, 0, 5),
                                       hintText: "请输入密码",
                                     ),
                                     autofocus: false,
@@ -220,7 +248,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     },
                                     controller: _cIdController,
                                     decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(0, 5, 0, 5),
                                       hintText: "请输入client_id",
                                     ),
                                     autofocus: false,
@@ -242,7 +271,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     controller: _cSecretController,
                                     obscureText: true,
                                     decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      contentPadding:
+                                          EdgeInsets.fromLTRB(0, 5, 0, 5),
                                       hintText: "请输入client_secret",
                                     ),
                                     autofocus: false,
@@ -280,18 +310,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           GestureDetector(
                             onTap: () {
                               cardKey.currentState?.toggleCard();
-                              WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                              WidgetsBinding.instance
+                                  ?.addPostFrameCallback((timeStamp) {
                                 setState(() {});
                               });
                             },
                             child: Text(
-                              loginByUserName() ? "client_id登录" : "用户名密码登录",
+                              loginByUserName() ? "client_id登录" : "账号登录",
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                         ],
@@ -313,7 +344,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 5,
                             ),
-                            color: canClickLoginBtn() ? primaryColor : primaryColor.withOpacity(0.4),
+                            color: canClickLoginBtn()
+                                ? ref.watch(themeProvider).primaryColor
+                                : ref
+                                    .watch(themeProvider)
+                                    .primaryColor
+                                    .withOpacity(0.4),
                             child: isLoading
                                 ? const CupertinoActivityIndicator()
                                 : const Text(
@@ -325,12 +361,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             onPressed: () {
                               Http.pushedLoginPage = false;
                               Utils.hideKeyBoard(context);
-                              getIt<UserInfoViewModel>().updateHost(_hostController.text);
+                              getIt<UserInfoViewModel>()
+                                  .updateHost(_hostController.text);
                               Http.clear();
                               if (loginByUserName()) {
-                                login(_userNameController.text, _passwordController.text);
+                                login(_userNameController.text,
+                                    _passwordController.text);
                               } else {
-                                login(_cIdController.text, _cSecretController.text);
+                                login(_cIdController.text,
+                                    _cSecretController.text);
                               }
                             },
                           ),
@@ -367,7 +406,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       loginSuccess(response, userName, password);
     } else if (loginByUserName() && response.code == 401) {
       //可能用户使用的是老版本qinglong
-      HttpResponse<LoginBean> oldResponse = await Api.loginOld(userName, password);
+      HttpResponse<LoginBean> oldResponse =
+          await Api.loginOld(userName, password);
       if (oldResponse.success) {
         loginSuccess(oldResponse, userName, password);
       } else {
@@ -398,11 +438,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     setState(() {});
   }
 
-  void loginSuccess(HttpResponse<LoginBean> response, String userName, String password) {
+  void loginSuccess(
+      HttpResponse<LoginBean> response, String userName, String password) {
     getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
     getIt<UserInfoViewModel>().useSecretLogin(!loginByUserName());
     if (rememberPassword) {
       getIt<UserInfoViewModel>().updateUserName(userName, password);
+    } else {
+      getIt<UserInfoViewModel>().updateUserName("", "");
     }
     Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
   }
@@ -412,9 +455,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     if (_hostController.text.isEmpty) return false;
     if (!loginByUserName()) {
-      return _cIdController.text.isNotEmpty && _cSecretController.text.isNotEmpty;
+      return _cIdController.text.isNotEmpty &&
+          _cSecretController.text.isNotEmpty;
     } else {
-      return _userNameController.text.isNotEmpty && _passwordController.text.isNotEmpty;
+      return _userNameController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
     }
   }
 
@@ -460,12 +505,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: Text(
                     "确定",
                     style: TextStyle(
-                      color: primaryColor,
+                      color: ref.watch(themeProvider).primaryColor,
                     ),
                   ),
                   onPressed: () async {
                     Navigator.of(context).pop(true);
-                    HttpResponse<LoginBean> response = await Api.loginTwo(userName, password, twoFact);
+                    HttpResponse<LoginBean> response =
+                        await Api.loginTwo(userName, password, twoFact);
                     if (response.success) {
                       loginSuccess(response, userName, password);
                     } else {
@@ -480,5 +526,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         setState(() {});
       }
     });
+  }
+
+  void update() async {
+    String? result = await UpdateUtils().checkUpdate();
+    if (result != null && result.isNotEmpty) {
+      UpdateDialog updateDialog = UpdateDialog(context,
+          title: "发现新版本", updateContent: "版本号:v${result}", onUpdate: () {
+        UpdateUtils.launchURL(result);
+      });
+      updateDialog.show();
+    }
   }
 }

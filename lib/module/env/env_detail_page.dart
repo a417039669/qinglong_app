@@ -249,7 +249,7 @@ class _TaskDetailPageState extends ConsumerState<EnvDetailPage> {
             child: Text(
               "确定",
               style: TextStyle(
-                color: primaryColor,
+                color: ref.watch(themeProvider).primaryColor,
               ),
             ),
             onPressed: () async {

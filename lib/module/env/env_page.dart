@@ -238,13 +238,24 @@ class EnvItemCell extends StatelessWidget {
                               ),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                border: Border.all(color: primaryColor, width: 1),
+                                border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
                               ),
                               child: Text(
                                 "$index",
-                                style: TextStyle(color: primaryColor, fontSize: 12),
+                                style: TextStyle(color: ref.watch(themeProvider).primaryColor, fontSize: 12),
                               ),
                             ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            bean.status == 1
+                                ? const Icon(
+                              Icons.dnd_forwardslash,
+                              size: 12,
+                              color: Colors.red,
+                            )
+                                : const SizedBox.shrink(),
+
                             const SizedBox(
                               width: 5,
                             ),
@@ -261,16 +272,6 @@ class EnvItemCell extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            bean.status == 1
-                                ? const Icon(
-                                    Icons.dnd_forwardslash,
-                                    size: 12,
-                                    color: Colors.red,
-                                  )
-                                : const SizedBox.shrink(),
                             const Spacer(),
                           ],
                         ),
@@ -331,7 +332,7 @@ class EnvItemCell extends StatelessWidget {
             child: Text(
               "确定",
               style: TextStyle(
-                color: primaryColor,
+                color: ref.watch(themeProvider).primaryColor,
               ),
             ),
             onPressed: () {

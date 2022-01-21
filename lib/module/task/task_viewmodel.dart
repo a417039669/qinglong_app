@@ -48,6 +48,7 @@ class TaskViewModel extends BaseViewModel {
     HttpResponse<NullResponse> result = await Api.startTasks([cron]);
     if (result.success) {
       list.firstWhere((element) => element.sId == cron).status = 0;
+      sortList();
       notifyListeners();
     } else {
       failToast(result.message, notify: true);
@@ -58,6 +59,7 @@ class TaskViewModel extends BaseViewModel {
     HttpResponse<NullResponse> result = await Api.stopTasks([cron]);
     if (result.success) {
       list.firstWhere((element) => element.sId == cron).status = 1;
+      sortList();
       notifyListeners();
     } else {
       failToast(result.message, notify: true);

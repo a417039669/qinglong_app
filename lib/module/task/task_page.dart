@@ -102,9 +102,17 @@ class _TaskPageState extends State<TaskPage> {
                 TaskBean item = list[index];
 
                 if (_searchController.text.isEmpty ||
-                    (item.name?.toLowerCase().contains(_searchController.text.toLowerCase()) ?? false) ||
-                    (item.command?.toLowerCase().contains(_searchController.text.toLowerCase()) ?? false) ||
-                    (item.schedule?.contains(_searchController.text.toLowerCase()) ?? false)) {
+                    (item.name
+                            ?.toLowerCase()
+                            .contains(_searchController.text.toLowerCase()) ??
+                        false) ||
+                    (item.command
+                            ?.toLowerCase()
+                            .contains(_searchController.text.toLowerCase()) ??
+                        false) ||
+                    (item.schedule
+                            ?.contains(_searchController.text.toLowerCase()) ??
+                        false)) {
                   return TaskItemCell(item, ref);
                 } else {
                   return const SizedBox.shrink();
@@ -175,10 +183,16 @@ class TaskItemCell extends StatelessWidget {
             child: Text(
               bean.status! == 1 ? "运行" : "停止运行",
             ),
-            trailingIcon: bean.status! == 1 ? CupertinoIcons.memories : CupertinoIcons.stop_circle,
+            trailingIcon: bean.status! == 1
+                ? CupertinoIcons.memories
+                : CupertinoIcons.stop_circle,
             onPressed: () {
               Navigator.of(context).pop();
-              startCron(context, ref);
+              if (bean.status! == 1) {
+                startCron(context, ref);
+              } else {
+                stopCron(context, ref);
+              }
             },
           ),
           QLCupertinoContextMenuAction(
@@ -193,7 +207,8 @@ class TaskItemCell extends StatelessWidget {
             child: const Text("编辑"),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context).pushNamed(Routes.routeAddTask, arguments: bean);
+              Navigator.of(context)
+                  .pushNamed(Routes.routeAddTask, arguments: bean);
             },
             trailingIcon: CupertinoIcons.pencil_outline,
           ),
@@ -203,7 +218,9 @@ class TaskItemCell extends StatelessWidget {
               Navigator.of(context).pop();
               pinTask();
             },
-            trailingIcon: bean.isPinned! == 0 ? CupertinoIcons.pin : CupertinoIcons.pin_slash,
+            trailingIcon: bean.isPinned! == 0
+                ? CupertinoIcons.pin
+                : CupertinoIcons.pin_slash,
           ),
           QLCupertinoContextMenuAction(
             child: Text(bean.isDisabled! == 0 ? "禁用" : "启用"),
@@ -212,7 +229,9 @@ class TaskItemCell extends StatelessWidget {
               enableTask();
             },
             isDestructiveAction: true,
-            trailingIcon: bean.isDisabled! == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
+            trailingIcon: bean.isDisabled! == 0
+                ? Icons.dnd_forwardslash
+                : Icons.check_circle_outline_sharp,
           ),
           QLCupertinoContextMenuAction(
             child: const Text("删除"),
@@ -229,15 +248,17 @@ class TaskItemCell extends StatelessWidget {
           return ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Container(
-              color: isDark ? const Color(0xff333333) : Theme.of(context).scaffoldBackgroundColor,
+              color: isDark
+                  ? const Color(0xff333333)
+                  : Theme.of(context).scaffoldBackgroundColor,
               padding: EdgeInsets.only(
                 left: 5,
                 right: 5,
                 top: 5,
                 bottom: isDark ? 5 : 20,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
+              child: SizedBox(
+                height: 200,
                 child: TaskDetailPage(
                   bean,
                   hideAppbar: true,
@@ -252,7 +273,9 @@ class TaskItemCell extends StatelessWidget {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
+              color: bean.isPinned == 1
+                  ? ref.watch(themeProvider).themeColor.pinColor()
+                  : Colors.transparent,
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 8,
@@ -265,39 +288,59 @@ class TaskItemCell extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Material(
-                        color: Colors.transparent,
-                        child: Text(
-                          bean.name ?? "",
-                          maxLines: 1,
-                          style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            color: ref.watch(themeProvider).themeColor.titleColor(),
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      bean.status == 1
-                          ? const SizedBox.shrink()
-                          : const SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
+                      Expanded(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            bean.status == 1
+                                ? const SizedBox.shrink()
+                                : SizedBox(
+                                    width: 15,
+                                    height: 15,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      color:
+                                          ref.watch(themeProvider).primaryColor,
+                                    ),
+                                  ),
+                            SizedBox(
+                              width: bean.status == 1 ? 0 : 5,
+                            ),
+                            Expanded(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: Text(
+                                  bean.name ?? "",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    color: ref
+                                        .watch(themeProvider)
+                                        .themeColor
+                                        .titleColor(),
+                                    fontSize: 18,
+                                  ),
+                                ),
                               ),
                             ),
-                      const Spacer(),
+                          ],
+                        ),
+                      ),
                       Material(
                         color: Colors.transparent,
                         child: Text(
-                          (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
+                          (bean.lastExecutionTime == null ||
+                                  bean.lastExecutionTime == 0)
+                              ? "-"
+                              : Utils.formatMessageTime(
+                                  bean.lastExecutionTime!),
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            color:
+                                ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 12,
                           ),
                         ),
@@ -310,21 +353,6 @@ class TaskItemCell extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Material(
-                        color: Colors.transparent,
-                        child: Text(
-                          bean.schedule ?? "",
-                          maxLines: 1,
-                          style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            color: ref.watch(themeProvider).themeColor.descColor(),
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
                       bean.isDisabled == 1
                           ? const Icon(
                               Icons.dnd_forwardslash,
@@ -332,6 +360,22 @@ class TaskItemCell extends StatelessWidget {
                               color: Colors.red,
                             )
                           : const SizedBox.shrink(),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          bean.schedule ?? "",
+                          maxLines: 1,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            color:
+                                ref.watch(themeProvider).themeColor.descColor(),
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -433,7 +477,7 @@ class TaskItemCell extends StatelessWidget {
             child: Text(
               "确定",
               style: TextStyle(
-                color: primaryColor,
+                color: ref.watch(themeProvider).primaryColor,
               ),
             ),
             onPressed: () {

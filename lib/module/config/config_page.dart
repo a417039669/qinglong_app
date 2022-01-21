@@ -5,6 +5,7 @@ import 'package:qinglong_app/base/base_state_widget.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/ui/abs_underline_tabindicator.dart';
+import 'package:qinglong_app/base/ui/empty_widget.dart';
 import 'package:qinglong_app/main.dart';
 
 import 'config_viewmodel.dart';
@@ -29,6 +30,9 @@ class ConfigPageState extends State<ConfigPage>
   Widget build(BuildContext context) {
     return BaseStateWidget<ConfigViewModel>(
       builder: (ref, model, child) {
+        if (model.list.isEmpty) {
+          return const EmptyWidget();
+        }
         _tabController ??=
             TabController(length: model.list.length, vsync: this);
 
@@ -89,6 +93,11 @@ class ConfigPageState extends State<ConfigPage>
       "title": ref.read(configProvider).list[_tabController?.index ?? 0].title,
       "content": ref.read(configProvider).content[
           ref.read(configProvider).list[_tabController?.index ?? 0].title]
+    }).then((value) async {
+      if (value != null && (value as String).isNotEmpty) {
+        await ref.read(configProvider).loadContent(value);
+        setState(() {});
+      }
     });
   }
 }

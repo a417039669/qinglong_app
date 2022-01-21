@@ -5,24 +5,14 @@ import 'package:json_conversion_annotation/json_conversion_annotation.dart';
 class ScriptBean {
   String? title;
   String? value;
-  String? key;
-  double? mtime;
   bool? disabled;
   List<ScriptChildren>? children;
 
-  ScriptBean(
-      {this.title,
-      this.value,
-      this.key,
-      this.mtime,
-      this.disabled,
-      this.children});
+  ScriptBean({this.title, this.value, this.disabled, this.children});
 
   ScriptBean.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     value = json['value'];
-    key = json['key'];
-    mtime = json['mtime'];
     disabled = json['disabled'];
     if (json['children'] != null) {
       children = <ScriptChildren>[];
@@ -36,8 +26,6 @@ class ScriptBean {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['title'] = this.title;
     data['value'] = this.value;
-    data['key'] = this.key;
-    data['mtime'] = this.mtime;
     data['disabled'] = this.disabled;
     if (this.children != null) {
       data['children'] = this.children!.map((v) => v.toJson()).toList();
@@ -53,17 +41,13 @@ class ScriptBean {
 class ScriptChildren {
   String? title;
   String? value;
-  String? key;
-  double? mtime;
   String? parent;
 
-  ScriptChildren({this.title, this.value, this.key, this.mtime, this.parent});
+  ScriptChildren({this.title, this.value, this.parent});
 
   ScriptChildren.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     value = json['value'];
-    key = json['key'];
-    mtime = json['mtime'];
     parent = json['parent'];
   }
 
@@ -71,8 +55,6 @@ class ScriptChildren {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['title'] = this.title;
     data['value'] = this.value;
-    data['key'] = this.key;
-    data['mtime'] = this.mtime;
     data['parent'] = this.parent;
     return data;
   }

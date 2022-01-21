@@ -12,8 +12,8 @@ iOS端暂无上架打算，用户自行下载main分支源码编译安装
 
 
 <p float="left">
+  <img src="./art/14.jpg" width="200" />
   <img src="./art/1.jpg" width="200" />
-  <img src="./art/8.jpg" width="200" /> 
   <img src="./art/9.jpg" width="200" />
 </p>
 <p float="left">
@@ -35,9 +35,9 @@ iOS端暂无上架打算，用户自行下载main分支源码编译安装
 
 <p float="left">
   <img src="./art/13.jpg" width="200" />
+  <img src="./art/8.jpg" width="200" />
 </p>
 
 ### 不支持的功能
-
 >* 应用设置
 >* 通知设置

@@ -19,7 +19,8 @@ class ConfigPage extends StatefulWidget {
 
 class ConfigPageState extends State<ConfigPage>
     with SingleTickerProviderStateMixin {
-  TabController? _tabController;
+  int _initIndex = 0;
+  BuildContext? childContext;
 
   @override
   void initState() {
@@ -33,51 +34,57 @@ class ConfigPageState extends State<ConfigPage>
         if (model.list.isEmpty) {
           return const EmptyWidget();
         }
-        _tabController ??=
-            TabController(length: model.list.length, vsync: this);
 
-        return Column(
-          children: [
-            TabBar(
-              controller: _tabController,
-              tabs: model.list
-                  .map((e) => Tab(
-                        text: e.title,
-                      ))
-                  .toList(),
-              isScrollable: true,
-              indicator: AbsUnderlineTabIndicator(
-                wantWidth: 20,
-                borderSide: BorderSide(
-                  color: Theme.of(context).primaryColor,
-                  width: 2,
+        return DefaultTabController(
+          length: model.list.length,
+          initialIndex: _initIndex,
+          child: Builder(builder: (context) {
+            childContext = context;
+            return Column(
+              children: [
+                TabBar(
+                  tabs: model.list
+                      .map((e) => Tab(
+                            text: e.title,
+                          ))
+                      .toList(),
+                  isScrollable: true,
+                  indicator: AbsUnderlineTabIndicator(
+                    wantWidth: 20,
+                    borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                  onTap: (index) {
+                    print(".....$index");
+                  },
                 ),
-              ),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: model.list
-                    .map(
-                      (e) => SingleChildScrollView(
-                        child: HighlightView(
-                          model.content[e.title] ?? "",
-                          language: "sh",
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15,
+                Expanded(
+                  child: TabBarView(
+                    children: model.list
+                        .map(
+                          (e) => SingleChildScrollView(
+                            child: HighlightView(
+                              model.content[e.title] ?? "",
+                              language: "sh",
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              theme: ref
+                                  .watch(themeProvider)
+                                  .themeColor
+                                  .codeEditorTheme(),
+                              tabSize: 14,
+                            ),
                           ),
-                          theme: ref
-                              .watch(themeProvider)
-                              .themeColor
-                              .codeEditorTheme(),
-                          tabSize: 14,
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ],
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            );
+          }),
         );
       },
       model: configProvider,
@@ -88,11 +95,16 @@ class ConfigPageState extends State<ConfigPage>
   }
 
   void editMe(WidgetRef ref) {
-    if (_tabController == null || _tabController!.length == 0) return;
+    if (childContext == null) return;
     navigatorState.currentState?.pushNamed(Routes.routeConfigEdit, arguments: {
-      "title": ref.read(configProvider).list[_tabController?.index ?? 0].title,
-      "content": ref.read(configProvider).content[
-          ref.read(configProvider).list[_tabController?.index ?? 0].title]
+      "title": ref
+          .read(configProvider)
+          .list[DefaultTabController.of(childContext!)?.index ?? 0]
+          .title,
+      "content": ref.read(configProvider).content[ref
+          .read(configProvider)
+          .list[DefaultTabController.of(childContext!)?.index ?? 0]
+          .title]
     }).then((value) async {
       if (value != null && (value as String).isNotEmpty) {
         await ref.read(configProvider).loadContent(value);

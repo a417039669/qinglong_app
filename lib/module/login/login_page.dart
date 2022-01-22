@@ -10,22 +10,25 @@ import 'package:qinglong_app/base/userinfo_viewmodel.dart';
 import 'package:qinglong_app/main.dart';
 import 'package:qinglong_app/module/login/user_bean.dart';
 import 'package:qinglong_app/utils/extension.dart';
+import 'package:qinglong_app/utils/login_helper.dart';
 import 'package:qinglong_app/utils/update_utils.dart';
 import 'package:qinglong_app/utils/utils.dart';
 import 'package:flip_card/flip_card.dart';
 
-import 'login_bean.dart';
-
 class LoginPage extends ConsumerStatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  final bool doNotLoadLocalData;
+
+  const LoginPage({
+    Key? key,
+    this.doNotLoadLocalData = false,
+  }) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends ConsumerState<LoginPage> {
-  final TextEditingController _hostController =
-      TextEditingController(text: getIt<UserInfoViewModel>().host);
+  final TextEditingController _hostController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _cIdController = TextEditingController();
@@ -39,25 +42,27 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   void initState() {
     super.initState();
-    useSecretLogin = getIt<UserInfoViewModel>().useSecretLogined;
-
-    if (getIt<UserInfoViewModel>().userName != null &&
-        getIt<UserInfoViewModel>().userName!.isNotEmpty) {
-      if (getIt<UserInfoViewModel>().useSecretLogined) {
-        _cIdController.text = getIt<UserInfoViewModel>().userName!;
+    if (!widget.doNotLoadLocalData) {
+      _hostController.text = getIt<UserInfoViewModel>().host ?? "";
+      useSecretLogin = getIt<UserInfoViewModel>().useSecretLogined;
+      if (getIt<UserInfoViewModel>().userName != null &&
+          getIt<UserInfoViewModel>().userName!.isNotEmpty) {
+        if (getIt<UserInfoViewModel>().useSecretLogined) {
+          _cIdController.text = getIt<UserInfoViewModel>().userName!;
+        } else {
+          _userNameController.text = getIt<UserInfoViewModel>().userName!;
+        }
+        rememberPassword = true;
       } else {
-        _userNameController.text = getIt<UserInfoViewModel>().userName!;
+        rememberPassword = false;
       }
-      rememberPassword = true;
-    } else {
-      rememberPassword = false;
-    }
-    if (getIt<UserInfoViewModel>().passWord != null &&
-        getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
-      if (getIt<UserInfoViewModel>().useSecretLogined) {
-        _cSecretController.text = getIt<UserInfoViewModel>().passWord!;
-      } else {
-        _passwordController.text = getIt<UserInfoViewModel>().passWord!;
+      if (getIt<UserInfoViewModel>().passWord != null &&
+          getIt<UserInfoViewModel>().passWord!.isNotEmpty) {
+        if (getIt<UserInfoViewModel>().useSecretLogined) {
+          _cSecretController.text = getIt<UserInfoViewModel>().passWord!;
+        } else {
+          _passwordController.text = getIt<UserInfoViewModel>().passWord!;
+        }
       }
     }
     getIt<UserInfoViewModel>().updateToken("");
@@ -361,9 +366,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             onPressed: () {
                               Http.pushedLoginPage = false;
                               Utils.hideKeyBoard(context);
-                              getIt<UserInfoViewModel>()
-                                  .updateHost(_hostController.text);
-                              Http.clear();
                               if (loginByUserName()) {
                                 login(_userNameController.text,
                                     _passwordController.text);
@@ -392,62 +394,31 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     return !useSecretLogin;
   }
 
+  LoginHelper? helper;
+
   Future<void> login(String userName, String password) async {
     isLoading = true;
     setState(() {});
-    HttpResponse<LoginBean> response;
 
-    if (loginByUserName()) {
-      response = await Api.login(userName, password);
+    helper = LoginHelper(useSecretLogin, _hostController.text, userName,
+        password, rememberPassword);
+    var response = await helper!.login();
+    dealLoginResponse(response);
+  }
+
+  void dealLoginResponse(int response) {
+    if (response == LoginHelper.success) {
+      Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
+    } else if (response == LoginHelper.failed) {
+      loginFailed();
     } else {
-      response = await Api.loginByClientId(userName, password);
-    }
-    if (response.success) {
-      loginSuccess(response, userName, password);
-    } else if (loginByUserName() && response.code == 401) {
-      //可能用户使用的是老版本qinglong
-      HttpResponse<LoginBean> oldResponse =
-          await Api.loginOld(userName, password);
-      if (oldResponse.success) {
-        loginSuccess(oldResponse, userName, password);
-      } else {
-        (oldResponse.message ?? "请检查网络情况").toast();
-        if (oldResponse.code == 420) {
-          twoFact(userName, password);
-        } else {
-          isLoading = false;
-          setState(() {});
-        }
-      }
-    } else {
-      print(response.code);
-      (response.message ?? "请检查网络情况").toast();
-      //420代表需要2步验证
-      if (response.code == 420) {
-        twoFact(userName, password);
-      } else {
-        isLoading = false;
-        setState(() {});
-      }
+      twoFact();
     }
   }
 
-  void loginFailed(HttpResponse<LoginBean> response) {
-    (response.message ?? "请检查网络情况").toast();
+  void loginFailed() {
     isLoading = false;
     setState(() {});
-  }
-
-  void loginSuccess(
-      HttpResponse<LoginBean> response, String userName, String password) {
-    getIt<UserInfoViewModel>().updateToken(response.bean?.token ?? "");
-    getIt<UserInfoViewModel>().useSecretLogin(!loginByUserName());
-    if (rememberPassword) {
-      getIt<UserInfoViewModel>().updateUserName(userName, password);
-    } else {
-      getIt<UserInfoViewModel>().updateUserName("", "");
-    }
-    Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
   }
 
   bool canClickLoginBtn() {
@@ -463,7 +434,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
   }
 
-  void twoFact(String userName, String password) {
+  void twoFact() {
     String twoFact = "";
     showCupertinoDialog(
         context: context,
@@ -510,12 +481,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ),
                   onPressed: () async {
                     Navigator.of(context).pop(true);
-                    HttpResponse<LoginBean> response =
-                        await Api.loginTwo(userName, password, twoFact);
-                    if (response.success) {
-                      loginSuccess(response, userName, password);
+                    if (helper != null) {
+                      var response = await helper!.loginTwice(twoFact);
+                      dealLoginResponse(response);
                     } else {
-                      loginFailed(response);
+                      "状态异常，请重新点登录按钮".toast();
                     }
                   },
                 ),

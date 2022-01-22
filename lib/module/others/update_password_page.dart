@@ -23,7 +23,8 @@ class UpdatePasswordPage extends ConsumerStatefulWidget {
 class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordAgainController = TextEditingController();
+  final TextEditingController _passwordAgainController =
+      TextEditingController();
 
   FocusNode focusNode = FocusNode();
 
@@ -175,7 +176,8 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
       "用户名不能为空".toast();
       return;
     }
-    if (_passwordController.text.isEmpty || _passwordAgainController.text.isEmpty) {
+    if (_passwordController.text.isEmpty ||
+        _passwordAgainController.text.isEmpty) {
       "密码不能为空".toast();
       return;
     }
@@ -191,15 +193,18 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
   void commitReal() async {
     String name = _nameController.text;
     String password = _passwordController.text;
-    HttpResponse<NullResponse> response = await Api.updatePassword(name, password);
+    HttpResponse<NullResponse> response =
+        await Api.updatePassword(name, password);
 
     if (response.success) {
       "更新成功".toast();
 
       if (!getIt<UserInfoViewModel>().useSecretLogined) {
-        getIt<UserInfoViewModel>().updateUserName(name, password);
+        getIt<UserInfoViewModel>().updateUserName(
+            getIt<UserInfoViewModel>().host ?? "", name, password, false);
       }
-      Navigator.of(context).pushNamedAndRemoveUntil(Routes.routeLogin, (route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(Routes.routeLogin, (route) => false);
     } else {
       response.message.toast();
     }

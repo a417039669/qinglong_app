@@ -88,6 +88,9 @@ class _TaskLogPageState extends ConsumerState<TaskLogPage> with LazyLoadState<Ta
     HttpResponse<List<TaskLogBean>> response = await Api.taskLog();
 
     if (response.success) {
+      if (response.bean == null || response.bean!.isEmpty) {
+        "暂无数据".toast();
+      }
       list.clear();
       list.addAll(response.bean ?? []);
       setState(() {});

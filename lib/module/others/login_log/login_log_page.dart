@@ -21,7 +21,8 @@ class LoginLogPage extends ConsumerStatefulWidget {
   _LoginLogPageState createState() => _LoginLogPageState();
 }
 
-class _LoginLogPageState extends ConsumerState<LoginLogPage> with LazyLoadState<LoginLogPage> {
+class _LoginLogPageState extends ConsumerState<LoginLogPage>
+    with LazyLoadState<LoginLogPage> {
   List<LoginLogBean> list = [];
 
   @override
@@ -65,7 +66,8 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> with LazyLoadState<
                           selectionWidthStyle: BoxWidthStyle.max,
                           selectionHeightStyle: BoxHeightStyle.max,
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            color:
+                                ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 14,
                           ),
                         ),
@@ -77,7 +79,8 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> with LazyLoadState<
                           selectionWidthStyle: BoxWidthStyle.max,
                           selectionHeightStyle: BoxHeightStyle.max,
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            color:
+                                ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 14,
                           ),
                         ),
@@ -106,6 +109,9 @@ class _LoginLogPageState extends ConsumerState<LoginLogPage> with LazyLoadState<
     HttpResponse<List<LoginLogBean>> response = await Api.loginLog();
 
     if (response.success) {
+      if (response.bean == null || response.bean!.isEmpty) {
+        "暂无数据".toast();
+      }
       list.clear();
       list.addAll(response.bean ?? []);
       setState(() {});

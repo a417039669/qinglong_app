@@ -14,7 +14,8 @@ class TaskDetailPage extends ConsumerStatefulWidget {
   final TaskBean taskBean;
   final bool hideAppbar;
 
-  const TaskDetailPage(this.taskBean, {Key? key, this.hideAppbar = false}) : super(key: key);
+  const TaskDetailPage(this.taskBean, {Key? key, this.hideAppbar = false})
+      : super(key: key);
 
   @override
   _TaskDetailPageState createState() => _TaskDetailPageState();
@@ -68,11 +69,13 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
                     ),
                     TaskDetailCell(
                       title: "创建时间",
-                      desc: Utils.formatMessageTime(widget.taskBean.created ?? 0),
+                      desc:
+                          Utils.formatMessageTime(widget.taskBean.created ?? 0),
                     ),
                     TaskDetailCell(
                       title: "更新时间",
-                      desc: Utils.formatGMTTime(widget.taskBean.timestamp ?? ""),
+                      desc:
+                          Utils.formatGMTTime(widget.taskBean.timestamp ?? ""),
                     ),
                     TaskDetailCell(
                       title: "任务定时",
@@ -80,11 +83,14 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
                     ),
                     TaskDetailCell(
                       title: "最后运行时间",
-                      desc: Utils.formatMessageTime(widget.taskBean.lastExecutionTime ?? 0),
+                      desc: Utils.formatMessageTime(
+                          widget.taskBean.lastExecutionTime ?? 0),
                     ),
                     TaskDetailCell(
                       title: "最后运行时长",
-                      desc: widget.taskBean.lastRunningTime == null ? "-" : "${widget.taskBean.lastRunningTime ?? "-"}秒",
+                      desc: widget.taskBean.lastRunningTime == null
+                          ? "-"
+                          : "${widget.taskBean.lastRunningTime ?? "-"}秒",
                     ),
                     GestureDetector(
                       behavior: HitTestBehavior.opaque,
@@ -152,12 +158,13 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
       [
         GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: () async{
+          onTap: () async {
             Navigator.of(context).pop();
-            await startCron(context, ref);
-            setState(() {
-
-            });
+            if (widget.taskBean.status! == 1) {
+              await startCron(context, ref);
+            } else {
+              await stopCron(context, ref);
+            }
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -180,7 +187,6 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
           onTap: () {
             Navigator.of(context).pop();
             showLog();
-
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -202,7 +208,8 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
           behavior: HitTestBehavior.opaque,
           onTap: () {
             Navigator.of(context).pop();
-            Navigator.of(context).pushNamed(Routes.routeAddTask, arguments: widget.taskBean);
+            Navigator.of(context)
+                .pushNamed(Routes.routeAddTask, arguments: widget.taskBean);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
@@ -354,12 +361,16 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
   }
 
   void enableTask() async {
-    await ref.read(taskProvider).enableTask(widget.taskBean.sId!, widget.taskBean.isDisabled!);
+    await ref
+        .read(taskProvider)
+        .enableTask(widget.taskBean.sId!, widget.taskBean.isDisabled!);
     setState(() {});
   }
 
   void pinTask() async {
-    await ref.read(taskProvider).pinTask(widget.taskBean.sId!, widget.taskBean.isPinned!);
+    await ref
+        .read(taskProvider)
+        .pinTask(widget.taskBean.sId!, widget.taskBean.isPinned!);
     setState(() {});
   }
 
@@ -408,7 +419,8 @@ class _TaskDetailPageState extends ConsumerState<TaskDetailPage> {
               maxLines: 1,
               style: const TextStyle(overflow: TextOverflow.ellipsis),
             ),
-            content: InTimeLogPage(widget.taskBean.sId!, widget.taskBean.status == 0),
+            content: InTimeLogPage(
+                widget.taskBean.sId!, widget.taskBean.status == 0),
             actions: [
               CupertinoDialogAction(
                 child: Text(
@@ -481,14 +493,16 @@ class TaskDetailCell extends ConsumerWidget {
                             }
                           },
                           style: TextStyle(
-                            color: ref.watch(themeProvider).themeColor.descColor(),
+                            color:
+                                ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 14,
                           ),
                         ),
                       ),
                     )
                   : Expanded(
-                      child: Align(alignment: Alignment.centerRight, child: icon!),
+                      child:
+                          Align(alignment: Alignment.centerRight, child: icon!),
                     ),
             ],
           ),

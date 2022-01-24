@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/ui/abs_underline_tabindicator.dart';
 import 'package:qinglong_app/base/ui/empty_widget.dart';
+import 'package:qinglong_app/base/ui/highlight/flutter_highlight.dart';
 import 'package:qinglong_app/main.dart';
 
 import 'config_viewmodel.dart';

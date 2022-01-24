@@ -265,13 +265,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.3"
-  flutter_highlight:
-    dependency: "direct main"
-    description:
-      name: flutter_highlight
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.7.0"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -353,7 +346,7 @@ packages:
     source: hosted
     version: "2.1.0"
   highlight:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: highlight
       url: "https://pub.flutter-io.cn"

@@ -24,7 +24,7 @@ dependencies:
   logger: ^1.1.0
   intl: ^0.17.0
   get_it: ^7.2.0
-  flutter_highlight: ^0.7.0
+  highlight: ^0.7.0
   drag_and_drop_lists: ^0.3.2+2
   fluttertoast: ^8.0.8
   move_to_background: ^1.0.2

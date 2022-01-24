@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/theme.dart';
+import 'package:qinglong_app/base/ui/highlight/flutter_highlight.dart';
 import 'package:qinglong_app/module/config/config_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
 
@@ -18,18 +20,33 @@ class ConfigEditPage extends ConsumerStatefulWidget {
 }
 
 class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
-  late TextEditingController _controller;
-  FocusNode node = FocusNode();
+  String text = "";
+  String pre_text = "";
 
   @override
   void initState() {
-    _controller = TextEditingController(text: widget.content);
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback(
-      (timeStamp) {
-        node.requestFocus();
-      },
-    );
+    text = widget.content;
+    pre_text = widget.content;
+  }
+
+  void replaceText(String oldText, String newText) {
+    pre_text = text;
+
+    if (oldText.isEmpty) {
+      text = text + newText;
+    } else {
+      if (text.contains(oldText)) {
+        text = text.replaceAll(oldText, newText);
+      }
+    }
+    setState(() {});
+  }
+
+  void clearText() {
+    pre_text = text;
+    text = "";
+    setState(() {});
   }
 
   @override
@@ -44,8 +61,7 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
         actions: [
           InkWell(
             onTap: () async {
-              HttpResponse<NullResponse> response =
-                  await Api.saveFile(widget.title, _controller.text);
+              HttpResponse<NullResponse> response = await Api.saveFile(widget.title, text);
               if (response.success) {
                 "提交成功".toast();
                 ref.read(configProvider).loadContent(widget.title);
@@ -71,23 +87,232 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
           )
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.only(
-          left: 15,
-          right: 15,
-        ),
-        child: SingleChildScrollView(
-          child: TextField(
-            focusNode: node,
-            style: TextStyle(
-              color: ref.read(themeProvider).themeColor.titleColor(),
-              fontSize: 14,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
             ),
-            controller: _controller,
-            minLines: 1,
-            maxLines: 100,
+            child: SizedBox(
+              height: 30,
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 15,),
+                scrollDirection: Axis.horizontal,
+                children: [
+                  GestureDetector(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                      ),
+                      child: Text(
+                        "插入",
+                        style: TextStyle(
+                          color: ref.watch(themeProvider).primaryColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      edit("插入内容", "", "请输入插入的内容,换行符自己添加");
+                    },
+                    behavior: HitTestBehavior.opaque,
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      edit("替换内容", "原内容", "新内容");
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                      ),
+                      child: Text(
+                        "替换",
+                        style: TextStyle(
+                          color: ref.watch(themeProvider).primaryColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      edit("删除内容", "输入要删除的内容", "");
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                      ),
+                      child: Text(
+                        "删除",
+                        style: TextStyle(
+                          color: ref.watch(themeProvider).primaryColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      clearText();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                      ),
+                      child: Text(
+                        "清空",
+                        style: TextStyle(
+                          color: ref.watch(themeProvider).primaryColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      text = pre_text;
+                      setState(() {});
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                      ),
+                      child: Text(
+                        "撤销本次操作",
+                        style: TextStyle(
+                          color: ref.watch(themeProvider).primaryColor,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
+          Expanded(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: HighlightView(
+                text,
+                language: "sh",
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
+                theme: ref.watch(themeProvider).themeColor.codeEditorTheme(),
+                tabSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void edit(String title, String oldDesc, String newDesc) {
+    String oldText = "";
+    String newText = "";
+    showCupertinoDialog(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: Text(title),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            oldDesc.isNotEmpty
+                ? Material(
+                    color: Colors.transparent,
+                    child: TextField(
+                      onChanged: (value) {
+                        oldText = value;
+                      },
+                      maxLines: 3,
+                      minLines: 1,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                        hintText: oldDesc,
+                      ),
+                      autofocus: true,
+                    ),
+                  )
+                : const SizedBox.shrink(),
+            newDesc.isNotEmpty
+                ? Material(
+                    color: Colors.transparent,
+                    child: TextField(
+                      onChanged: (value) {
+                        newText = value;
+                      },
+                      maxLines: 3,
+                      minLines: 1,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                        hintText: newDesc,
+                      ),
+                      autofocus: true,
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ],
         ),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text(
+              "取消",
+              style: TextStyle(
+                color: Color(0xff999999),
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          CupertinoDialogAction(
+            child: Text(
+              "确定",
+              style: TextStyle(
+                color: ref.watch(themeProvider).primaryColor,
+              ),
+            ),
+            onPressed: () async {
+              Navigator.of(context).pop(true);
+              replaceText(oldText, newText);
+            },
+          ),
+        ],
       ),
     );
   }

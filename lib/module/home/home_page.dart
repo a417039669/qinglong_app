@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/routes.dart';
@@ -10,6 +9,7 @@ import 'package:qinglong_app/module/others/other_page.dart';
 import 'package:qinglong_app/module/task/task_page.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:qinglong_app/utils/update_utils.dart';
+import 'dart:math' as math;
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,22 +18,36 @@ class HomePage extends ConsumerStatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMixin {
   int _index = 0;
   String _title = "";
+  bool isNewYear = false;
 
   List<IndexBean> titles = [];
 
   GlobalKey<ConfigPageState> configKey = GlobalKey();
 
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 1000),
+    vsync: this,
+  )..repeat();
+
   @override
   void initState() {
+    isNewYearDuration();
+
     initTitles();
     _title = titles[0].title;
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       update();
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -140,8 +154,30 @@ class _HomePageState extends ConsumerState<HomePage> {
           items: titles
               .map(
                 (e) => BottomNavigationBarItem(
-                  icon: Icon(e.icon),
-                  activeIcon: Icon(e.checkedIcon),
+                  icon: (e.celebrate.isNotEmpty)
+                      ? Image.asset(
+                          e.celebrate,
+                          width: 35,
+                          height: 35,
+                          fit: BoxFit.cover,
+                        )
+                      : Icon(e.icon),
+                  activeIcon: (e.celebrate.isNotEmpty)
+                      ? AnimatedBuilder(
+                          builder: (context, _) {
+                            return Transform.rotate(
+                              angle: _controller.value * 2.0 * math.pi,
+                              child: Image.asset(
+                                e.celebrate,
+                                width: 35,
+                                height: 35,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                          animation: _controller,
+                        )
+                      : Icon(e.checkedIcon),
                   label: e.title,
                 ),
               )
@@ -152,7 +188,10 @@ class _HomePageState extends ConsumerState<HomePage> {
             _title = titles[index].title;
             setState(() {});
           },
+          elevation: 0,
           type: BottomNavigationBarType.fixed,
+          showSelectedLabels: !isNewYear,
+          showUnselectedLabels: !isNewYear,
         ),
       ),
     );
@@ -165,6 +204,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         CupertinoIcons.timer,
         CupertinoIcons.timer_fill,
         "定时任务",
+        celebrate: !isNewYear ? "" : "assets/images/xin.png",
       ),
     );
     titles.add(
@@ -172,6 +212,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         CupertinoIcons.hammer,
         CupertinoIcons.hammer_fill,
         "环境变量",
+        celebrate: !isNewYear ? "" : "assets/images/chun.png",
       ),
     );
     titles.add(
@@ -179,6 +220,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         CupertinoIcons.settings,
         CupertinoIcons.settings_solid,
         "配置文件",
+        celebrate: !isNewYear ? "" : "assets/images/kuai.png",
       ),
     );
     titles.add(
@@ -186,6 +228,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         CupertinoIcons.cube,
         CupertinoIcons.cube_fill,
         "其他功能",
+        celebrate: !isNewYear ? "" : "assets/images/le.png",
       ),
     );
   }
@@ -199,12 +242,25 @@ class _HomePageState extends ConsumerState<HomePage> {
       updateDialog.show();
     }
   }
+
+  void isNewYearDuration() {
+    DateTime date = DateTime.now();
+    DateTime dateYear1 = DateTime(2022, 1, 29);
+    DateTime dateYear2 = DateTime(2022, 2, 6);
+
+    if (date.isAfter(dateYear1) && date.isBefore(dateYear2)) {
+      isNewYear = true;
+    } else {
+      isNewYear = false;
+    }
+  }
 }
 
 class IndexBean {
   IconData icon;
   IconData checkedIcon;
   String title;
+  String celebrate;
 
-  IndexBean(this.icon, this.checkedIcon, this.title);
+  IndexBean(this.icon, this.checkedIcon, this.title, {this.celebrate = ""});
 }

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:json_conversion_annotation/json_conversion_annotation.dart';
 
+import '../../main.dart';
+
 @JsonConversion()
 class TaskBean {
   String? name;
@@ -55,8 +57,7 @@ class TaskBean {
       lastRunningTime = json['last_running_time'];
       pid = json['pid'].toString();
     } catch (e) {
-      print(jsonEncode(json));
-      print(e);
+      logger.e(e);
     }
   }
 

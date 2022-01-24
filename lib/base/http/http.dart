@@ -127,6 +127,7 @@ class Http {
   }
 
   static HttpResponse<T> exceptionHandler<T>(DioError e, String path) {
+    logger.e(e);
     if (e.response?.statusCode == 401 && !Url.inWhiteList(path)) {
       if (!getIt<UserInfoViewModel>().useSecretLogined) {
         exitLogin();

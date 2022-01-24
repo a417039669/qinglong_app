@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:qinglong_app/utils/extension.dart';
 import 'package:qinglong_app/utils/sp_utils.dart';
 
+import '../main.dart';
 import 'sp_const.dart';
 import 'theme.dart';
 
@@ -89,7 +91,7 @@ class UserInfoViewModel {
 
     //如果已经存在host，那就更新
 
-    print("login success $_host $userName $passWord");
+    "login success $_host $userName $passWord".log();
 
     historyAccounts.removeWhere((element) => element.host == _host);
 

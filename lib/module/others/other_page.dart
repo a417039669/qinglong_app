@@ -1,4 +1,3 @@
-import 'package:dio_log/dio_log.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -379,29 +378,29 @@ class _OtherPageState extends ConsumerState<OtherPage> {
           const SizedBox(
             height: 30,
           ),
-          Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width - 40,
-              child: CupertinoButton(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 5,
-                ),
-                color: ref.watch(themeProvider).themeColor.buttonBgColor(),
-                child: const Text(
-                  "切换账号",
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pushNamed(Routes.routeChangeAccount);
-                },
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
+          // Center(
+          //   child: SizedBox(
+          //     width: MediaQuery.of(context).size.width - 40,
+          //     child: CupertinoButton(
+          //       padding: const EdgeInsets.symmetric(
+          //         vertical: 5,
+          //       ),
+          //       color: ref.watch(themeProvider).themeColor.buttonBgColor(),
+          //       child: const Text(
+          //         "切换账号",
+          //         style: TextStyle(
+          //           fontSize: 16,
+          //         ),
+          //       ),
+          //       onPressed: () {
+          //         Navigator.of(context).pushNamed(Routes.routeChangeAccount);
+          //       },
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 30,
+          // ),
           Center(
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 40,

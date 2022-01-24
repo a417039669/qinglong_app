@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../main.dart';
+
 extension ContextExt on BuildContext {
   T read<T>(ProviderBase<T> provider) {
     return ProviderScope.containerOf(this, listen: false).read(provider);
@@ -17,5 +19,9 @@ extension StringExt on String? {
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
     );
+  }
+
+  void log() {
+    logger.i(this);
   }
 }

@@ -56,9 +56,6 @@ class ConfigPageState extends State<ConfigPage>
                       width: 2,
                     ),
                   ),
-                  onTap: (index) {
-                    print(".....$index");
-                  },
                 ),
                 Expanded(
                   child: TabBarView(

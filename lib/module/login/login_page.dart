@@ -371,35 +371,37 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
               Positioned(
                 bottom: 10,
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Center(
-                    child: Material(
-                      color: Colors.transparent,
-                      child: PopupMenuButton<UserInfoBean>(
-                        onSelected: (UserInfoBean result) {
-                          selected(result);
-                        },
-                        itemBuilder: (BuildContext context) => <PopupMenuEntry<UserInfoBean>>[
-                          ...getIt<UserInfoViewModel>()
-                              .historyAccounts
-                              .map((e) => PopupMenuItem<UserInfoBean>(
-                                    value: e,
-                                    child: buildCell(e),
-                                  ))
-                              .toList(),
-                        ],
-                        child: Text(
-                          "切换账号",
-                          style: TextStyle(
-                            color: ref.watch(themeProvider).primaryColor,
-                            fontSize: 14,
+                child: (getIt<UserInfoViewModel>().historyAccounts.isEmpty)
+                    ? const SizedBox.shrink()
+                    : SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Center(
+                          child: Material(
+                            color: Colors.transparent,
+                            child: PopupMenuButton<UserInfoBean>(
+                              onSelected: (UserInfoBean result) {
+                                selected(result);
+                              },
+                              itemBuilder: (BuildContext context) => <PopupMenuEntry<UserInfoBean>>[
+                                ...getIt<UserInfoViewModel>()
+                                    .historyAccounts
+                                    .map((e) => PopupMenuItem<UserInfoBean>(
+                                          value: e,
+                                          child: buildCell(e),
+                                        ))
+                                    .toList(),
+                              ],
+                              child: Text(
+                                "切换账号",
+                                style: TextStyle(
+                                  color: ref.watch(themeProvider).primaryColor,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
               ),
             ],
           ),

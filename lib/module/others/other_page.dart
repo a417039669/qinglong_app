@@ -27,10 +27,10 @@ class _OtherPageState extends ConsumerState<OtherPage> {
           Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 15,
-              vertical: 30,
+              vertical: 15,
             ),
             decoration: BoxDecoration(
-              color: ref.watch(themeProvider).themeColor.settingBgColor(),
+              color: ref.watch(themeProvider).themeColor.settingBordorColor(),
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
               ),
@@ -48,8 +48,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(
-                      top: 12,
-                      bottom: 8,
+                      top: 10,
+                      bottom: 5,
                       left: 15,
                       right: 15,
                     ),
@@ -58,10 +58,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "脚本管理",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -86,7 +83,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 8,
+                      vertical: 5,
                       horizontal: 15,
                     ),
                     child: Row(
@@ -94,10 +91,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "依赖管理",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -122,8 +116,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(
-                      top: 8,
-                      bottom: 15,
+                      top: 5,
+                      bottom: 5,
                       left: 15,
                       right: 15,
                     ),
@@ -132,10 +126,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "任务日志",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -148,24 +139,9 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 15,
-            ),
-            decoration: BoxDecoration(
-              color: ref.watch(themeProvider).themeColor.settingBgColor(),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(15),
-              ),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                const Divider(
+                  indent: 15,
+                ),
                 GestureDetector(
                   behavior: HitTestBehavior.opaque,
                   onTap: () {
@@ -178,9 +154,11 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     }
                   },
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 15,
+                    padding: const EdgeInsets.only(
+                      top: 5,
+                      bottom: 5,
+                      left: 15,
+                      right: 15,
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
@@ -188,10 +166,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "登录日志",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -220,8 +195,8 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                   behavior: HitTestBehavior.opaque,
                   child: Padding(
                     padding: const EdgeInsets.only(
-                      top: 8,
-                      bottom: 15,
+                      top: 5,
+                      bottom: 10,
                       left: 15,
                       right: 15,
                     ),
@@ -232,10 +207,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "修改密码",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -257,7 +229,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
               vertical: 15,
             ),
             decoration: BoxDecoration(
-              color: ref.watch(themeProvider).themeColor.settingBgColor(),
+              color: ref.watch(themeProvider).themeColor.settingBordorColor(),
               borderRadius: const BorderRadius.all(
                 Radius.circular(15),
               ),
@@ -279,8 +251,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       Text(
                         "夜间模式",
                         style: TextStyle(
-                          color:
-                              ref.watch(themeProvider).themeColor.titleColor(),
+                          color: ref.watch(themeProvider).themeColor.titleColor(),
                           fontSize: 16,
                         ),
                       ),
@@ -294,6 +265,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                     ],
                   ),
                 ),
+
                 const Divider(
                   indent: 15,
                 ),
@@ -316,10 +288,42 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "主题设置",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          CupertinoIcons.right_chevron,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const Divider(
+                  indent: 15,
+                ),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.of(context).pushNamed(Routes.routeChangeAccount);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15,
+                      right: 15,
+                      top: 5,
+                      bottom: 5,
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "切换账号",
+                          style: TextStyle(
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -347,7 +351,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                       left: 15,
                       right: 15,
                       top: 5,
-                      bottom: 15,
+                      bottom: 10,
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -356,10 +360,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                         Text(
                           "关于",
                           style: TextStyle(
-                            color: ref
-                                .watch(themeProvider)
-                                .themeColor
-                                .titleColor(),
+                            color: ref.watch(themeProvider).themeColor.titleColor(),
                             fontSize: 16,
                           ),
                         ),
@@ -378,29 +379,6 @@ class _OtherPageState extends ConsumerState<OtherPage> {
           const SizedBox(
             height: 30,
           ),
-          // Center(
-          //   child: SizedBox(
-          //     width: MediaQuery.of(context).size.width - 40,
-          //     child: CupertinoButton(
-          //       padding: const EdgeInsets.symmetric(
-          //         vertical: 5,
-          //       ),
-          //       color: ref.watch(themeProvider).themeColor.buttonBgColor(),
-          //       child: const Text(
-          //         "切换账号",
-          //         style: TextStyle(
-          //           fontSize: 16,
-          //         ),
-          //       ),
-          //       onPressed: () {
-          //         Navigator.of(context).pushNamed(Routes.routeChangeAccount);
-          //       },
-          //     ),
-          //   ),
-          // ),
-          // const SizedBox(
-          //   height: 30,
-          // ),
           Center(
             child: SizedBox(
               width: MediaQuery.of(context).size.width - 40,
@@ -441,8 +419,7 @@ class _OtherPageState extends ConsumerState<OtherPage> {
                             ),
                             onPressed: () {
                               getIt<UserInfoViewModel>().updateToken("");
-                              Navigator.of(context)
-                                  .pushReplacementNamed(Routes.routeLogin);
+                              Navigator.of(context).pushReplacementNamed(Routes.routeLogin);
                             },
                           ),
                         ],

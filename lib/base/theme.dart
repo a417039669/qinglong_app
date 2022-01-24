@@ -208,6 +208,7 @@ class ThemeViewModel extends ChangeNotifier {
 
 abstract class ThemeColors {
   Color settingBgColor();
+  Color settingBordorColor();
 
   Color titleColor();
 
@@ -250,6 +251,11 @@ class LightThemeColors extends ThemeColors {
   Color buttonBgColor() {
     return _primaryColor;
   }
+
+  @override
+  Color settingBordorColor() {
+    return Colors.white;
+  }
 }
 
 class DartThemeColors extends ThemeColors {
@@ -281,5 +287,10 @@ class DartThemeColors extends ThemeColors {
   @override
   Color buttonBgColor() {
     return const Color(0xff333333);
+  }
+
+  @override
+  Color settingBordorColor() {
+    return Color(0xff333333);
   }
 }

@@ -50,7 +50,7 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
                 "轻触账号以切换登录",
                 style: TextStyle(
                   color: ref.watch(themeProvider).themeColor.titleColor(),
-                  fontSize: 25,
+                  fontSize: 22,
                 ),
               ),
               const SizedBox(
@@ -64,14 +64,13 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      if (index ==
-                          getIt<UserInfoViewModel>().historyAccounts.length) {
+                      if (index == getIt<UserInfoViewModel>().historyAccounts.length) {
                         return addAccount();
                       }
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Container(
-                          color: Colors.white,
+                          color: ref.watch(themeProvider).themeColor.settingBordorColor(),
                           child: buildCell(index),
                         ),
                       );
@@ -81,8 +80,7 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
                         height: 10,
                       );
                     },
-                    itemCount:
-                        getIt<UserInfoViewModel>().historyAccounts.length + 1),
+                    itemCount: getIt<UserInfoViewModel>().historyAccounts.length + 1),
               ),
             ],
           ),
@@ -115,13 +113,11 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(
-                    color: ref.watch(themeProvider).primaryColor, width: 1),
+                border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
               ),
               child: Text(
                 "已登录",
-                style: TextStyle(
-                    color: ref.watch(themeProvider).primaryColor, fontSize: 12),
+                style: TextStyle(color: ref.watch(themeProvider).primaryColor, fontSize: 12),
               ),
             )
           : (isLoginingHost.isNotEmpty
@@ -136,8 +132,7 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
               : const SizedBox.shrink()),
     );
 
-    if (getIt<UserInfoViewModel>().historyAccounts[index].host ==
-        getIt<UserInfoViewModel>().host) {
+    if (getIt<UserInfoViewModel>().historyAccounts[index].host == getIt<UserInfoViewModel>().host) {
       return child;
     }
 
@@ -151,8 +146,7 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
             backgroundColor: Colors.red,
             flex: 1,
             onPressed: (_) {
-              getIt<UserInfoViewModel>().removeHistoryAccount(
-                  getIt<UserInfoViewModel>().historyAccounts[index].host);
+              getIt<UserInfoViewModel>().removeHistoryAccount(getIt<UserInfoViewModel>().historyAccounts[index].host);
               setState(() {});
             },
             foregroundColor: Colors.white,
@@ -187,8 +181,7 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
 
   void dealLoginResponse(int response) {
     if (response == LoginHelper.success) {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(Routes.routeHomePage, (_) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(Routes.routeHomePage, (_) => false);
     } else if (response == LoginHelper.failed) {
       loginFailed();
     } else {
@@ -284,7 +277,10 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
             vertical: 15,
             horizontal: 15,
           ),
-          color: Colors.white,
+          decoration: BoxDecoration(
+            color: ref.watch(themeProvider).themeColor.settingBordorColor(),
+            borderRadius: BorderRadius.circular(15),
+          ),
           child: Row(
             children: [
               Container(
@@ -308,7 +304,7 @@ class _ChangeAccountPageState extends ConsumerState<ChangeAccountPage> {
                 "添加账号",
                 style: TextStyle(
                   color: ref.watch(themeProvider).themeColor.titleColor(),
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
               ),
             ],

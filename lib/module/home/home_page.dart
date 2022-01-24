@@ -185,7 +185,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       IndexBean(
         CupertinoIcons.cube,
         CupertinoIcons.cube_fill,
-        "其他",
+        "其他功能",
       ),
     );
   }

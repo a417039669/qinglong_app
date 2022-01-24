@@ -7,7 +7,7 @@ import 'package:qinglong_app/module/env/env_detail_page.dart';
 import 'package:qinglong_app/module/home/home_page.dart';
 import 'package:qinglong_app/module/login/login_page.dart';
 import 'package:qinglong_app/module/others/about_page.dart';
-import 'package:qinglong_app/module/others/change_account.dart';
+import 'package:qinglong_app/module/others/change_account_page.dart';
 import 'package:qinglong_app/module/others/dependencies/add_dependency_page.dart';
 import 'package:qinglong_app/module/others/dependencies/dependency_page.dart';
 import 'package:qinglong_app/module/others/login_log/login_log_page.dart';

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -14,6 +15,9 @@ import '../main.dart';
 class UpdateUtils {
   Future<String?> checkUpdate([bool remind = false]) async {
     try {
+      if (!Platform.isAndroid) {
+        return null;
+      }
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
       String version = packageInfo.version;

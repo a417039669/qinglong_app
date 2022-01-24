@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -312,6 +314,8 @@ class EnvDetailCell extends ConsumerWidget {
                         child: SelectableText(
                           desc!,
                           textAlign: TextAlign.right,
+                          selectionHeightStyle: BoxHeightStyle.max,
+                          selectionWidthStyle: BoxWidthStyle.max,
                           onTap: () {
                             if (taped != null) {
                               taped!();

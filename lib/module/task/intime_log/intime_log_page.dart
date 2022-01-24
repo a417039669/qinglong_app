@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +69,8 @@ class _InTimeLogPageState extends State<InTimeLogPage> {
           : CupertinoScrollbar(
               child: SelectableText(
                 content!,
+                selectionHeightStyle: BoxHeightStyle.max,
+                selectionWidthStyle: BoxWidthStyle.max,
               ),
             ),
     );

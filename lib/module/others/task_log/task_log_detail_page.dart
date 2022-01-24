@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,6 +43,8 @@ class _TaskLogDetailPageState extends ConsumerState<TaskLogDetailPage> with Lazy
               ),
               child: SelectableText(
                 (content == null || content!.isEmpty) ? "暂无数据" : content!,
+                selectionHeightStyle: BoxHeightStyle.max,
+                selectionWidthStyle: BoxWidthStyle.max,
               ),
             ),
     );

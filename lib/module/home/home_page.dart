@@ -189,6 +189,8 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
             setState(() {});
           },
           elevation: 0,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: !isNewYear,
           showUnselectedLabels: !isNewYear,

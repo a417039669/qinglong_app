@@ -41,7 +41,7 @@ class _TaskPageState extends State<TaskPage> {
             searchCell(ref),
             Expanded(
               child: DefaultTabController(
-                length: 3,
+                length: 5,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,6 +52,12 @@ class _TaskPageState extends State<TaskPage> {
                         ),
                         Tab(
                           text: "正在运行",
+                        ),
+                        Tab(
+                          text: "从未运行",
+                        ),
+                        Tab(
+                          text: "非脚本类",
                         ),
                         Tab(
                           text: "已禁用",
@@ -70,6 +76,8 @@ class _TaskPageState extends State<TaskPage> {
                         children: [
                           body(model, model.list, ref),
                           body(model, model.running, ref),
+                          body(model, model.neverRunning, ref),
+                          body(model, model.notScripts, ref),
                           body(model, model.disabled, ref),
                         ],
                       ),
@@ -102,17 +110,9 @@ class _TaskPageState extends State<TaskPage> {
                 TaskBean item = list[index];
 
                 if (_searchController.text.isEmpty ||
-                    (item.name
-                            ?.toLowerCase()
-                            .contains(_searchController.text.toLowerCase()) ??
-                        false) ||
-                    (item.command
-                            ?.toLowerCase()
-                            .contains(_searchController.text.toLowerCase()) ??
-                        false) ||
-                    (item.schedule
-                            ?.contains(_searchController.text.toLowerCase()) ??
-                        false)) {
+                    (item.name?.toLowerCase().contains(_searchController.text.toLowerCase()) ?? false) ||
+                    (item.command?.toLowerCase().contains(_searchController.text.toLowerCase()) ?? false) ||
+                    (item.schedule?.contains(_searchController.text.toLowerCase()) ?? false)) {
                   return TaskItemCell(item, ref);
                 } else {
                   return const SizedBox.shrink();
@@ -183,9 +183,7 @@ class TaskItemCell extends StatelessWidget {
             child: Text(
               bean.status! == 1 ? "运行" : "停止运行",
             ),
-            trailingIcon: bean.status! == 1
-                ? CupertinoIcons.memories
-                : CupertinoIcons.stop_circle,
+            trailingIcon: bean.status! == 1 ? CupertinoIcons.memories : CupertinoIcons.stop_circle,
             onPressed: () {
               Navigator.of(context).pop();
               if (bean.status! == 1) {
@@ -207,8 +205,7 @@ class TaskItemCell extends StatelessWidget {
             child: const Text("编辑"),
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.of(context)
-                  .pushNamed(Routes.routeAddTask, arguments: bean);
+              Navigator.of(context).pushNamed(Routes.routeAddTask, arguments: bean);
             },
             trailingIcon: CupertinoIcons.pencil_outline,
           ),
@@ -218,9 +215,7 @@ class TaskItemCell extends StatelessWidget {
               Navigator.of(context).pop();
               pinTask();
             },
-            trailingIcon: bean.isPinned! == 0
-                ? CupertinoIcons.pin
-                : CupertinoIcons.pin_slash,
+            trailingIcon: bean.isPinned! == 0 ? CupertinoIcons.pin : CupertinoIcons.pin_slash,
           ),
           QLCupertinoContextMenuAction(
             child: Text(bean.isDisabled! == 0 ? "禁用" : "启用"),
@@ -229,9 +224,7 @@ class TaskItemCell extends StatelessWidget {
               enableTask();
             },
             isDestructiveAction: true,
-            trailingIcon: bean.isDisabled! == 0
-                ? Icons.dnd_forwardslash
-                : Icons.check_circle_outline_sharp,
+            trailingIcon: bean.isDisabled! == 0 ? Icons.dnd_forwardslash : Icons.check_circle_outline_sharp,
           ),
           QLCupertinoContextMenuAction(
             child: const Text("删除"),
@@ -248,9 +241,7 @@ class TaskItemCell extends StatelessWidget {
           return ClipRRect(
             borderRadius: BorderRadius.circular(15),
             child: Container(
-              color: isDark
-                  ? const Color(0xff333333)
-                  : Theme.of(context).scaffoldBackgroundColor,
+              color: isDark ? const Color(0xff333333) : Theme.of(context).scaffoldBackgroundColor,
               padding: EdgeInsets.only(
                 left: 5,
                 right: 5,
@@ -273,9 +264,7 @@ class TaskItemCell extends StatelessWidget {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              color: bean.isPinned == 1
-                  ? ref.watch(themeProvider).themeColor.pinColor()
-                  : Colors.transparent,
+              color: bean.isPinned == 1 ? ref.watch(themeProvider).themeColor.pinColor() : Colors.transparent,
               padding: const EdgeInsets.symmetric(
                 horizontal: 15,
                 vertical: 8,
@@ -300,8 +289,7 @@ class TaskItemCell extends StatelessWidget {
                                     height: 15,
                                     child: CircularProgressIndicator(
                                       strokeWidth: 2,
-                                      color:
-                                          ref.watch(themeProvider).primaryColor,
+                                      color: ref.watch(themeProvider).primaryColor,
                                     ),
                                   ),
                             SizedBox(
@@ -316,10 +304,7 @@ class TaskItemCell extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     overflow: TextOverflow.ellipsis,
-                                    color: ref
-                                        .watch(themeProvider)
-                                        .themeColor
-                                        .titleColor(),
+                                    color: ref.watch(themeProvider).themeColor.titleColor(),
                                     fontSize: 18,
                                   ),
                                 ),
@@ -331,16 +316,11 @@ class TaskItemCell extends StatelessWidget {
                       Material(
                         color: Colors.transparent,
                         child: Text(
-                          (bean.lastExecutionTime == null ||
-                                  bean.lastExecutionTime == 0)
-                              ? "-"
-                              : Utils.formatMessageTime(
-                                  bean.lastExecutionTime!),
+                          (bean.lastExecutionTime == null || bean.lastExecutionTime == 0) ? "-" : Utils.formatMessageTime(bean.lastExecutionTime!),
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color:
-                                ref.watch(themeProvider).themeColor.descColor(),
+                            color: ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 12,
                           ),
                         ),
@@ -370,8 +350,7 @@ class TaskItemCell extends StatelessWidget {
                           maxLines: 1,
                           style: TextStyle(
                             overflow: TextOverflow.ellipsis,
-                            color:
-                                ref.watch(themeProvider).themeColor.descColor(),
+                            color: ref.watch(themeProvider).themeColor.descColor(),
                             fontSize: 12,
                           ),
                         ),

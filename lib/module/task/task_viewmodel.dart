@@ -10,6 +10,8 @@ var taskProvider = ChangeNotifierProvider((ref) => TaskViewModel());
 class TaskViewModel extends BaseViewModel {
   List<TaskBean> list = [];
   List<TaskBean> running = [];
+  List<TaskBean> neverRunning = [];
+  List<TaskBean> notScripts = [];
   List<TaskBean> disabled = [];
 
   Future<void> loadData([isLoading = true]) async {
@@ -40,6 +42,10 @@ class TaskViewModel extends BaseViewModel {
 
     running.clear();
     running.addAll(list.where((element) => element.status == 0));
+    neverRunning.clear();
+    neverRunning.addAll(list.where((element) => element.lastRunningTime == null || element.lastRunningTime == 0));
+    notScripts.clear();
+    notScripts.addAll(list.where((element) => (element.command != null && (element.command!.startsWith("ql repo") || element.command!.startsWith("ql raw")))));
     disabled.clear();
     disabled.addAll(list.where((element) => element.isDisabled == 1));
   }

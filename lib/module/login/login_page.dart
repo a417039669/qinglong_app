@@ -1,6 +1,7 @@
 import 'package:dio_log/dio_log.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
@@ -74,336 +75,339 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ColoredBox(
-        color: ref.watch(themeProvider).themeColor.settingBgColor(),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              Positioned(
-                bottom: 0,
-                child: Image.asset(
-                  "assets/images/login_bg.png",
-                  width: MediaQuery.of(context).size.width,
-                ),
-              ),
-              Scaffold(
-                backgroundColor: Colors.transparent,
-                body: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height / 10,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Image.asset(
-                                      "assets/images/login_tip.png",
-                                      height: 45,
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onDoubleTap: () {
-                                    if (debugBtnIsShow()) {
-                                      dismissDebugBtn();
-                                    } else {
-                                      showDebugBtn(context, btnColor: ref.watch(themeProvider).primaryColor);
-                                    }
-                                    WidgetsBinding.instance?.endOfFrame;
-                                  },
-                                  child: ColorFiltered(
-                                    colorFilter: ColorFilter.mode(
-                                      ref.watch(themeProvider).primaryColor,
-                                      BlendMode.srcIn,
-                                    ),
-                                    child: Image.asset(
-                                      "assets/images/ql.png",
-                                      height: 45,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height / 15,
-                            ),
-                            const Text(
-                              "域名:",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            TextField(
-                              onChanged: (_) {
-                                setState(() {});
-                              },
-                              controller: _hostController,
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                hintText: "http://1.1.1.1:5700",
-                              ),
-                              autofocus: false,
-                            ),
-                            FlipCard(
-                              key: cardKey,
-                              flipOnTouch: false,
-                              onFlipDone: (back) {
-                                useSecretLogin = back;
-                                setState(() {});
-                              },
-                              direction: FlipDirection.HORIZONTAL,
-                              front: SizedBox(
-                                height: 200,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      "用户名:",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    TextField(
-                                      onChanged: (_) {
-                                        setState(() {});
-                                      },
-                                      controller: _userNameController,
-                                      decoration: const InputDecoration(
-                                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        hintText: "请输入用户名",
-                                      ),
-                                      autofocus: false,
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      "密码:",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    TextField(
-                                      onChanged: (_) {
-                                        setState(() {});
-                                      },
-                                      controller: _passwordController,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(
-                                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        hintText: "请输入密码",
-                                      ),
-                                      autofocus: false,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              back: SizedBox(
-                                height: 200,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      "client_id:",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    TextField(
-                                      onChanged: (_) {
-                                        setState(() {});
-                                      },
-                                      controller: _cIdController,
-                                      decoration: const InputDecoration(
-                                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        hintText: "请输入client_id",
-                                      ),
-                                      autofocus: false,
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    const Text(
-                                      "client_secret:",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    TextField(
-                                      onChanged: (_) {
-                                        setState(() {});
-                                      },
-                                      controller: _cSecretController,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(
-                                        contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                        hintText: "请输入client_secret",
-                                      ),
-                                      autofocus: false,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 25,
-                        ),
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              value: rememberPassword,
-                              onChanged: (checked) {
-                                rememberPassword = checked ?? false;
-                                setState(() {});
-                              },
-                            ),
-                            const Text(
-                              "记住密码/client",
-                              style: TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                            const Spacer(),
-                            GestureDetector(
-                              onTap: () {
-                                cardKey.currentState?.toggleCard();
-                                WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                                  setState(() {});
-                                });
-                              },
-                              child: Text(
-                                loginByUserName() ? "client_id登录" : "账号登录",
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 40,
-                        ),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width - 80,
-                          child: IgnorePointer(
-                            ignoring: !canClickLoginBtn(),
-                            child: CupertinoButton(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 5,
-                              ),
-                              color: canClickLoginBtn() ? ref.watch(themeProvider).primaryColor : ref.watch(themeProvider).primaryColor.withOpacity(0.4),
-                              child: isLoading
-                                  ? const CupertinoActivityIndicator()
-                                  : const Text(
-                                      "登 录",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                              onPressed: () {
-                                Http.pushedLoginPage = false;
-                                Utils.hideKeyBoard(context);
-                                if (loginByUserName()) {
-                                  login(_userNameController.text, _passwordController.text);
-                                } else {
-                                  login(_cIdController.text, _cSecretController.text);
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                    ],
+    return Scaffold(
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: ref.watch(themeProvider).darkMode == true ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
+        child: ColoredBox(
+          color: ref.watch(themeProvider).themeColor.settingBgColor(),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+                Positioned(
+                  bottom: 0,
+                  child: Image.asset(
+                    "assets/images/login_bg.png",
+                    width: MediaQuery.of(context).size.width,
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 10,
-                child: (getIt<UserInfoViewModel>().historyAccounts.isEmpty)
-                    ? const SizedBox.shrink()
-                    : SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: Material(
-                            color: Colors.transparent,
-                            child: PopupMenuButton<UserInfoBean>(
-                              onSelected: (UserInfoBean result) {
-                                selected(result);
-                              },
-                              itemBuilder: (BuildContext context) => <PopupMenuEntry<UserInfoBean>>[
-                                ...getIt<UserInfoViewModel>()
-                                    .historyAccounts
-                                    .map((e) => PopupMenuItem<UserInfoBean>(
-                                          value: e,
-                                          child: buildCell(e),
-                                        ))
-                                    .toList(),
-                              ],
-                              child: Text(
-                                "切换账号",
+                Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 10,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Image.asset(
+                                        "assets/images/login_tip.png",
+                                        height: 45,
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onDoubleTap: () {
+                                      if (debugBtnIsShow()) {
+                                        dismissDebugBtn();
+                                      } else {
+                                        showDebugBtn(context, btnColor: ref.watch(themeProvider).primaryColor);
+                                      }
+                                      WidgetsBinding.instance?.endOfFrame;
+                                    },
+                                    child: ColorFiltered(
+                                      colorFilter: ColorFilter.mode(
+                                        ref.watch(themeProvider).primaryColor,
+                                        BlendMode.srcIn,
+                                      ),
+                                      child: Image.asset(
+                                        "assets/images/ql.png",
+                                        height: 45,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height / 15,
+                              ),
+                              const Text(
+                                "域名:",
                                 style: TextStyle(
-                                  color: ref.watch(themeProvider).primaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextField(
+                                onChanged: (_) {
+                                  setState(() {});
+                                },
+                                controller: _hostController,
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  hintText: "http://1.1.1.1:5700",
+                                ),
+                                autofocus: false,
+                              ),
+                              FlipCard(
+                                key: cardKey,
+                                flipOnTouch: false,
+                                onFlipDone: (back) {
+                                  useSecretLogin = back;
+                                  setState(() {});
+                                },
+                                direction: FlipDirection.HORIZONTAL,
+                                front: SizedBox(
+                                  height: 200,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      const Text(
+                                        "用户名:",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      TextField(
+                                        onChanged: (_) {
+                                          setState(() {});
+                                        },
+                                        controller: _userNameController,
+                                        decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                          hintText: "请输入用户名",
+                                        ),
+                                        autofocus: false,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      const Text(
+                                        "密码:",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      TextField(
+                                        onChanged: (_) {
+                                          setState(() {});
+                                        },
+                                        controller: _passwordController,
+                                        obscureText: true,
+                                        decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                          hintText: "请输入密码",
+                                        ),
+                                        autofocus: false,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                back: SizedBox(
+                                  height: 200,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      const Text(
+                                        "client_id:",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      TextField(
+                                        onChanged: (_) {
+                                          setState(() {});
+                                        },
+                                        controller: _cIdController,
+                                        decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                          hintText: "请输入client_id",
+                                        ),
+                                        autofocus: false,
+                                      ),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      const Text(
+                                        "client_secret:",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      TextField(
+                                        onChanged: (_) {
+                                          setState(() {});
+                                        },
+                                        controller: _cSecretController,
+                                        obscureText: true,
+                                        decoration: const InputDecoration(
+                                          contentPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                          hintText: "请输入client_secret",
+                                        ),
+                                        autofocus: false,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                          ),
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                value: rememberPassword,
+                                onChanged: (checked) {
+                                  rememberPassword = checked ?? false;
+                                  setState(() {});
+                                },
+                              ),
+                              const Text(
+                                "记住密码/client",
+                                style: TextStyle(
                                   fontSize: 14,
+                                ),
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: () {
+                                  cardKey.currentState?.toggleCard();
+                                  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                                    setState(() {});
+                                  });
+                                },
+                                child: Text(
+                                  loginByUserName() ? "client_id登录" : "账号登录",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                          ),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width - 80,
+                            child: IgnorePointer(
+                              ignoring: !canClickLoginBtn(),
+                              child: CupertinoButton(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 5,
+                                ),
+                                color: canClickLoginBtn() ? ref.watch(themeProvider).primaryColor : ref.watch(themeProvider).primaryColor.withOpacity(0.4),
+                                child: isLoading
+                                    ? const CupertinoActivityIndicator()
+                                    : const Text(
+                                        "登 录",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                onPressed: () {
+                                  Http.pushedLoginPage = false;
+                                  Utils.hideKeyBoard(context);
+                                  if (loginByUserName()) {
+                                    login(_userNameController.text, _passwordController.text);
+                                  } else {
+                                    login(_cIdController.text, _cSecretController.text);
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 10,
+                  child: (getIt<UserInfoViewModel>().historyAccounts.isEmpty)
+                      ? const SizedBox.shrink()
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: Material(
+                              color: Colors.transparent,
+                              child: PopupMenuButton<UserInfoBean>(
+                                onSelected: (UserInfoBean result) {
+                                  selected(result);
+                                },
+                                itemBuilder: (BuildContext context) => <PopupMenuEntry<UserInfoBean>>[
+                                  ...getIt<UserInfoViewModel>()
+                                      .historyAccounts
+                                      .map((e) => PopupMenuItem<UserInfoBean>(
+                                            value: e,
+                                            child: buildCell(e),
+                                          ))
+                                      .toList(),
+                                ],
+                                child: Text(
+                                  "切换账号",
+                                  style: TextStyle(
+                                    color: ref.watch(themeProvider).primaryColor,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

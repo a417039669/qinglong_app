@@ -10,7 +10,6 @@ Android端去[release](https://github.com/qinglong-app/qinglong_app/releases)下
 
 iOS端暂无上架打算，用户自行下载main分支源码编译安装
 
-## [更新记录](./CHANGELOG.md)
 
 <p float="left">
   <img src="./art/14.jpg" width="200" />
@@ -38,6 +37,9 @@ iOS端暂无上架打算，用户自行下载main分支源码编译安装
   <img src="./art/13.jpg" width="200" />
   <img src="./art/8.jpg" width="200" />
 </p>
+
+## [更新记录](./CHANGELOG.md)
+
 
 ### 不支持的功能
 >* 应用设置

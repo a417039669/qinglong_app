@@ -57,7 +57,7 @@ class _TaskPageState extends State<TaskPage> {
                           text: "从未运行",
                         ),
                         Tab(
-                          text: "非脚本类",
+                          text: "拉库脚本",
                         ),
                         Tab(
                           text: "已禁用",

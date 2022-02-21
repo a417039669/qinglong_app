@@ -43,7 +43,7 @@ class TaskViewModel extends BaseViewModel {
     running.clear();
     running.addAll(list.where((element) => element.status == 0));
     neverRunning.clear();
-    neverRunning.addAll(list.where((element) => element.lastRunningTime == null || element.lastRunningTime == 0));
+    neverRunning.addAll(list.where((element) => element.lastRunningTime == null ));
     notScripts.clear();
     notScripts.addAll(list.where((element) => (element.command != null && (element.command!.startsWith("ql repo") || element.command!.startsWith("ql raw")))));
     disabled.clear();

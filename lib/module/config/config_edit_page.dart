@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,9 +7,12 @@ import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/theme.dart';
-import 'package:qinglong_app/base/ui/highlight/flutter_highlight.dart';
+import 'package:qinglong_app/module/config/config_page.dart';
 import 'package:qinglong_app/module/config/config_viewmodel.dart';
 import 'package:qinglong_app/utils/extension.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../base/ui/syntax_highlighter.dart';
 
 class ConfigEditPage extends ConsumerStatefulWidget {
   final String content;
@@ -61,7 +66,8 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
         actions: [
           InkWell(
             onTap: () async {
-              HttpResponse<NullResponse> response = await Api.saveFile(widget.title, text);
+              HttpResponse<NullResponse> response =
+                  await Api.saveFile(widget.title, text);
               if (response.success) {
                 "提交成功".toast();
                 ref.read(configProvider).loadContent(widget.title);
@@ -96,7 +102,9 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
             child: SizedBox(
               height: 30,
               child: ListView(
-                padding: EdgeInsets.symmetric(horizontal: 15,),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 15,
+                ),
                 scrollDirection: Axis.horizontal,
                 children: [
                   GestureDetector(
@@ -106,7 +114,9 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                        border: Border.all(
+                            color: ref.watch(themeProvider).primaryColor,
+                            width: 1),
                       ),
                       child: Text(
                         "插入",
@@ -135,7 +145,9 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                        border: Border.all(
+                            color: ref.watch(themeProvider).primaryColor,
+                            width: 1),
                       ),
                       child: Text(
                         "替换",
@@ -159,7 +171,9 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                        border: Border.all(
+                            color: ref.watch(themeProvider).primaryColor,
+                            width: 1),
                       ),
                       child: Text(
                         "删除",
@@ -183,7 +197,9 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                        border: Border.all(
+                            color: ref.watch(themeProvider).primaryColor,
+                            width: 1),
                       ),
                       child: Text(
                         "清空",
@@ -208,7 +224,9 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: ref.watch(themeProvider).primaryColor, width: 1),
+                        border: Border.all(
+                            color: ref.watch(themeProvider).primaryColor,
+                            width: 1),
                       ),
                       child: Text(
                         "撤销本次操作",
@@ -224,18 +242,7 @@ class _ConfigEditPageState extends ConsumerState<ConfigEditPage> {
             ),
           ),
           Expanded(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: HighlightView(
-                text,
-                language: "sh",
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                ),
-                theme: ref.watch(themeProvider).themeColor.codeEditorTheme(),
-                tabSize: 14,
-              ),
-            ),
+            child: CodeWidget(content: text,),
           ),
         ],
       ),

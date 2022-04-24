@@ -1,4 +1,4 @@
-package work.master.qinglongapp
+package com.example.qinglong_app
 
 import io.flutter.embedding.android.FlutterActivity
 

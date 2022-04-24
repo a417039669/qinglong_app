@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,9 +8,13 @@ import 'package:qinglong_app/base/http/http.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/base/theme.dart';
-import 'package:qinglong_app/base/ui/highlight/flutter_highlight.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:qinglong_app/base/ui/lazy_load_state.dart';
 import 'package:qinglong_app/utils/extension.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../../../base/ui/syntax_highlighter.dart';
+import '../../config/config_page.dart';
 
 /// @author NewTab
 class ScriptDetailPage extends ConsumerStatefulWidget {
@@ -25,7 +31,8 @@ class ScriptDetailPage extends ConsumerStatefulWidget {
   _ScriptDetailPageState createState() => _ScriptDetailPageState();
 }
 
-class _ScriptDetailPageState extends ConsumerState<ScriptDetailPage> with LazyLoadState<ScriptDetailPage> {
+class _ScriptDetailPageState extends ConsumerState<ScriptDetailPage>
+    with LazyLoadState<ScriptDetailPage> {
   String? content;
 
   List<Widget> actions = [];
@@ -103,7 +110,8 @@ class _ScriptDetailPageState extends ConsumerState<ScriptDetailPage> with LazyLo
                     ),
                     onPressed: () async {
                       Navigator.of(context).pop();
-                      HttpResponse<NullResponse> result = await Api.delScript(widget.title, widget.path ?? "");
+                      HttpResponse<NullResponse> result =
+                          await Api.delScript(widget.title, widget.path ?? "");
                       if (result.success) {
                         "删除成功".toast();
                         Navigator.of(context).pop(true);
@@ -211,16 +219,8 @@ class _ScriptDetailPageState extends ConsumerState<ScriptDetailPage> with LazyLo
           ? const Center(
               child: CupertinoActivityIndicator(),
             )
-          : SingleChildScrollView(
-              child: HighlightView(
-                content ?? "",
-                language: getLanguageType(widget.title),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 15,
-                ),
-                theme: ref.watch(themeProvider).themeColor.codeEditorTheme(),
-                tabSize: 14,
-              ),
+          : CodeWidget(
+              content: content ?? "",
             ),
     );
   }

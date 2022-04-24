@@ -152,7 +152,7 @@ class EnvItemCell extends StatelessWidget {
                   Navigator.of(context).pushNamed(Routes.routeAddEnv, arguments: bean);
                 },
                 foregroundColor: Colors.white,
-                icon: CupertinoIcons.pencil,
+                icon: CupertinoIcons.pencil_outline,
               ),
               SlidableAction(
                 backgroundColor: Colors.orange,

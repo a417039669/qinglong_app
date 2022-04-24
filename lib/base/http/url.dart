@@ -2,6 +2,8 @@ import '../../main.dart';
 import '../userinfo_viewmodel.dart';
 
 class Url {
+  static get system => "/api/system";
+
   static get login => "/api/user/login";
 
   static get loginOld => "/api/login";

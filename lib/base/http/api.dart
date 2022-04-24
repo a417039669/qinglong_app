@@ -113,7 +113,7 @@ class Api {
     var data = {"name": name, "command": command, "schedule": cron};
 
     if (id != null) {
-      data["_id"] = id;
+      data["id"] = id;
       return await Http.put<NullResponse>(
         Url.addTask,
         data,
@@ -217,7 +217,7 @@ class Api {
     };
 
     if (id != null) {
-      data["_id"] = id;
+      data["id"] = id;
       return await Http.put<NullResponse>(
         Url.addEnv,
         data,

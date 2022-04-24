@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="work.master.qinglongapp">
    <application
-        android:label="qinglong_app"
+        android:label="青龙"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/img">
         <activity
             android:name=".MainActivity"
             android:exported="true"

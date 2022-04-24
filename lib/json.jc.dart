@@ -2,6 +2,7 @@
 
 import 'package:qinglong_app/module/config/config_bean.dart';
 import 'package:qinglong_app/module/env/env_bean.dart';
+import 'package:qinglong_app/module/home/system_bean.dart';
 import 'package:qinglong_app/module/login/login_bean.dart';
 import 'package:qinglong_app/module/login/user_bean.dart';
 import 'package:qinglong_app/module/others/dependencies/dependency_bean.dart';
@@ -33,6 +34,10 @@ class JsonConversion$Json {
       return EnvBean.jsonConversion(json)  as M;
     }
     
+    if(type == (SystemBean).toString()){
+      return SystemBean.jsonConversion(json)  as M;
+    }
+    
     if(type == (LoginBean).toString()){
       return LoginBean.jsonConversion(json)  as M;
     }
@@ -60,7 +65,7 @@ class JsonConversion$Json {
     if(type == (TaskBean).toString()){
       return TaskBean.jsonConversion(json)  as M;
     }
-
+    
     throw Exception("not found");
   }
 
@@ -71,6 +76,10 @@ class JsonConversion$Json {
     
     if(<EnvBean>[] is M){
       return data.map<EnvBean>((e) => EnvBean.jsonConversion(e)).toList() as M;
+    }
+    
+    if(<SystemBean>[] is M){
+      return data.map<SystemBean>((e) => SystemBean.jsonConversion(e)).toList() as M;
     }
     
     if(<LoginBean>[] is M){
@@ -100,7 +109,7 @@ class JsonConversion$Json {
     if(<TaskBean>[] is M){
       return data.map<TaskBean>((e) => TaskBean.jsonConversion(e)).toList() as M;
     }
-
+    
     throw Exception("not found");
   }
 }

@@ -1,15 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:qinglong_app/base/http/api.dart';
 import 'package:qinglong_app/base/ql_app_bar.dart';
 import 'package:qinglong_app/base/routes.dart';
 import 'package:qinglong_app/module/config/config_page.dart';
 import 'package:qinglong_app/module/env/env_page.dart';
+import 'package:qinglong_app/module/home/system_bean.dart';
 import 'package:qinglong_app/module/others/other_page.dart';
 import 'package:qinglong_app/module/task/task_page.dart';
 import 'package:move_to_background/move_to_background.dart';
 import 'package:qinglong_app/utils/update_utils.dart';
 import 'dart:math' as math;
+
+import '../../utils/utils.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,7 +24,8 @@ class HomePage extends ConsumerStatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends ConsumerState<HomePage>
+    with TickerProviderStateMixin {
   int _index = 0;
   String _title = "";
   bool isNewYear = false;
@@ -41,6 +48,7 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
       update();
+      getSystemBean();
     });
   }
 
@@ -238,7 +246,8 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
   void update() async {
     String? result = await UpdateUtils().checkUpdate();
     if (result != null && result.isNotEmpty) {
-      UpdateDialog updateDialog = UpdateDialog(context, title: "发现新版本", updateContent: "版本号:v$result", onUpdate: () {
+      UpdateDialog updateDialog = UpdateDialog(context,
+          title: "发现新版本", updateContent: "版本号:v$result", onUpdate: () {
         UpdateUtils.launchURL(result);
       });
       updateDialog.show();
@@ -254,6 +263,13 @@ class _HomePageState extends ConsumerState<HomePage> with TickerProviderStateMix
       isNewYear = true;
     } else {
       isNewYear = false;
+    }
+  }
+
+  void getSystemBean() async {
+    var bean = await Api.system();
+    if (bean.success) {
+      Utils.systemBean.version = bean.bean?.version ?? "2.10.13";
     }
   }
 }

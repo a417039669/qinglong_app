@@ -1,13 +1,15 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qinglong_app/base/base_state_widget.dart';
 import 'package:qinglong_app/base/routes.dart';
-import 'package:qinglong_app/base/theme.dart';
 import 'package:qinglong_app/base/ui/abs_underline_tabindicator.dart';
 import 'package:qinglong_app/base/ui/empty_widget.dart';
-import 'package:qinglong_app/base/ui/highlight/flutter_highlight.dart';
 import 'package:qinglong_app/main.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import '../../base/ui/syntax_highlighter.dart';
 import 'config_viewmodel.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -18,7 +20,7 @@ class ConfigPage extends StatefulWidget {
 }
 
 class ConfigPageState extends State<ConfigPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   int _initIndex = 0;
   BuildContext? childContext;
 
@@ -61,19 +63,8 @@ class ConfigPageState extends State<ConfigPage>
                   child: TabBarView(
                     children: model.list
                         .map(
-                          (e) => SingleChildScrollView(
-                            child: HighlightView(
-                              model.content[e.title] ?? "",
-                              language: "sh",
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                              ),
-                              theme: ref
-                                  .watch(themeProvider)
-                                  .themeColor
-                                  .codeEditorTheme(),
-                              tabSize: 14,
-                            ),
+                          (e) => CodeWidget(
+                            content: model.content[e.title] ?? "",
                           ),
                         )
                         .toList(),
@@ -109,4 +100,46 @@ class ConfigPageState extends State<ConfigPage>
       }
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
+}
+
+class CodeWidget extends StatefulWidget {
+  final String content;
+
+  const CodeWidget({
+    Key? key,
+    required this.content,
+  }) : super(key: key);
+
+  @override
+  State<CodeWidget> createState() => _CodeWidgetState();
+}
+
+class _CodeWidgetState extends State<CodeWidget>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    return SelectableText.rich(
+      TextSpan(
+        style: GoogleFonts.droidSansMono(fontSize: 14).apply(
+          fontSizeFactor: 1,
+        ),
+        children: <TextSpan>[
+          DartSyntaxHighlighter(SyntaxHighlighterStyle.lightThemeStyle())
+              .format(widget.content)
+        ],
+      ),
+      style: DefaultTextStyle.of(context).style.apply(
+            fontSizeFactor: 1,
+          ),
+      selectionWidthStyle: BoxWidthStyle.max,
+      selectionHeightStyle: BoxHeightStyle.max,
+      autofocus: true,
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

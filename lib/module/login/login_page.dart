@@ -432,6 +432,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   void dealLoginResponse(int response) {
+    isLoading = false;
     if (response == LoginHelper.success) {
       Navigator.of(context).pushReplacementNamed(Routes.routeHomePage);
     } else if (response == LoginHelper.failed) {

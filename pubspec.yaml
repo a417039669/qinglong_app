@@ -38,6 +38,8 @@ dependencies:
   # flutter pub run build_runner build  --delete-conflicting-outputs
   # flutter pub run change_app_package_name:main work.master.qinglongapp
   # flutter pub run flutter_native_splash:create
+  # flutter pub run flutter_launcher_icons:main
+  # flutter pub run flutter_app_name
 
 dev_dependencies:
   flutter_native_splash: ^2.0.5

@@ -1,0 +1,78 @@
+#当提交被推送到您的默认分支时，此工作流将构建node.js应用程序并将其推送到Azure Web App。
+#
+#此工作流假设您已经创建了目标Azure App Service web app。
+#有关说明，请参见https://docs . Microsoft . com/en-us/azure/app-service/quick start-nodejs？tabs = linux & pivots =开发-环境-cli
+#
+#要配置此工作流:
+#
+# 1.为您的Azure Web应用下载发布配置文件。您可以从Azure门户中您的Web应用的概述页面下载该文件。
+#了解更多信息:https://docs . Microsoft . com/en-us/azure/app-service/deploy-github-actions？tabs = applevel #生成-部署-凭证
+#
+# 2.在名为AZURE_WEBAPP_PUBLISH_PROFILE的存储库中创建一个秘密，将发布配置文件的内容粘贴为秘密的值。
+#有关获取发布配置文件的说明，请参见:https://docs . Microsoft . com/azure/app-service/deploy-github-actions # configure-the-github-secret
+#
+# 3.更改AZURE_WEBAPP_NAME的值。或者，更改下面的AZURE_WEBAPP_PACKAGE_PATH和NODE_VERSION环境变量。
+#
+#有关GitHub对Azure的操作的更多信息:https://github.com/Azure/Actions
+#有关Azure Web Apps部署操作的更多信息:https://github.com/Azure/webapps-deploy
+#获取更多部署到Azure的GitHub动作工作流的示例:https://github.com/Azure/actions-workflow-samples
+
+在:
+推:
+分支: [ "主要" ]
+工作流_调度:
+
+包封/包围（动词envelop的简写）:
+AZURE_WEBAPP_NAME: 您的应用程序名称#将此设置为应用程序的名称
+AZURE_WEBAPP_PACKAGE_PATH: '.'      #将此项设置为web应用程序项目的路径，默认为存储库根目录
+节点版本: 14.x '                #将其设置为要使用的节点版本
+
+许可:
+内容: 阅读
+
+工作:
+建设:
+连续运行: Ubuntu-最新版
+步伐:
+    - 使用: 动作/签出@v3
+
+    - 名字: 设置Node.js
+使用: 动作/设置-节点@v3
+随着:
+节点版本: ${{环境。节点版本}}
+隐藏物: ' npm '
+
+    - 名字: npm安装、构建和测试
+奔跑: |
+npm安装
+npm运行构建-如果存在
+npm运行测试-如果存在
+
+    - 名字: 为部署作业上传工件
+使用: 动作/上传-工件@v3
+随着:
+名字: 节点应用程序
+小路: .
+
+部署:
+许可:
+内容: 没有人
+连续运行: Ubuntu-最新版
+需要: 建设
+环境:
+名字: 发展
+全球资源定位器(Uniform Resource Locator): ${{steps . deploy-to-web app . outputs . web app-URL}}
+
+步伐:
+    - 名字: 从构建作业下载工件
+使用: 操作/下载-工件@v3
+随着:
+名字: 节点应用程序
+
+    - 名字: '部署到Azure WebApp '
+身份证明（identification）: 部署到webapp
+使用: azure/web apps-部署@v2
+随着:
+应用程序名称: ${{环境。AZURE_WEBAPP_NAME}}
+发布配置文件: ${{秘密。AZURE_WEBAPP_PUBLISH_PROFILE}}
+包裹: ${{环境AZURE_WEBAPP_PACKAGE_PATH}}
